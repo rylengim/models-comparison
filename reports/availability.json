@@ -1,0 +1,75 @@
+{
+  "checked_at": "2026-10-29",
+  "llm_requests": 0,
+  "network_checks": [
+    {
+      "check": "wiki_search",
+      "tool": "web_search",
+      "arguments": {
+        "query": "2026 in science"
+      },
+      "elapsed_s": 1.86,
+      "ok": true,
+      "result_count": 5,
+      "found": null,
+      "error": null
+    },
+    {
+      "check": "wiki_page",
+      "tool": "page_find",
+      "arguments": {
+        "title": "2026 in science",
+        "keywords": [
+          "January"
+        ]
+      },
+      "elapsed_s": 1.09,
+      "ok": true,
+      "result_count": null,
+      "found": true,
+      "error": null
+    },
+    {
+      "check": "ddg_search",
+      "tool": "web_search_extra",
+      "arguments": {
+        "query": "site:esawebb.org 2026 galaxy"
+      },
+      "elapsed_s": 1.37,
+      "ok": false,
+      "result_count": null,
+      "found": null,
+      "error": "ValueError: DuckDuckGo returned an anti-bot challenge; try Wikipedia or an official source URL"
+    },
+    {
+      "check": "official_page",
+      "tool": "page_find",
+      "arguments": {
+        "url": "https://esahubble.org/news/heic2601/",
+        "keywords": [
+          "Cloud-9",
+          "RELHIC"
+        ]
+      },
+      "elapsed_s": 0.57,
+      "ok": true,
+      "result_count": null,
+      "found": true,
+      "error": null
+    }
+  ],
+  "public_model_catalog": [
+    {
+      "id": "anthropic/claude-sonnet-4.6",
+      "tool_calling": true
+    },
+    {
+      "id": "anthropic/claude-haiku-4.5",
+      "tool_calling": true
+    },
+    {
+      "id": "openai/gpt-4o-mini",
+      "tool_calling": true
+    }
+  ]
+}
