@@ -4,6 +4,7 @@ Run from the repository root: python reports/run_paced.py benchmark --resume ...
 The package and request payloads are unchanged. Wall time includes pacing waits.
 """
 import fcntl
+import json
 import math
 import os
 import sys
@@ -90,6 +91,24 @@ class RequestGate:
             raise
 
 
+def _exception_chain(error):
+    """Only exception classes and the last three module/function frame names."""
+    chain, seen = [], set()
+    while isinstance(error, BaseException) and id(error) not in seen and len(chain) < 8:
+        seen.add(id(error))
+        frames = []
+        traceback = error.__traceback__
+        while traceback is not None:
+            frame = traceback.tb_frame
+            frames.append({"module": frame.f_globals.get("__name__", "unknown"),
+                           "function": frame.f_code.co_name})
+            frames = frames[-3:]
+            traceback = traceback.tb_next
+        chain.append({"type": type(error).__name__, "frames": frames})
+        error = error.__cause__ or error.__context__
+    return chain
+
+
 def main(argv=None):
     gate = RequestGate.from_env()
     original = OpenRouterClient.complete
@@ -99,15 +118,19 @@ def main(argv=None):
         return gate.call(original, self, **kwargs)
 
     def diagnosed_post(*args, **kwargs):
+        started = time.monotonic()
         try:
             return original_post(*args, **kwargs)
         except requests.RequestException as error:
+            elapsed = time.monotonic() - started
             context = error.__cause__ or error.__context__
             reason = getattr(context, "reason", context)
             reason_type = type(reason).__name__ if isinstance(reason, BaseException) else "unknown"
             # Exception text, args and request details can contain credentials.
             try:
-                print(f"POST transport failure: type={type(error).__name__} reason_type={reason_type}",
+                print(f"POST transport failure: type={type(error).__name__} reason_type={reason_type} elapsed_s={elapsed:.6f}",
+                      file=sys.stderr, flush=True)
+                print("POST exception chain: " + json.dumps(_exception_chain(error)),
                       file=sys.stderr, flush=True)
             except OSError:
                 pass  # Diagnostic output must not replace the transport error.

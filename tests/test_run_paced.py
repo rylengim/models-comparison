@@ -1,3 +1,4 @@
+import json
 import multiprocessing
 import time
 from types import SimpleNamespace
@@ -216,8 +217,58 @@ def test_transport_diagnostic_reports_only_types_and_restores_patches(
     assert calls == [(("https://secret-url.invalid",), arguments)]
     captured = capsys.readouterr()
     assert captured.out == ""
-    assert captured.err == (f"POST transport failure: type={error_class.__name__} "
-                            f"reason_type={type(reason).__name__}\n")
+    diagnostic, stack_line = captured.err.splitlines()
+    assert diagnostic.startswith(f"POST transport failure: type={error_class.__name__} "
+                                 f"reason_type={type(reason).__name__} elapsed_s=")
+    assert float(diagnostic.rsplit("=", 1)[1]) >= 0
+    stack = json.loads(stack_line.removeprefix("POST exception chain: "))
+    assert stack[0]["type"] == error_class.__name__
+    assert all(set(frame) == {"module", "function"} for item in stack for frame in item["frames"])
     assert "secret" not in captured.err
+    assert requests.post is post
+    assert paced.OpenRouterClient.complete is original_complete
+
+
+def test_transport_trace_identifies_handshake_context_and_post_elapsed(monkeypatch, tmp_path, capsys):
+    import reports.run_paced as paced
+
+    monkeypatch.setenv("FRESHQA_GATE_PATH", str(tmp_path / "gate"))
+    ticks = iter([20.0, 20.125])
+    monkeypatch.setattr(paced.time, "monotonic", lambda: next(ticks))
+    failure = requests.ReadTimeout("secret-request-message")
+    calls = []
+
+    def synthetic_handshake():
+        local_token = "secret-local-variable"
+        raise TimeoutError(local_token)
+
+    def validate_connection():
+        try:
+            synthetic_handshake()
+        except TimeoutError:
+            raise ReadTimeoutError(None, "https://secret-url.invalid", "secret-tls-message")
+
+    def post(*args, **kwargs):
+        calls.append(1)
+        try:
+            validate_connection()
+        except ReadTimeoutError:
+            raise failure
+
+    monkeypatch.setattr(requests, "post", post)
+    monkeypatch.setattr(paced, "cli_main", lambda argv: requests.post("https://secret-url.invalid"))
+    original_complete = paced.OpenRouterClient.complete
+    with pytest.raises(requests.ReadTimeout) as caught:
+        paced.main([])
+    assert caught.value is failure
+    assert calls == [1]
+    diagnostic = capsys.readouterr().err
+    line, stack_line = diagnostic.splitlines()
+    assert line.endswith("elapsed_s=0.125000")
+    stack = json.loads(stack_line.removeprefix("POST exception chain: "))
+    assert [item["type"] for item in stack] == ["ReadTimeout", "ReadTimeoutError", "TimeoutError"]
+    assert stack[-1]["frames"][-1] == {"module": __name__, "function": "synthetic_handshake"}
+    assert all(len(item["frames"]) <= 3 for item in stack)
+    assert "secret" not in diagnostic
     assert requests.post is post
     assert paced.OpenRouterClient.complete is original_complete
