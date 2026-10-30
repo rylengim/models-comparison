@@ -1,0 +1,115 @@
+{
+  "final": "unknown",
+  "steps": 3,
+  "elapsed_s": 10.206943833996775,
+  "cost_usd": 0.005875999999999992,
+  "known_cost_usd": 0.005875999999999992,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.001955,
+      "prompt_tokens": 1470,
+      "completion_tokens": 97,
+      "request_id": "gen-1793376229-IMVjWCYcxcWmDANHpxxs",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "I'll search for information about this fine issued to Amed S.F.K. by the Turkish Football Federation.",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_01QZ8ojmm4EuG9CCaCJyZyUf",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"Amed S.F.K. Turkish Football Federation fine January 29 2026\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 3.257742361001874
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Amed S.F.K. Turkish Football Federation fine January 29 2026"
+      },
+      "tool_call_id": "toolu_bdrk_01QZ8ojmm4EuG9CCaCJyZyUf",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.5772561839985428
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.001955,
+      "prompt_tokens": 1590,
+      "completion_tokens": 73,
+      "request_id": "gen-1793376233-vUNVxpnI6LLxqABClYWQ",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "Let me try a different search approach:",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_01UPxdrBRqSz6KBjc3PTHrbt",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"Amed SK fine 2026 Turkish Football Federation\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 3.1625579059982556
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "Amed SK fine 2026 Turkish Football Federation"
+      },
+      "tool_call_id": "toolu_bdrk_01UPxdrBRqSz6KBjc3PTHrbt",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.4879398589982884
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.001966,
+      "prompt_tokens": 1686,
+      "completion_tokens": 56,
+      "request_id": "gen-1793376236-pmeZG8DvrbpOys4EH8YH",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "I'm unable to retrieve information about this specific fine through my available search tools. The searches are returning errors, and I don't have access to real-time information about events in January 2026 or recent Turkish Football Federation decisions.\n\nFINAL: unknown",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 2.7203592939986265
+    }
+  ],
+  "id": "fresh-50",
+  "question": "What fine was issued to Amed S.F.K. by the Turkish Football Federation on January 29, 2026?",
+  "expected": "802,500 lira",
+  "correct": false,
+  "config": "medium_search_read",
+  "model": "anthropic/claude-haiku-4.5",
+  "measured": true,
+  "recorded_at": "2026-10-30T16:03:57.540902+00:00"
+}

@@ -1,0 +1,76 @@
+{
+  "final": "5.6",
+  "steps": 2,
+  "elapsed_s": 7.037013120003394,
+  "cost_usd": 0.004269000000000078,
+  "known_cost_usd": 0.004269000000000078,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.001872,
+      "prompt_tokens": 1457,
+      "completion_tokens": 83,
+      "request_id": "gen-1793377386-iWMa1otjyNzhdzzgKJ7A",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "I'll search for information about an earthquake in Yamanashi Prefecture in June 2026.",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_017qYJwCCCM6LNtPAcEK2fR6",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"Yamanashi Prefecture earthquake June 2026\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.8547401489995536
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Yamanashi Prefecture earthquake June 2026"
+      },
+      "tool_call_id": "toolu_bdrk_017qYJwCCCM6LNtPAcEK2fR6",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"List of earthquakes in 2026\", \"url\": \"https://en.wikipedia.org/wiki/List_of_earthquakes_in_2026\", \"snippet\": \"This is a list of earthquakes in 2026 . Only earthquakes of magnitude 6 or above are included, unless they result in significant damage and/or casualties\"}, {\"title\": \"2011 Tōhoku earthquake and tsunami\", \"url\": \"https://en.wikipedia.org/wiki/2011_T%C5%8Dhoku_earthquake_and_tsunami\", \"snippet\": \"affected Tokyo, Kanagawa, Eastern Shizuoka, Yamanashi , Chiba, Ibaraki, Saitama, Tochigi, and Gunma prefectures . Voluntary reductions in electricity use by\"}, {\"title\": \"2024 Noto earthquake\", \"url\": \"https://en.wikipedia.org/wiki/2024_Noto_earthquake\", \"snippet\": \"a MJMA7.6 (Mw7.5) earthquake struck 6 km (3.7 mi) north-northeast of Suzu, located on the Noto Peninsula of Ishikawa Prefecture , Japan. The reverse-faulting\"}, {\"title\": \"Chūō Shinkansen\", \"url\": \"https://en.wikipedia.org/wiki/Ch%C5%AB%C5%8D_Shinkansen\", \"snippet\": \"at a site in Yamanashi Prefecture , between Ōtsuki and Tsuru (35°34′59″N 138°55′37″E﻿ / ﻿35.583°N 138.927°E﻿ / 35.583; 138.927﻿ ( Yamanashi Test Track))\"}, {\"title\": \"2026 in Japan\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_Japan\", \"snippet\": \"occurs on Hirao, Yamaguchi. June 27 – A magnitude 5.6 earthquake strikes Yamanashi Prefecture , injuring 10 people. July 5 – The 2026 Shiga gubernatorial election\"}]}",
+      "elapsed_s": 0.9384633600020607
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.002397,
+      "prompt_tokens": 2077,
+      "completion_tokens": 64,
+      "request_id": "gen-1793377389-TKOXOTYUjMhJThwyv8kD",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "Perfect! I found the information. According to the search results from the Wikipedia article \"2026 in Japan,\" a magnitude 5.6 earthquake struck Yamanashi Prefecture on June 27, 2026, injuring 10 people.\n\nFINAL: 5.6",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 3.2426677440016647
+    }
+  ],
+  "id": "fresh-121",
+  "question": "What magnitude earthquake struck Yamanashi Prefecture in June 2026?",
+  "expected": "5.6",
+  "correct": true,
+  "config": "medium_search_read",
+  "model": "anthropic/claude-haiku-4.5",
+  "measured": true,
+  "recorded_at": "2026-10-30T16:23:11.934371+00:00"
+}

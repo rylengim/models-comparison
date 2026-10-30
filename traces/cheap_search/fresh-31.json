@@ -1,0 +1,77 @@
+{
+  "final": "Aibek Dädebai formed the new government of Kazakhstan after the legislative election on August 23, 2026.",
+  "steps": 2,
+  "elapsed_s": 14.107985681999708,
+  "cost_usd": 0.00024270000000001235,
+  "known_cost_usd": 0.00024270000000001235,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 9.075e-05,
+      "prompt_tokens": 485,
+      "completion_tokens": 30,
+      "request_id": "gen-1793373196-iC4FIY6MVEXupt43zrug",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_Asvkxj0rlJhagmx5Bo0fB5FG",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Kazakhstan new government after legislative election August 23 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 6.546495137998136
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Kazakhstan new government after legislative election August 23 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_Asvkxj0rlJhagmx5Bo0fB5FG",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2026 Kazakh legislative election\", \"url\": \"https://en.wikipedia.org/wiki/2026_Kazakh_legislative_election\", \"snippet\": \"Legislative elections were held in Kazakhstan on 23 August 2026 to elect all 145 members of the Kurultai of the 1st convocation. It was the 10th legislative\"}, {\"title\": \"2026\", \"url\": \"https://en.wikipedia.org/wiki/2026\", \"snippet\": \"and East Syria in favor of the Syrian government under Ahmed al-Sharaa. August 23 – 2026 Kazakh legislative election : Pro-Tokayev party Ädilet wins a supermajority\"}, {\"title\": \"List of elections in 2026\", \"url\": \"https://en.wikipedia.org/wiki/List_of_elections_in_2026\", \"snippet\": \"Japanese local elections Kazakhstan 2026 Kazakh constitutional referendum, 15 March 2026 Kazakh legislative election , 23 August Laos 2026 Laotian parliamentary\"}, {\"title\": \"2026 national electoral calendar\", \"url\": \"https://en.wikipedia.org/wiki/2026_national_electoral_calendar\", \"snippet\": \"observer to 2026 general elections \\\". aa.com.tr. 21 May 2025. Retrieved 28 November 2025. Omirgazy, Dana (1 July 2026 ). \\\" Kazakhstan Sets August 23 Date for\"}, {\"title\": \"2026 in politics\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_politics\", \"snippet\": \"August 23 – The 2026 Kazakh legislative election was held, with Aibek Dädebai of the newly-formed Ädilet forming the new government of Kazakhstan . August\"}]}",
+      "elapsed_s": 0.9330920560023515
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.00015195,
+      "prompt_tokens": 901,
+      "completion_tokens": 28,
+      "request_id": "gen-1793373204-nNKj5fgOb0NZap6X8vD9",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: Aibek Dädebai formed the new government of Kazakhstan after the legislative election on August 23, 2026.",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 6.6273015049991955
+    }
+  ],
+  "id": "fresh-31",
+  "question": "Who formed the new government of Kazakhstan after the legislative election on August 23, 2026?",
+  "expected": "Aibek Dädebai",
+  "correct": true,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:13:25.352288+00:00"
+}

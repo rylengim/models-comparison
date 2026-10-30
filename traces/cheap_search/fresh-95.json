@@ -1,0 +1,157 @@
+{
+  "final": "unknown",
+  "steps": 4,
+  "elapsed_s": 10.764743072999408,
+  "cost_usd": 0.0005114999999999981,
+  "known_cost_usd": 0.0005114999999999981,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "repeated_tool_call",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 8.7e-05,
+      "prompt_tokens": 480,
+      "completion_tokens": 25,
+      "request_id": "gen-1793376264-synBzmgoyzajbcxRVIq6",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_fTUBI5Sw2oNLe7wTyyadZIa1",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"2026 Men's T20 World Cup winner\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 3.202783584001736
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "2026 Men's T20 World Cup winner",
+        "language": "en"
+      },
+      "tool_call_id": "call_fTUBI5Sw2oNLe7wTyyadZIa1",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2026 Men's T20 World Cup\", \"url\": \"https://en.wikipedia.org/wiki/2026_Men%27s_T20_World_Cup\", \"snippet\": \"The 2026 ICC Men's T20 World Cup was the tenth edition of the ICC Men's T20 World Cup , co-hosted by Board of Control for Cricket in India and Sri Lanka\"}, {\"title\": \"2026 Men's T20 World Cup final\", \"url\": \"https://en.wikipedia.org/wiki/2026_Men%27s_T20_World_Cup_final\", \"snippet\": \"Modi Stadium in Ahmedabad, India, on 8 March 2026 to determine the winner of the 2026 ICC Men's T20 World Cup . It was played between the defending champions\"}, {\"title\": \"2028 Men's T20 World Cup qualification\", \"url\": \"https://en.wikipedia.org/wiki/2028_Men%27s_T20_World_Cup_qualification\", \"snippet\": \"The 2028 ICC Men's T20 World Cup will be the eleventh edition of the ICC Men's T20 World Cup , a biennial world cup for cricket in Twenty20 International\"}, {\"title\": \"2026 Men's T20 World Cup qualification\", \"url\": \"https://en.wikipedia.org/wiki/2026_Men%27s_T20_World_Cup_qualification\", \"snippet\": \"The 2026 ICC Men's T20 World Cup was the tenth edition of the ICC Men's T20 World Cup , a biennial world cup for cricket in Twenty20 International (T20I)\"}, {\"title\": \"2026 Women's T20 World Cup\", \"url\": \"https://en.wikipedia.org/wiki/2026_Women%27s_T20_World_Cup\", \"snippet\": \"The 2026 ICC Women's T20 World Cup was the tenth edition of the ICC Women's T20 World Cup and was hosted by the England and Wales Cricket Board from 12\"}]}",
+      "elapsed_s": 0.5443279480023193
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.0001548,
+      "prompt_tokens": 928,
+      "completion_tokens": 26,
+      "request_id": "gen-1793376267-YbxFt2I7XOkmgUHmHB9C",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_bfULC4n1HA4ocjaJdZS5RlRL",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"2026 Men's T20 World Cup final result\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.603865933000634
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "2026 Men's T20 World Cup final result",
+        "language": "en"
+      },
+      "tool_call_id": "call_bfULC4n1HA4ocjaJdZS5RlRL",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.33383408800000325
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.00016095,
+      "prompt_tokens": 973,
+      "completion_tokens": 25,
+      "request_id": "gen-1793376270-ff7UcqYWKrr4EuhjC3aS",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_danVP0WN0KxhjM1rbpgm51Ij",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"2026 Men's T20 World Cup winner\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.539550123998197
+    },
+    {
+      "type": "tool",
+      "step": 3,
+      "name": "web_search",
+      "arguments": {
+        "query": "2026 Men's T20 World Cup winner",
+        "language": "en"
+      },
+      "tool_call_id": "call_danVP0WN0KxhjM1rbpgm51Ij",
+      "output": "{\"error\": \"repeated_tool_call\"}",
+      "elapsed_s": 3.011599983437918e-05
+    },
+    {
+      "type": "llm",
+      "step": 4,
+      "tools_enabled": false,
+      "cost_usd": 0.00010875,
+      "prompt_tokens": 713,
+      "completion_tokens": 3,
+      "request_id": "gen-1793376272-spFsBniYethhpqMeMvfO",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: unknown",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 1.5396567219977442
+    }
+  ],
+  "id": "fresh-95",
+  "question": "Which country won the 2026 Men's T20 World Cup in cricket?",
+  "expected": "India",
+  "correct": false,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T16:04:33.205788+00:00"
+}

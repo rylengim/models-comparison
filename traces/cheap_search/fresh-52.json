@@ -1,0 +1,77 @@
+{
+  "final": "5.2",
+  "steps": 2,
+  "elapsed_s": 3.2270648010016885,
+  "cost_usd": 0.0002324999999999966,
+  "known_cost_usd": 0.0002324999999999966,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 8.955e-05,
+      "prompt_tokens": 485,
+      "completion_tokens": 28,
+      "request_id": "gen-1793375770-K3Iqch5BUIDWWRBghCgh",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_7x0DZbZFNOgnMfifnXfcFNwA",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Guangxi earthquake May 18 2026 magnitude\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.9076897849990928
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Guangxi earthquake May 18 2026 magnitude",
+        "language": "en"
+      },
+      "tool_call_id": "call_7x0DZbZFNOgnMfifnXfcFNwA",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2026 Liuzhou earthquakes\", \"url\": \"https://en.wikipedia.org/wiki/2026_Liuzhou_earthquakes\", \"snippet\": \"On 18 May 2026 , two doublet earthquakes measuring Mww 5.0 and 5.1 (both measuring 5.2 according to the China Earthquake Administration) struck Liuzhou\"}, {\"title\": \"List of earthquakes in 2026\", \"url\": \"https://en.wikipedia.org/wiki/List_of_earthquakes_in_2026\", \"snippet\": \"This is a list of earthquakes in 2026 . Only earthquakes of magnitude 6 or above are included, unless they result in significant damage and/or casualties\"}, {\"title\": \"2026 in China\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_China\", \"snippet\": \"Jinping. 16 May – A truck falls into a river in Huanjiang Maonan Autonomous County, Guangxi , killing nine people. 18 May – A magnitude 5.2 earthquake hits Guangxi\"}, {\"title\": \"List of earthquakes 2021–present\", \"url\": \"https://en.wikipedia.org/wiki/List_of_earthquakes_2021%E2%80%93present\", \"snippet\": \"significant earthquakes from 2021–2030, listing earthquakes of magnitude 7 and above, or which caused human fatalities. Deaths due to earthquake -caused tsunamis\"}, {\"title\": \"2025 Myanmar earthquake\", \"url\": \"https://en.wikipedia.org/wiki/2025_Myanmar_earthquake\", \"snippet\": \"On 28 March 2025, at 12:50:52 MMT (06:20:52 UTC), a moment magnitude (Mw) 7.7–7.9 earthquake struck the Sagaing Region of Myanmar, with an epicenter close\"}]}",
+      "elapsed_s": 0.569310922997829
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.00014295,
+      "prompt_tokens": 925,
+      "completion_tokens": 7,
+      "request_id": "gen-1793375772-b5YfkEWOInsaBMVpYmyG",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: 5.2",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 0.7490922049983055
+    }
+  ],
+  "id": "fresh-52",
+  "question": "What was the magnitude of the earthquake that hit Guangxi on May 18, 2026?",
+  "expected": "5.2",
+  "correct": true,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:56:12.875768+00:00"
+}

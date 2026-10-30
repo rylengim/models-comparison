@@ -1,0 +1,76 @@
+{
+  "final": "New Delhi",
+  "steps": 2,
+  "elapsed_s": 14.92889797799944,
+  "cost_usd": 0.004091999999999998,
+  "known_cost_usd": 0.004091999999999998,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.001844,
+      "prompt_tokens": 1459,
+      "completion_tokens": 77,
+      "request_id": "gen-1793372955-miEAPnuG18m9eKcNNqha",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "I'll search for information about the 2026 BWF World Championships.",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_01DNcLbbFm2rgWTr6oByyzzQ",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"2026 BWF World Championships August\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 7.291125963998638
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "2026 BWF World Championships August"
+      },
+      "tool_call_id": "toolu_bdrk_01DNcLbbFm2rgWTr6oByyzzQ",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2026 BWF World Championships\", \"url\": \"https://en.wikipedia.org/wiki/2026_BWF_World_Championships\", \"snippet\": \"The 2026 BWF World Championships is the 30th edition of the world badminton championships . It took place in New Delhi, India in 2026 . India hosted the\"}, {\"title\": \"2026 BWF season\", \"url\": \"https://en.wikipedia.org/wiki/2026_BWF_season\", \"snippet\": \"in 2026 consists of: 1. BWF tournaments (Grade 1; Major Events) BWF World Team Championships (Thomas & Uber Cup) BWF World Championships 2. BWF World Tour\"}, {\"title\": \"2026 BWF World Tour\", \"url\": \"https://en.wikipedia.org/wiki/2026_BWF_World_Tour\", \"snippet\": \"The 2026 BWF World Tour (officially known as the 2026 HSBC BWF World Tour for sponsorship reasons) is the ninth season of the BWF World Tour of badminton\"}, {\"title\": \"2026 BWF World Championships – Men's singles\", \"url\": \"https://en.wikipedia.org/wiki/2026_BWF_World_Championships_%E2%80%93_Men%27s_singles\", \"snippet\": \"the 2026 BWF World Championships took place from 17 to 23 August 2026 at the Indira Gandhi Arena in New Delhi. The seeding list was based on the World Rankings\"}, {\"title\": \"BWF World Junior Championships\", \"url\": \"https://en.wikipedia.org/wiki/BWF_World_Junior_Championships\", \"snippet\": \"The BWF World Junior Championships is a tournament organized by the Badminton World Federation to crown the best junior badminton players (U-19) in the\"}]}",
+      "elapsed_s": 0.9033575270004803
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.002248,
+      "prompt_tokens": 1988,
+      "completion_tokens": 52,
+      "request_id": "gen-1793372962-MtB29ddomUHLKvFhr0Av",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "Based on the search results, the 2026 BWF World Championships took place in **New Delhi, India** in August 2026 (specifically from August 17-23, 2026).\n\nFINAL: New Delhi",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 6.733236650001345
+    }
+  ],
+  "id": "fresh-9",
+  "question": "What city hosted the 2026 BWF World Championships in sports in August?",
+  "expected": "New Delhi",
+  "correct": true,
+  "config": "medium_search_read",
+  "model": "anthropic/claude-haiku-4.5",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:09:24.266582+00:00"
+}

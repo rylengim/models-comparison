@@ -1,0 +1,77 @@
+{
+  "final": "Bruno Foucher",
+  "steps": 2,
+  "elapsed_s": 3.485894631998235,
+  "cost_usd": 0.00022140000000001048,
+  "known_cost_usd": 0.00022140000000001048,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 9e-05,
+      "prompt_tokens": 488,
+      "completion_tokens": 28,
+      "request_id": "gen-1793375766-colzN67HvPqRQXifeJxi",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_SLNCtte3nDaRbldnsHlRPFgg",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"French ambassador Central African Republic disciplinary proceedings August 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.8617290789989056
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "French ambassador Central African Republic disciplinary proceedings August 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_SLNCtte3nDaRbldnsHlRPFgg",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2026 in the Central African Republic\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_the_Central_African_Republic\", \"snippet\": \"and torture. 13 August – The French Foreign Ministry opens disciplinary proceedings against its ambassador to the Central African Republic , Bruno Foucher\"}, {\"title\": \"2026 in France\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_France\", \"snippet\": \"650 people. 13 August – The French Foreign Ministry opens disciplinary proceedings against its ambassador to the Central African Republic , Bruno Foucher\"}, {\"title\": \"Bruno Foucher\", \"url\": \"https://en.wikipedia.org/wiki/Bruno_Foucher\", \"snippet\": \"French diplomat. He has been ambassador of France to Lebanon since 2017 until 2020. In 2026 , Foucher, by then the ambassador to the Central African Republic\"}, {\"title\": \"Iran\", \"url\": \"https://en.wikipedia.org/wiki/Iran\", \"snippet\": \"by the superintendent of each department. Jean Chardin, French merchant and eventual ambassador to Iran, wrote that the Safavid shahs ruled their land\"}, {\"title\": \"Zinedine Zidane\", \"url\": \"https://en.wikipedia.org/wiki/Zinedine_Zidane\", \"snippet\": \"Zinedine Yazid Zidane ( French : [zinedin zidan]; born 23 June 1972), popularly known as Zizou ( French : [zizu]), is a French professional football manager\"}]}",
+      "elapsed_s": 0.7583563360021799
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.0001314,
+      "prompt_tokens": 852,
+      "completion_tokens": 6,
+      "request_id": "gen-1793375768-mv7Q4jFaauNYgWwnemWw",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: Bruno Foucher",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 0.8651088510014233
+    }
+  ],
+  "id": "fresh-51",
+  "question": "What is the name of the French ambassador to the Central African Republic involved in disciplinary proceedings in August 2026?",
+  "expected": "Bruno Foucher",
+  "correct": true,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:56:09.647675+00:00"
+}

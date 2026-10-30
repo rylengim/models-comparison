@@ -1,0 +1,237 @@
+{
+  "final": "unknown",
+  "steps": 6,
+  "elapsed_s": 14.771997192998242,
+  "cost_usd": 0.0008574000000000012,
+  "known_cost_usd": 0.0008574000000000012,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "max_steps",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.0001248,
+      "prompt_tokens": 692,
+      "completion_tokens": 35,
+      "request_id": "gen-1793374055-RAeQlMRGiMJmHVEVqtfz",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_2gdGh6VXtmqreTPECiH8mXZl",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"earthquake 66 km north-northwest of Ende Indonesia 14 August 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.48892935099866
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "earthquake 66 km north-northwest of Ende Indonesia 14 August 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_2gdGh6VXtmqreTPECiH8mXZl",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"Netherlands\", \"url\": \"https://en.wikipedia.org/wiki/Netherlands\", \"snippet\": \"kingdom. Indonesia had declared its independence in August 1945. Suriname followed in 1975. The Netherlands was one of the founding members of Benelux\"}, {\"title\": \"Qanat\", \"url\": \"https://en.wikipedia.org/wiki/Qanat\", \"snippet\": \"concentration is in the north and northwest along the Pakistan-Afghanistan border and oasis of Makoran division. The karez system of the Balochistan desert\"}]}",
+      "elapsed_s": 0.7914845900013461
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.00014685,
+      "prompt_tokens": 863,
+      "completion_tokens": 29,
+      "request_id": "gen-1793374057-GDLerf9DlkP9kwiZxzQS",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_XUQRIU5RnnXo0IVl8HxiUBPM",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"USGS earthquake record Ende Indonesia August 14 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.8470890839998901
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "USGS earthquake record Ende Indonesia August 14 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_XUQRIU5RnnXo0IVl8HxiUBPM",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.22329174400147167
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.00015885,
+      "prompt_tokens": 911,
+      "completion_tokens": 37,
+      "request_id": "gen-1793374060-d8ZlRhSyCaQnbw5aIoRS",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_HN6bPSewM73hVYe7n0ZhD4CJ",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"USGS earthquake magnitude 66 km north-northwest of Ende Indonesia August 14 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.1771702139994886
+    },
+    {
+      "type": "tool",
+      "step": 3,
+      "name": "web_search",
+      "arguments": {
+        "query": "USGS earthquake magnitude 66 km north-northwest of Ende Indonesia August 14 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_HN6bPSewM73hVYe7n0ZhD4CJ",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.7834568569996918
+    },
+    {
+      "type": "llm",
+      "step": 4,
+      "tools_enabled": true,
+      "cost_usd": 0.00016305,
+      "prompt_tokens": 967,
+      "completion_tokens": 30,
+      "request_id": "gen-1793374062-9LRxHu7fuYKsixlSFWAb",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_oAFA48p6Lz4tXSkvkkw32Irc",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"earthquake magnitude USGS August 14 2026 Ende Indonesia\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.5418544269996346
+    },
+    {
+      "type": "tool",
+      "step": 4,
+      "name": "web_search",
+      "arguments": {
+        "query": "earthquake magnitude USGS August 14 2026 Ende Indonesia",
+        "language": "en"
+      },
+      "tool_call_id": "call_oAFA48p6Lz4tXSkvkkw32Irc",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.5492835379991448
+    },
+    {
+      "type": "llm",
+      "step": 5,
+      "tools_enabled": true,
+      "cost_usd": 0.000174,
+      "prompt_tokens": 1016,
+      "completion_tokens": 36,
+      "request_id": "gen-1793374065-xcJYZPv0uEBsH6P65xrG",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_h1iqMLL8NgWNJM93lkUQwXHa",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"earthquake 66 km north-northwest of Ende Indonesia August 14 2026 magnitude\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.929416217997641
+    },
+    {
+      "type": "tool",
+      "step": 5,
+      "name": "web_search",
+      "arguments": {
+        "query": "earthquake 66 km north-northwest of Ende Indonesia August 14 2026 magnitude",
+        "language": "en"
+      },
+      "tool_call_id": "call_h1iqMLL8NgWNJM93lkUQwXHa",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.4756973939984164
+    },
+    {
+      "type": "llm",
+      "step": 6,
+      "tools_enabled": false,
+      "cost_usd": 8.985e-05,
+      "prompt_tokens": 587,
+      "completion_tokens": 3,
+      "request_id": "gen-1793374067-EfEy7UKUs3kZ6o6koMnL",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: unknown",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 1.9621000019978965
+    }
+  ],
+  "id": "fresh-36",
+  "question": "According to the USGS event record, what was the magnitude of the earthquake 66 km north-northwest of Ende, Indonesia, at 21:58 UTC on 14 August 2026 (15 August locally)?",
+  "expected": "7.8",
+  "correct": false,
+  "config": "cheap_search_read",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:27:48.839139+00:00"
+}

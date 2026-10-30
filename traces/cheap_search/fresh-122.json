@@ -1,0 +1,77 @@
+{
+  "final": "Angus Taylor",
+  "steps": 2,
+  "elapsed_s": 5.9384717239991005,
+  "cost_usd": 0.0002234999999999876,
+  "known_cost_usd": 0.0002234999999999876,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 8.835e-05,
+      "prompt_tokens": 481,
+      "completion_tokens": 27,
+      "request_id": "gen-1793376619-AlFL1EhQkxzfAjFtJAxO",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_Z5S4zsOq3wyVPDITnYwlvxWj",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Sussan Ley ousted February 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 3.173451766000653
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Sussan Ley ousted February 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_Z5S4zsOq3wyVPDITnYwlvxWj",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"Sussan Ley\", \"url\": \"https://en.wikipedia.org/wiki/Sussan_Ley\", \"snippet\": \"Sussan Penelope Ley (née Braybrooks; born 14 December 1961) is an Australian retired politician who served as the leader of the Opposition from 2025 to\"}, {\"title\": \"2026 in politics\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_politics\", \"snippet\": \"landslide victory. February 13 – Sussan Ley , the first female leader of the Liberal Party of Australia, was ousted by Angus Taylor. February 17 – Peruvian\"}, {\"title\": \"2026 Farrer by-election\", \"url\": \"https://en.wikipedia.org/wiki/2026_Farrer_by-election\", \"snippet\": \"writ — on or before 10 July 2026 A leadership spill of the Liberal party room was held on 13 February 2026 , where Sussan Ley was defeated by Angus Taylor\"}, {\"title\": \"Next Australian federal election\", \"url\": \"https://en.wikipedia.org/wiki/Next_Australian_federal_election\", \"snippet\": \"Nation at the by-election in May 2026 following the resignation of former Opposition Leader Sussan Ley on 27 February 2026 . Party leader Robbie Katter sits\"}, {\"title\": \"2026 Liberal Party of Australia leadership spill\", \"url\": \"https://en.wikipedia.org/wiki/2026_Liberal_Party_of_Australia_leadership_spill\", \"snippet\": \"the Opposition. Angus Taylor was elected, defeating incumbent leader Sussan Ley . A spill for the deputy leadership was held concurrently, with Jane Hume\"}]}",
+      "elapsed_s": 0.6150975130003644
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.00013515,
+      "prompt_tokens": 881,
+      "completion_tokens": 5,
+      "request_id": "gen-1793376622-tlao4eh2v76xiMXdSTql",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: Angus Taylor",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 2.1488249780013575
+    }
+  ],
+  "id": "fresh-122",
+  "question": "Who ousted Sussan Ley in February 2026 in Australian politics?",
+  "expected": "Angus Taylor",
+  "correct": true,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T16:10:23.463574+00:00"
+}

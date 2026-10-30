@@ -1,0 +1,76 @@
+{
+  "final": "28 people died in the fire at the Huiteng Shoes factory in Jinjiang, Fujian, China on July 9, 2026.",
+  "steps": 2,
+  "elapsed_s": 5.7522048560022085,
+  "cost_usd": 0.004182000000000019,
+  "known_cost_usd": 0.004182000000000019,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.001857,
+      "prompt_tokens": 1462,
+      "completion_tokens": 79,
+      "request_id": "gen-1793376553-a4uKYVStOCZkxs0MSDfJ",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "I'll search for information about a shoe factory fire in China in July 2026.",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_011wcTz4aFKzRce31AzcMazs",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"shoe factory fire China July 2026\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.767952841000806
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "shoe factory fire China July 2026"
+      },
+      "tool_call_id": "toolu_bdrk_011wcTz4aFKzRce31AzcMazs",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"Huiteng Shoes factory fire\", \"url\": \"https://en.wikipedia.org/wiki/Huiteng_Shoes_factory_fire\", \"snippet\": \"9 July 2026 , a fire erupted on the first floor in a flammable material storage area at the Huiteng Shoe Company factory in Jinjiang, Fujian, China . Founded\"}, {\"title\": \"2026 in China\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_China\", \"snippet\": \"people and damaging 4,309 homes. 9 July — A fire at a shoe factory in Jinjiang, Quanzhou kills 28 people. 10 July — China halts helium exports. CASC successfully\"}, {\"title\": \"Nike, Inc.\", \"url\": \"https://en.wikipedia.org/wiki/Nike%2C_Inc.\", \"snippet\": \"one of the biggest strikes in mainland China took place at the Yue Yuen Industrial Holdings Dongguan shoe factory , producing amongst others for Nike. Yue\"}, {\"title\": \"List of building or structure fires\", \"url\": \"https://en.wikipedia.org/wiki/List_of_building_or_structure_fires\", \"snippet\": \"killed 15. 9 July – Huiteng Shoes factory fire in China killed 28. 12 July – 2026 Bangkok pub fire in Thailand killed 41. 16 July – A fire at an orphanage\"}, {\"title\": \"Clarks (shoe retailer)\", \"url\": \"https://en.wikipedia.org/wiki/Clarks_%28shoe_retailer%29\", \"snippet\": \"market it in North America in 1968. As General Manager of the factory , Paddy Roberts took the shoe to a trade fair in New York in the same year, whereupon he\"}]}",
+      "elapsed_s": 0.8219807910027157
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.002325,
+      "prompt_tokens": 1995,
+      "completion_tokens": 66,
+      "request_id": "gen-1793376555-PfDrIRZefehB2jlQkTdj",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "Based on the search results, I found the information about the shoe factory fire in China in July 2026.\n\nFINAL: 28 people died in the fire at the Huiteng Shoes factory in Jinjiang, Fujian, China on July 9, 2026.",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 2.1612602499990317
+    }
+  ],
+  "id": "fresh-82",
+  "question": "What was the death toll from the fire at a shoe factory in China in July 2026?",
+  "expected": "28 people",
+  "correct": true,
+  "config": "medium_search_read",
+  "model": "anthropic/claude-haiku-4.5",
+  "measured": true,
+  "recorded_at": "2026-10-30T16:09:17.230091+00:00"
+}

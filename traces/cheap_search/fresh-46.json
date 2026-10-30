@@ -1,0 +1,117 @@
+{
+  "final": "unknown",
+  "steps": 3,
+  "elapsed_s": 5.143533249000029,
+  "cost_usd": 0.00027075000000001403,
+  "known_cost_usd": 0.00027075000000001403,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 8.79e-05,
+      "prompt_tokens": 482,
+      "completion_tokens": 26,
+      "request_id": "gen-1793375738-lsRwA5mAHSPtdzECOJm4",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_7vZ2GVhGlWgfPIUcK4gTYmjB",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Moscow bombing August 1 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.9942631810008606
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Moscow bombing August 1 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_7vZ2GVhGlWgfPIUcK4gTYmjB",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.21208444100193447
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 9.465e-05,
+      "prompt_tokens": 527,
+      "completion_tokens": 26,
+      "request_id": "gen-1793375739-5cIG2g4VrYXB2d9FPiva",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_i03ZCmSUVKEeqWpbG1CcZggu",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Moscow bombing August 1 2026\",\"language\":\"ru\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.5389210790017387
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "Moscow bombing August 1 2026",
+        "language": "ru"
+      },
+      "tool_call_id": "call_i03ZCmSUVKEeqWpbG1CcZggu",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.7546893029975763
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 8.82e-05,
+      "prompt_tokens": 572,
+      "completion_tokens": 4,
+      "request_id": "gen-1793375742-5HyPdmsmqVV3Lm6SKYH2",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: unknown",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 0.6427810029999819
+    }
+  ],
+  "id": "fresh-46",
+  "question": "How many people died in the Moscow bombing on August 1, 2026?",
+  "expected": "five",
+  "correct": false,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:55:42.702499+00:00"
+}

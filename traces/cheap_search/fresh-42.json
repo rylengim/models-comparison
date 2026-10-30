@@ -1,0 +1,117 @@
+{
+  "final": "Prime Minister Modi",
+  "steps": 3,
+  "elapsed_s": 5.221186464001221,
+  "cost_usd": 0.0004271999999999887,
+  "known_cost_usd": 0.0004271999999999887,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 8.76e-05,
+      "prompt_tokens": 480,
+      "completion_tokens": 26,
+      "request_id": "gen-1793375714-7OeaUYk83VlU9ljlrZK9",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_4cGh33EkFJNycVrKYIpcn55H",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Noida International Airport inauguration March 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.6925314920008532
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Noida International Airport inauguration March 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_4cGh33EkFJNycVrKYIpcn55H",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"Noida International Airport\", \"url\": \"https://en.wikipedia.org/wiki/Noida_International_Airport\", \"snippet\": \"Noida International Airport (IATA: DXN, ICAO: VIND), also called Jewar Airport , is an international airport at Jewar in the Gautam Buddha Nagar district\"}, {\"title\": \"Noida Metro\", \"url\": \"https://en.wikipedia.org/wiki/Noida_Metro\", \"snippet\": \"Delhi–Mumbai Expressway with Noida International Airport in March 2026 . Rail connectivity between Greater Noida and Noida International Airport has been proposed\"}, {\"title\": \"Noida\", \"url\": \"https://en.wikipedia.org/wiki/Noida\", \"snippet\": \"the airport's operational readiness. The Noida International Airport is slated to be operational by April 2026 after multiple delays. The Noida International\"}, {\"title\": \"Navi Mumbai International Airport\", \"url\": \"https://en.wikipedia.org/wiki/Navi_Mumbai_International_Airport\", \"snippet\": \"Retrieved 1 April 2026 . \\\"IndiGo to launch first commercial flights from Noida International Airport on June 15\\\". The News Mill. 7 May 2026 . \\\"[IndiGo launches\"}, {\"title\": \"Indira Gandhi International Airport\", \"url\": \"https://en.wikipedia.org/wiki/Indira_Gandhi_International_Airport\", \"snippet\": \"Retrieved 11 April 2026 . \\\" Noida International Airport Inauguration \\\". Times of India. 28 March 2026 . Retrieved 4 July 2026 . \\\"Capital's first airport looks for a\"}]}",
+      "elapsed_s": 1.1296840520008118
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.0001467,
+      "prompt_tokens": 870,
+      "completion_tokens": 27,
+      "request_id": "gen-1793375717-T4dMyQ5M7bJ1gxUaiiJc",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_y6c0nTik6oswbzbz13yTLRJF",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Noida International Airport inauguration March 2026 details\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 0.9477795170023455
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "Noida International Airport inauguration March 2026 details",
+        "language": "en"
+      },
+      "tool_call_id": "call_y6c0nTik6oswbzbz13yTLRJF",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"Noida International Airport\", \"url\": \"https://en.wikipedia.org/wiki/Noida_International_Airport\", \"snippet\": \"Noida International Airport (IATA: DXN, ICAO: VIND), also called Jewar Airport , is an international airport at Jewar in the Gautam Buddha Nagar district\"}, {\"title\": \"Noida\", \"url\": \"https://en.wikipedia.org/wiki/Noida\", \"snippet\": \"the airport's operational readiness. The Noida International Airport is slated to be operational by April 2026 after multiple delays. The Noida International\"}, {\"title\": \"Noida Metro\", \"url\": \"https://en.wikipedia.org/wiki/Noida_Metro\", \"snippet\": \"Delhi–Mumbai Expressway with Noida International Airport in March 2026 . Rail connectivity between Greater Noida and Noida International Airport has been proposed\"}, {\"title\": \"2026 in India\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_India\", \"snippet\": \"ISSN 0971-8257. Retrieved 28 March 2026 . \\\"PM Modi inaugurates Noida International Airport \\\". The Hindu. 28 March 2026 . Retrieved 28 March 2026 . \\\"India declares victory\"}, {\"title\": \"Chhatrapati Shivaji Maharaj International Airport\", \"url\": \"https://en.wikipedia.org/wiki/Chhatrapati_Shivaji_Maharaj_International_Airport\", \"snippet\": \"Chhatrapati Shivaji Maharaj International Airport (IATA: BOM, ICAO: VABB) is the international airport serving Mumbai, the capital of the Indian state\"}]}",
+      "elapsed_s": 0.6492819129998679
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.0001929,
+      "prompt_tokens": 1262,
+      "completion_tokens": 6,
+      "request_id": "gen-1793375718-SLTQAfyxRaxqUm3kOwtx",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: Prime Minister Modi",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 0.8000227530028496
+    }
+  ],
+  "id": "fresh-42",
+  "question": "Who inaugurated the Noida International Airport in India in March 2026?",
+  "expected": "Prime Minister Narendra Modi",
+  "correct": false,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:55:19.577326+00:00"
+}

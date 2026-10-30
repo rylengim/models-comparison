@@ -1,0 +1,77 @@
+{
+  "final": "₹25,863 crore",
+  "steps": 2,
+  "elapsed_s": 5.988076679001097,
+  "cost_usd": 0.0002452500000000024,
+  "known_cost_usd": 0.0002452500000000024,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.0001206,
+      "prompt_tokens": 672,
+      "completion_tokens": 33,
+      "request_id": "gen-1793374690-tjABfDp73UMY54ptSN7h",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_72WdxCjugNEwscj01vdVaBmz",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Shivraj Singh Chouhan VB-G RAM-G scheme July 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 3.10376998799984
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Shivraj Singh Chouhan VB-G RAM-G scheme July 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_72WdxCjugNEwscj01vdVaBmz",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2026 in India\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_India\", \"snippet\": \"Minister Shivraj Singh Chouhan releases the first instalment of ₹25,863 crore (US$2.7 billion) to states for the implementation of the VB - G RAM - G scheme . 6\"}]}",
+      "elapsed_s": 0.5323065289994702
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.00012465,
+      "prompt_tokens": 799,
+      "completion_tokens": 8,
+      "request_id": "gen-1793374693-EUO9RIS3cpMvq4SatYNc",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: ₹25,863 crore",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 2.350874793002731
+    }
+  ],
+  "id": "fresh-91",
+  "question": "What was the amount released by Shivraj Singh Chouhan for the VB-G RAM-G scheme in July 2026?",
+  "expected": "₹25,863 crore",
+  "correct": true,
+  "config": "cheap_search_read",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:38:15.607634+00:00"
+}

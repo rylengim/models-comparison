@@ -1,0 +1,76 @@
+{
+  "final": "The 2026 Beninese parliamentary election was held in Benin on 11 January 2026 to choose members of the National Assembly.",
+  "steps": 2,
+  "elapsed_s": 7.18105960399771,
+  "cost_usd": 0.004144999999999954,
+  "known_cost_usd": 0.004144999999999954,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.001902,
+      "prompt_tokens": 1467,
+      "completion_tokens": 87,
+      "request_id": "gen-1793377215-N6q13NvPJuR5mbhU0qQV",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "I'll search for information about the Benin election on 11 January 2026.",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_01H3ZZ72o7MJPgVZ3hVYg2sx",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"Benin election 11 January 2026 National Assembly\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 4.412505103999138
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Benin election 11 January 2026 National Assembly"
+      },
+      "tool_call_id": "toolu_bdrk_01H3ZZ72o7MJPgVZ3hVYg2sx",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"National Assembly (Benin)\", \"url\": \"https://en.wikipedia.org/wiki/National_Assembly_%28Benin%29\", \"snippet\": \"History of Benin Legislative Branch List of legislatures by country List of presidents of the National Assembly of Benin Politics of Benin Histoire et\"}, {\"title\": \"2026 national electoral calendar\", \"url\": \"https://en.wikipedia.org/wiki/2026_national_electoral_calendar\", \"snippet\": \"territories. By- elections are excluded, though national referendums are included. Specific dates are given where these are known. 11 January : Benin , Parliament\"}, {\"title\": \"List of elections in 2026\", \"url\": \"https://en.wikipedia.org/wiki/List_of_elections_in_2026\", \"snippet\": \"Algeria 2026 Algerian parliamentary election , 2 July Benin 2026 Beninese parliamentary election , 11 January 2026 Beninese presidential election , 12 April\"}, {\"title\": \"2026 Beninese parliamentary election\", \"url\": \"https://en.wikipedia.org/wiki/2026_Beninese_parliamentary_election\", \"snippet\": \"Parliamentary elections were held in Benin on 11 January 2026 to elect all 109 members of the National Assembly . The preliminary results of the election were announced\"}, {\"title\": \"2026 Beninese presidential election\", \"url\": \"https://en.wikipedia.org/wiki/2026_Beninese_presidential_election\", \"snippet\": \"Presidential elections were held in Benin on 12 April 2026 , following the 11 January parliamentary elections conducted in accordance with the national electoral\"}]}",
+      "elapsed_s": 0.8977480770008697
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.002243,
+      "prompt_tokens": 1978,
+      "completion_tokens": 53,
+      "request_id": "gen-1793377219-3fSMwnb6WJWDlOBw3Ben",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "Based on the search results, I have found the answer.\n\nFINAL: The 2026 Beninese parliamentary election was held in Benin on 11 January 2026 to choose members of the National Assembly.",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 1.8691191830002936
+    }
+  ],
+  "id": "fresh-107",
+  "question": "What election was held in Benin on 11 January 2026 to choose members of the National Assembly?",
+  "expected": "2026 Beninese parliamentary election",
+  "correct": true,
+  "config": "medium_search_read",
+  "model": "anthropic/claude-haiku-4.5",
+  "measured": true,
+  "recorded_at": "2026-10-30T16:20:20.316905+00:00"
+}

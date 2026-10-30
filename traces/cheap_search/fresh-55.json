@@ -1,0 +1,197 @@
+{
+  "final": "unknown",
+  "steps": 5,
+  "elapsed_s": 9.405188107000868,
+  "cost_usd": 0.0005008499999999694,
+  "known_cost_usd": 0.0005008499999999694,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 8.865e-05,
+      "prompt_tokens": 483,
+      "completion_tokens": 27,
+      "request_id": "gen-1793375789-u4Kcv58QMkt2j6wuBoO2",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_HsKgMt0GRe9piWMs4pa95P8H",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Guerrero earthquake January 2 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.170619431999512
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Guerrero earthquake January 2 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_HsKgMt0GRe9piWMs4pa95P8H",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.22643820199664333
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 9.555e-05,
+      "prompt_tokens": 529,
+      "completion_tokens": 27,
+      "request_id": "gen-1793375791-8KfLZfHS4tHFhwpK0BxX",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_FCExwuxEBcnDgjKntmqVWPfC",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Guerrero earthquake January 2 2026\",\"language\":\"ru\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.4765636370029824
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "Guerrero earthquake January 2 2026",
+        "language": "ru"
+      },
+      "tool_call_id": "call_FCExwuxEBcnDgjKntmqVWPfC",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.9894352629999048
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.00010305,
+      "prompt_tokens": 575,
+      "completion_tokens": 28,
+      "request_id": "gen-1793375793-wizzGigHTzjBumrH0hYd",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_4kJBDy5RxMgu7gR3CTdFQmKV",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Guerrero earthquake January 2 2026 casualties\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.2350314750001417
+    },
+    {
+      "type": "tool",
+      "step": 3,
+      "name": "web_search",
+      "arguments": {
+        "query": "Guerrero earthquake January 2 2026 casualties",
+        "language": "en"
+      },
+      "tool_call_id": "call_4kJBDy5RxMgu7gR3CTdFQmKV",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 1.3384592330003215
+    },
+    {
+      "type": "llm",
+      "step": 4,
+      "tools_enabled": true,
+      "cost_usd": 0.0001107,
+      "prompt_tokens": 622,
+      "completion_tokens": 29,
+      "request_id": "gen-1793375796-vEvWKgfjN03OjaQ3a0jT",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_XI615CKZBKjAx77Kf9A9QsjH",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Guerrero earthquake January 2 2026 death toll\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.0980284609977389
+    },
+    {
+      "type": "tool",
+      "step": 4,
+      "name": "web_search",
+      "arguments": {
+        "query": "Guerrero earthquake January 2 2026 death toll",
+        "language": "en"
+      },
+      "tool_call_id": "call_XI615CKZBKjAx77Kf9A9QsjH",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.9602271270014171
+    },
+    {
+      "type": "llm",
+      "step": 5,
+      "tools_enabled": true,
+      "cost_usd": 0.0001029,
+      "prompt_tokens": 670,
+      "completion_tokens": 4,
+      "request_id": "gen-1793375798-tIBI3ldI4sAgHLxkkvTC",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: unknown",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 0.9096795299992664
+    }
+  ],
+  "id": "fresh-55",
+  "question": "How many people were killed in the Guerrero earthquake on January 2, 2026?",
+  "expected": "two",
+  "correct": false,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:56:39.147049+00:00"
+}

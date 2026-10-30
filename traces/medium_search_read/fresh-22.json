@@ -1,0 +1,154 @@
+{
+  "final": "unknown",
+  "steps": 4,
+  "elapsed_s": 11.857106546001887,
+  "cost_usd": 0.008104,
+  "known_cost_usd": 0.008104,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.001943,
+      "prompt_tokens": 1473,
+      "completion_tokens": 94,
+      "request_id": "gen-1793375919-tmdnZK5emIv9VQqG0zc6",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "I'll search for information about Matt Braly's indie animated series that was fully funded on March 17, 2026.",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_01TDcsC3TxHJ5QYBEto1A1ia",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"Matt Braly indie animated series funded March 17 2026\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.611088137000479
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Matt Braly indie animated series funded March 17 2026"
+      },
+      "tool_call_id": "toolu_bdrk_01TDcsC3TxHJ5QYBEto1A1ia",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.48995505300263176
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.00194,
+      "prompt_tokens": 1590,
+      "completion_tokens": 70,
+      "request_id": "gen-1793375922-KdM4rQYvKoOa07LZ7epI",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "Let me try a different search approach.",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_01GSPr6XX9obHiK4BidM3iF1",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"Matt Braly animated series 2026\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.4516779390032752
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "Matt Braly animated series 2026"
+      },
+      "tool_call_id": "toolu_bdrk_01GSPr6XX9obHiK4BidM3iF1",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.46111204599947087
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.002043,
+      "prompt_tokens": 1683,
+      "completion_tokens": 72,
+      "request_id": "gen-1793375925-JGfdzkLcF7UwjoVu2nDC",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "Let me search for Matt Braly's projects more generally.",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_01JuJsRyg3Uuxmpcbgo9niUz",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"Matt Braly creator animator\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.647266479998507
+    },
+    {
+      "type": "tool",
+      "step": 3,
+      "name": "web_search",
+      "arguments": {
+        "query": "Matt Braly creator animator"
+      },
+      "tool_call_id": "toolu_bdrk_01JuJsRyg3Uuxmpcbgo9niUz",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.5307369619986275
+    },
+    {
+      "type": "llm",
+      "step": 4,
+      "tools_enabled": true,
+      "cost_usd": 0.002178,
+      "prompt_tokens": 1778,
+      "completion_tokens": 80,
+      "request_id": "gen-1793375928-YpZfgndlffl7tAPjPqBv",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "I'm experiencing technical difficulties with the search function. However, based on my knowledge, I cannot reliably confirm the specific name of an indie animated series by Matt Braly that was fully funded on March 17, 2026, as this date is in the future from my training data cutoff and I don't have verified information about this event.\n\nFINAL: unknown",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 2.6640878539983532
+    }
+  ],
+  "id": "fresh-22",
+  "question": "In animation, what is the name of the indie animated series created by Matt Braly that was fully funded on March 17, 2026?",
+  "expected": "Clara and the Below",
+  "correct": false,
+  "config": "medium_search_read",
+  "model": "anthropic/claude-haiku-4.5",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:58:49.944897+00:00"
+}

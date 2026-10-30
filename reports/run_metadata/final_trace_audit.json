@@ -1,0 +1,178 @@
+{
+  "checked_at": "2026-10-30T16:31:04.130926+00:00",
+  "checks": [
+    "identical manifests",
+    "frozen dataset and package hashes",
+    "145 unique IDs per configuration",
+    "saved grades equal fixed grader",
+    "models and questions match manifest/data",
+    "no incomplete attempts or inflight markers",
+    "unique request IDs",
+    "sum of provider event costs equals trace cost",
+    "step counts and limits",
+    "Sonnet freshness threshold"
+  ],
+  "signature": {
+    "dataset_sha256": "46d33a363dd819c002ab470ec4808dfa23ea630ec24329d30865e1b489cd04fb",
+    "n": 145,
+    "configs": {
+      "strong_no_tools": {
+        "model": "anthropic/claude-sonnet-4.6",
+        "tools": []
+      },
+      "cheap_no_tools": {
+        "model": "openai/gpt-4o-mini",
+        "tools": []
+      },
+      "cheap_search": {
+        "model": "openai/gpt-4o-mini",
+        "tools": [
+          "web_search",
+          "calculator",
+          "python_exec"
+        ]
+      },
+      "cheap_search_read": {
+        "model": "openai/gpt-4o-mini",
+        "tools": [
+          "web_search",
+          "page_find",
+          "calculator",
+          "python_exec"
+        ]
+      },
+      "medium_search_read": {
+        "model": "anthropic/claude-haiku-4.5",
+        "tools": [
+          "web_search",
+          "page_find",
+          "calculator",
+          "python_exec"
+        ]
+      },
+      "cheap_extra_search": {
+        "model": "openai/gpt-4o-mini",
+        "tools": [
+          "web_search",
+          "page_find",
+          "calculator",
+          "python_exec",
+          "web_search_extra"
+        ]
+      },
+      "cascade": {
+        "model": "openai/gpt-4o-mini",
+        "fallback_model": "anthropic/claude-haiku-4.5",
+        "tools": [
+          "web_search",
+          "page_find",
+          "calculator",
+          "python_exec",
+          "web_search_extra"
+        ]
+      }
+    },
+    "max_steps": 6,
+    "code_sha256": "0277cb954194ca5763bf26a5b515f52654d2a34766e4f50074da2d5041fca149"
+  },
+  "configurations": {
+    "strong_no_tools": {
+      "n": 145,
+      "total": 145,
+      "complete": true,
+      "correct": 1,
+      "accuracy": 0.006896551724137931,
+      "cost_total": 0.17364900000000003,
+      "cost_per_task": 0.0011975793103448278,
+      "cost_per_correct": 0.17364900000000003,
+      "mean_steps": 1.0,
+      "mean_seconds": 2.967708505724069,
+      "statuses": {
+        "ok": 145
+      },
+      "original_correct": 1,
+      "added_correct": 0,
+      "llm_requests": 145
+    },
+    "cheap_no_tools": {
+      "n": 145,
+      "total": 145,
+      "complete": true,
+      "correct": 0,
+      "accuracy": 0.0,
+      "cost_total": 0.0038969999999999283,
+      "cost_per_task": 2.6875862068965023e-05,
+      "cost_per_correct": null,
+      "mean_steps": 1.0,
+      "mean_seconds": 3.492575028634521,
+      "statuses": {
+        "ok": 145
+      },
+      "original_correct": 0,
+      "added_correct": 0,
+      "llm_requests": 145
+    },
+    "cheap_search": {
+      "n": 145,
+      "total": 145,
+      "complete": true,
+      "correct": 57,
+      "accuracy": 0.3931034482758621,
+      "cost_total": 0.08106974999999947,
+      "cost_per_task": 0.0005591017241379274,
+      "cost_per_correct": 0.0014222763157894643,
+      "mean_steps": 4.2620689655172415,
+      "mean_seconds": 13.714706171917,
+      "statuses": {
+        "max_steps": 52,
+        "ok": 72,
+        "repeated_tool_call": 21
+      },
+      "original_correct": 55,
+      "added_correct": 2,
+      "llm_requests": 618
+    },
+    "cheap_search_read": {
+      "n": 145,
+      "total": 145,
+      "complete": true,
+      "correct": 70,
+      "accuracy": 0.4827586206896552,
+      "cost_total": 0.10463384999999997,
+      "cost_per_task": 0.0007216127586206894,
+      "cost_per_correct": 0.0014947692857142853,
+      "mean_steps": 4.551724137931035,
+      "mean_seconds": 13.616410196200114,
+      "statuses": {
+        "ok": 69,
+        "max_steps": 58,
+        "repeated_tool_call": 18
+      },
+      "original_correct": 68,
+      "added_correct": 2,
+      "llm_requests": 660
+    },
+    "medium_search_read": {
+      "n": 145,
+      "total": 145,
+      "complete": true,
+      "correct": 71,
+      "accuracy": 0.4896551724137931,
+      "cost_total": 1.3255039999999993,
+      "cost_per_task": 0.00914140689655172,
+      "cost_per_correct": 0.0186690704225352,
+      "mean_steps": 3.717241379310345,
+      "mean_seconds": 14.036863269254937,
+      "statuses": {
+        "ok": 118,
+        "max_steps": 27
+      },
+      "original_correct": 63,
+      "added_correct": 8,
+      "llm_requests": 539
+    }
+  },
+  "completed_questions": 725,
+  "llm_requests": 2107,
+  "benchmark_cost_usd": 1.6887535999999987
+}

@@ -1,0 +1,197 @@
+{
+  "final": "unknown",
+  "steps": 5,
+  "elapsed_s": 18.776686832999985,
+  "cost_usd": 0.0004957499999999615,
+  "known_cost_usd": 0.0004957499999999615,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 8.865e-05,
+      "prompt_tokens": 479,
+      "completion_tokens": 28,
+      "request_id": "gen-1793376625-OlcDgJesHLe7ADzJ7obF",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_pyFp5dcpAJnQWEKkwK3rG6FF",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"country broke off diplomatic relations with France June 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 3.0932353169991984
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "country broke off diplomatic relations with France June 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_pyFp5dcpAJnQWEKkwK3rG6FF",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.22090489599941066
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 9.51e-05,
+      "prompt_tokens": 526,
+      "completion_tokens": 27,
+      "request_id": "gen-1793376628-e8y7mrNnVF95113Gr1D7",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_PQS1oXXR8kcZ3sVHjSPYwdvu",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"June 2026 country breaks diplomatic relations with France\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 3.3774387630001
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "June 2026 country breaks diplomatic relations with France",
+        "language": "en"
+      },
+      "tool_call_id": "call_PQS1oXXR8kcZ3sVHjSPYwdvu",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 5.287281382999936
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.0001014,
+      "prompt_tokens": 572,
+      "completion_tokens": 26,
+      "request_id": "gen-1793376635-YYcn11CybbwHniTlNqKJ",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_QGEHl7imTmJuSzGiiGBsNRUb",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"diplomatic relations France June 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.0154652080018423
+    },
+    {
+      "type": "tool",
+      "step": 3,
+      "name": "web_search",
+      "arguments": {
+        "query": "diplomatic relations France June 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_QGEHl7imTmJuSzGiiGBsNRUb",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 1.339227727999969
+    },
+    {
+      "type": "llm",
+      "step": 4,
+      "tools_enabled": true,
+      "cost_usd": 0.00010875,
+      "prompt_tokens": 617,
+      "completion_tokens": 27,
+      "request_id": "gen-1793376638-fQeF5eLqwup2DGF8GGDQ",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_LMMuDxw6sA6pbzBtHQ0mEjsq",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"country cuts diplomatic ties with France June 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.5555356419972668
+    },
+    {
+      "type": "tool",
+      "step": 4,
+      "name": "web_search",
+      "arguments": {
+        "query": "country cuts diplomatic ties with France June 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_LMMuDxw6sA6pbzBtHQ0mEjsq",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.5493559790011204
+    },
+    {
+      "type": "llm",
+      "step": 5,
+      "tools_enabled": true,
+      "cost_usd": 0.00010185,
+      "prompt_tokens": 663,
+      "completion_tokens": 4,
+      "request_id": "gen-1793376641-fKPyo6h12E9ScucLDhPz",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: unknown",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 2.337319270998705
+    }
+  ],
+  "id": "fresh-123",
+  "question": "What country broke off diplomatic relations with France in June 2026?",
+  "expected": "Burkina Faso",
+  "correct": false,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T16:10:42.241103+00:00"
+}

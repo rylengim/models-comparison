@@ -1,0 +1,199 @@
+{
+  "final": "A total fire ban came into force in Victoria on 9 January 2026 in response to an ongoing heatwave.",
+  "steps": 5,
+  "elapsed_s": 34.732525698000245,
+  "cost_usd": 0.013992000000000004,
+  "known_cost_usd": 0.013992000000000004,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.001895,
+      "prompt_tokens": 1470,
+      "completion_tokens": 85,
+      "request_id": "gen-1793372835-m4X9afWfcHbC6gLBXbxV",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "I'll search for information about fire restrictions in Victoria on January 9, 2026.",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_016JzMkbKAuCHYYzjVetq4dN",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"Victoria fire restriction January 9 2026 heatwave\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 4.804434615998616
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Victoria fire restriction January 9 2026 heatwave"
+      },
+      "tool_call_id": "toolu_bdrk_016JzMkbKAuCHYYzjVetq4dN",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2026 European heatwaves\", \"url\": \"https://en.wikipedia.org/wiki/2026_European_heatwaves\", \"snippet\": \"Starting in late May 2026 , several severe heatwaves affected Europe. Temperature records were broken in Austria, Belarus, Belgium, Czech Republic, Denmark\"}, {\"title\": \"2026 in the United Kingdom\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_the_United_Kingdom\", \"snippet\": \"29 May 2026 . Retrieved 29 May 2026 . \\\"Two more boys die in latest heatwave water deaths\\\". BBC News. BBC. 28 May 2026 . Retrieved 28 May 2026 . Masud, Faarea;\"}, {\"title\": \"2026\", \"url\": \"https://en.wikipedia.org/wiki/2026\", \"snippet\": \"2026 January February March April May June July August September October November December 2026 (MMXXVI) is the current year, and is a common year starting\"}, {\"title\": \"2026 in England\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_England\", \"snippet\": \"(25 June 2026 ). \\\"Trains suspended as heatwave causes rails to buckle\\\". BBC News. BBC. Retrieved 25 June 2026 . Cook, Victoria (26 June 2026 ). \\\"Caution\"}, {\"title\": \"Water restrictions in Australia\", \"url\": \"https://en.wikipedia.org/wiki/Water_restrictions_in_Australia\", \"snippet\": \"\\\"Drought Towns 'used To Water Restrictions '\\\". The West Australian. p. 31. Amalfi, Carmelo; Pennells, Steve (4 January 1997). \\\" Heatwave Runs Course\\\". The West\"}]}",
+      "elapsed_s": 0.6886003300023731
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.002395,
+      "prompt_tokens": 2010,
+      "completion_tokens": 77,
+      "request_id": "gen-1793372842-rafc2GRHh4v1U8Kj2yLI",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "Let me search more specifically for Victoria Australia fire restrictions in January 2026.",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_018KnrevsRSGyYhpJGhM8wef",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"Victoria Australia fire restriction January 2026\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 6.8225858740006515
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "Victoria Australia fire restriction January 2026"
+      },
+      "tool_call_id": "toolu_bdrk_018KnrevsRSGyYhpJGhM8wef",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2026\", \"url\": \"https://en.wikipedia.org/wiki/2026\", \"snippet\": \"2026 January February March April May June July August September October November December 2026 (MMXXVI) is the current year, and is a common year starting\"}, {\"title\": \"Water restrictions in Australia\", \"url\": \"https://en.wikipedia.org/wiki/Water_restrictions_in_Australia\", \"snippet\": \"Water restrictions have been enacted in many specific cities and regions in Australia , which is the Earth's driest inhabited continent, in response to\"}, {\"title\": \"Bushfires in Australia\", \"url\": \"https://en.wikipedia.org/wiki/Bushfires_in_Australia\", \"snippet\": \"an Australian bushfire is a type of wildfire, while \\\"bushfire\\\" remains the common Australian term for an unplanned landscape fire . Eastern Australia is\"}, {\"title\": \"Melbourne\", \"url\": \"https://en.wikipedia.org/wiki/Melbourne\", \"snippet\": \"capital and most populous city of the Australian state of Victoria and the second-most populous city in Australia . The city's name generally refers to\"}, {\"title\": \"Daniel Andrews\", \"url\": \"https://en.wikipedia.org/wiki/Daniel_Andrews\", \"snippet\": \"Michael Andrews (born 6 July 1972) is an Australian former politician who served as the 48th premier of Victoria from 2014 to 2023 and the leader of the\"}]}",
+      "elapsed_s": 0.601857640001981
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.002825,
+      "prompt_tokens": 2440,
+      "completion_tokens": 77,
+      "request_id": "gen-1793372850-8ESAoaouZSKBizB8BzNS",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "Let me try a more specific search about Total Fire Ban in Victoria.",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_01BfqePkZKnM28kyaWSSEGr6",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"Total Fire Ban Victoria January 9 2026\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 6.896444278998388
+    },
+    {
+      "type": "tool",
+      "step": 3,
+      "name": "web_search",
+      "arguments": {
+        "query": "Total Fire Ban Victoria January 9 2026"
+      },
+      "tool_call_id": "toolu_bdrk_01BfqePkZKnM28kyaWSSEGr6",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2026\", \"url\": \"https://en.wikipedia.org/wiki/2026\", \"snippet\": \"2026 January February March April May June July August September October November December 2026 (MMXXVI) is the current year, and is a common year starting\"}, {\"title\": \"2026 in the United Kingdom\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_the_United_Kingdom\", \"snippet\": \"BBC. 16 January 2026 . Retrieved 16 January 2026 . McIntyre, Alex (16 January 2026 ). \\\"West Midlands Police chief retires over Israeli fans ban row\\\". BBC\"}, {\"title\": \"2026 in Australia\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_Australia\", \"snippet\": \"Court of New South Wales. 9 January – A total fire ban comes into force in Victoria in response to an ongoing heatwave. 10 January – Wildfires destroy 130\"}, {\"title\": \"2026 AFL season\", \"url\": \"https://en.wikipedia.org/wiki/2026_AFL_season\", \"snippet\": \"time since 1999, with Western Australia playing Victoria at Optus Stadium in February 2026 ; Victoria won the match by 24 points. Rules governing voting\"}, {\"title\": \"Victoria Beckham\", \"url\": \"https://en.wikipedia.org/wiki/Victoria_Beckham\", \"snippet\": \"Retrieved 23 January 2026 . \\\" Victoria Beckham\\\". Official Charts Company. Retrieved 23 January 2026 . \\\"Official Albums Downloads Chart 30 January 2026 - 5 February\\\"\"}]}",
+      "elapsed_s": 0.7582877169988933
+    },
+    {
+      "type": "llm",
+      "step": 4,
+      "tools_enabled": true,
+      "cost_usd": 0.003512,
+      "prompt_tokens": 2937,
+      "completion_tokens": 115,
+      "request_id": "gen-1793372858-2rIwwPMoJdkVGiziWYgM",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "Perfect! I found the information. Let me get more details from the \"2026 in Australia\" article.",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_01W2wjkuyq2wpiTf8d4xZXx1",
+            "function": {
+              "name": "page_find",
+              "arguments": "{\"title\": \"2026 in Australia\", \"keywords\": [\"total fire ban\",\"Victoria\",\"January 9\",\"heatwave\"]}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 7.387654710000788
+    },
+    {
+      "type": "tool",
+      "step": 4,
+      "name": "page_find",
+      "arguments": {
+        "title": "2026 in Australia",
+        "keywords": [
+          "total fire ban",
+          "Victoria",
+          "January 9",
+          "heatwave"
+        ]
+      },
+      "tool_call_id": "toolu_bdrk_01W2wjkuyq2wpiTf8d4xZXx1",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.22346085699973628
+    },
+    {
+      "type": "llm",
+      "step": 5,
+      "tools_enabled": true,
+      "cost_usd": 0.003365,
+      "prompt_tokens": 3075,
+      "completion_tokens": 58,
+      "request_id": "gen-1793372865-pLnPTzHvsHK2dOjEpZRw",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "Based on the search results I found, the answer is clear from the Wikipedia article on \"2026 in Australia\":\n\nFINAL: A total fire ban came into force in Victoria on 9 January 2026 in response to an ongoing heatwave.",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 6.54814515399994
+    }
+  ],
+  "id": "fresh-4",
+  "question": "What statewide fire restriction came into force in Victoria on 9 January 2026 in response to the heatwave?",
+  "expected": "A total fire ban",
+  "correct": true,
+  "config": "medium_search_read",
+  "model": "anthropic/claude-haiku-4.5",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:07:46.587152+00:00"
+}

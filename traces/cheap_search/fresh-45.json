@@ -1,0 +1,77 @@
+{
+  "final": "F-16 Fighting Falcon",
+  "steps": 2,
+  "elapsed_s": 2.9196585530007724,
+  "cost_usd": 0.00023054999999999604,
+  "known_cost_usd": 0.00023054999999999604,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 9.09e-05,
+      "prompt_tokens": 486,
+      "completion_tokens": 30,
+      "request_id": "gen-1793375735-qR3vQtpa1I2HZk3OhEFu",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_vGR1LKE7y7mPdP2hlHPyEeLL",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Yalova Province Turkey aircraft crash August 13 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.5612387390028744
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Yalova Province Turkey aircraft crash August 13 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_vGR1LKE7y7mPdP2hlHPyEeLL",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"List of accidents and incidents involving military aircraft (2020–present)\", \"url\": \"https://en.wikipedia.org/wiki/List_of_accidents_and_incidents_involving_military_aircraft_%282020%E2%80%93present%29\", \"snippet\": \"F-16 Fighting Falcon of the Turkish Air Force crashed in Yalova Province . The pilot ejected from the aircraft . 24 August A Sukhoi fighter jet of the Indonesian\"}, {\"title\": \"2026 in Turkey\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_Turkey\", \"snippet\": \"its weapons. 13 August – An F-16 Fighting Falcon of the Turkish Air Force crashes in Yalova Province . The pilot ejects safely. 21 August – An international\"}, {\"title\": \"2025 in Turkey\", \"url\": \"https://en.wikipedia.org/wiki/2025_in_Turkey\", \"snippet\": \"are killed in shootout during a raid at a residence in Elmalik, Yalova Province . Turkey and Armenia reach an agreement allowing for the issuance of free\"}, {\"title\": \"Turkish war crimes\", \"url\": \"https://en.wikipedia.org/wiki/Turkish_war_crimes\", \"snippet\": \"with a heavy vehicle in Turkey in what are said, by her employer and her parents, to be suspicious circumstances. The car crash happened just days after\"}, {\"title\": \"Assassination of Jamal Khashoggi\", \"url\": \"https://en.wikipedia.org/wiki/Assassination_of_Jamal_Khashoggi\", \"snippet\": \"Turkish police have expanded the search, as Khashoggi's body may have been disposed of in nearby Belgrad Forest or on farmland in Yalova Province , as\"}]}",
+      "elapsed_s": 0.6051178710004024
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.00013965,
+      "prompt_tokens": 899,
+      "completion_tokens": 8,
+      "request_id": "gen-1793375736-zAf9TE4LEJqK22HSem7U",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: F-16 Fighting Falcon",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 0.7522607860009884
+    }
+  ],
+  "id": "fresh-45",
+  "question": "What type of aircraft crashed in Yalova Province, Turkey on August 13, 2026?",
+  "expected": "F-16 Fighting Falcon",
+  "correct": true,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:55:37.558408+00:00"
+}

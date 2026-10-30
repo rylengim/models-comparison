@@ -1,0 +1,197 @@
+{
+  "final": "280 million years",
+  "steps": 5,
+  "elapsed_s": 8.95502180800031,
+  "cost_usd": 0.0007477499999999637,
+  "known_cost_usd": 0.0007477499999999637,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 9.24e-05,
+      "prompt_tokens": 496,
+      "completion_tokens": 30,
+      "request_id": "gen-1793376724-6AHc1mmHLLSbCfs6sKIM",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_nTZJFvKV9DAftqMm9jhbhRZL",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"ESA Webb MoM-z14 announcement January 28 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.2855013200023677
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "ESA Webb MoM-z14 announcement January 28 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_nTZJFvKV9DAftqMm9jhbhRZL",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"List of the most distant astronomical objects\", \"url\": \"https://en.wikipedia.org/wiki/List_of_the_most_distant_astronomical_objects\", \"snippet\": \"(21 May 2025). \\\"JWST breaks its own record with new most distant galaxy MoM - z14 \\\". Big Think. Isaac Schultz (24 May 2025). \\\"Image Reveals the Most Distant\"}, {\"title\": \"List of galaxies\", \"url\": \"https://en.wikipedia.org/wiki/List_of_galaxies\", \"snippet\": \"(21 May 2025). \\\"JWST breaks its own record with new most distant galaxy MoM - z14 \\\". Big Think. Megan Watzke; Jonathan Deal (6 November 2023). \\\"NASA Telescopes\"}]}",
+      "elapsed_s": 0.7005767859991465
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.0001215,
+      "prompt_tokens": 706,
+      "completion_tokens": 26,
+      "request_id": "gen-1793376726-kKVkelgMApDc43BdZDd1",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_3P1QhHb2lsYxVFi1lwWMOyzh",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"MoM-z14 galaxy age after Big Bang\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.4377399059994787
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "MoM-z14 galaxy age after Big Bang",
+        "language": "en"
+      },
+      "tool_call_id": "call_3P1QhHb2lsYxVFi1lwWMOyzh",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"MoM-z14\", \"url\": \"https://en.wikipedia.org/wiki/MoM-z14\", \"snippet\": \"MoM - z14 is the most distant known galaxy , with a redshift of z = 14.44. The galaxy was first imaged on May 16, 2025 by the NIRcam instrument aboard the\"}, {\"title\": \"JADES-GS-z14-0\", \"url\": \"https://en.wikipedia.org/wiki/JADES-GS-z14-0\", \"snippet\": \"years ago, approximately 300 million years after the Big Bang , or about 2% of its current age . JADES-GS- z14 -0 was observed using the James Webb Space Telescope's\"}, {\"title\": \"List of the most distant astronomical objects\", \"url\": \"https://en.wikipedia.org/wiki/List_of_the_most_distant_astronomical_objects\", \"snippet\": \"galaxy MoM - z14 \\\". Big Think. Isaac Schultz (24 May 2025). \\\"Image Reveals the Most Distant Galaxy Ever Seen, From Just 280 Million Years After the Big Bang\\\"\"}, {\"title\": \"Capotauro\", \"url\": \"https://en.wikipedia.org/wiki/Capotauro\", \"snippet\": \"existed just 90 million years after the Big Bang . This is nearly 200 million years before the current record holder MoM - z14 and would place Capotauro closer\"}, {\"title\": \"Observable universe\", \"url\": \"https://en.wikipedia.org/wiki/Observable_universe\", \"snippet\": \"signal sent from the galaxy only 500 million years after the Big Bang . Because of the universe's expansion, there may be some later age at which a signal\"}]}",
+      "elapsed_s": 1.2917850670019106
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.00018105,
+      "prompt_tokens": 1111,
+      "completion_tokens": 24,
+      "request_id": "gen-1793376728-foRlQ38zAWBRYzNwFAR7",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_mVrJoEm2UyZJUyFntD6Ji6n8",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"MoM-z14 galaxy confirmed age\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 0.9883839630019793
+    },
+    {
+      "type": "tool",
+      "step": 3,
+      "name": "web_search",
+      "arguments": {
+        "query": "MoM-z14 galaxy confirmed age",
+        "language": "en"
+      },
+      "tool_call_id": "call_mVrJoEm2UyZJUyFntD6Ji6n8",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"MoM-z14\", \"url\": \"https://en.wikipedia.org/wiki/MoM-z14\", \"snippet\": \"MoM - z14 is the most distant known galaxy , with a redshift of z = 14.44. The galaxy was first imaged on May 16, 2025 by the NIRcam instrument aboard the\"}, {\"title\": \"JADES-GS-z14-0\", \"url\": \"https://en.wikipedia.org/wiki/JADES-GS-z14-0\", \"snippet\": \"JADES-GS- z14 -0 is a high-redshift Lyman-Break galaxy in the constellation Fornax that was discovered in 2024 using NIRCam as part of the James Webb Space\"}, {\"title\": \"Capotauro\", \"url\": \"https://en.wikipedia.org/wiki/Capotauro\", \"snippet\": \"Bang. This is nearly 200 million years before the current record holder MoM - z14 and would place Capotauro closer to the very beginning of time than any\"}, {\"title\": \"List of galaxies\", \"url\": \"https://en.wikipedia.org/wiki/List_of_galaxies\", \"snippet\": \"Siegel (21 May 2025). \\\"JWST breaks its own record with new most distant galaxy MoM - z14 \\\". Big Think. Megan Watzke; Jonathan Deal (6 November 2023). \\\"NASA Telescopes\"}, {\"title\": \"List of the most distant astronomical objects\", \"url\": \"https://en.wikipedia.org/wiki/List_of_the_most_distant_astronomical_objects\", \"snippet\": \"record with new most distant galaxy MoM - z14 \\\". Big Think. Isaac Schultz (24 May 2025). \\\"Image Reveals the Most Distant Galaxy Ever Seen, From Just 280 Million\"}]}",
+      "elapsed_s": 0.5960707330013975
+    },
+    {
+      "type": "llm",
+      "step": 4,
+      "tools_enabled": true,
+      "cost_usd": 0.00017055,
+      "prompt_tokens": 1533,
+      "completion_tokens": 29,
+      "request_id": "gen-1793376730-AttdO3Y4Thnjij0Gi8JT",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_H3tinWnfAfzEF3K6zVPeCjmD",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"MoM-z14 galaxy 280 million years after Big Bang\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.0258519419985532
+    },
+    {
+      "type": "tool",
+      "step": 4,
+      "name": "web_search",
+      "arguments": {
+        "query": "MoM-z14 galaxy 280 million years after Big Bang",
+        "language": "en"
+      },
+      "tool_call_id": "call_H3tinWnfAfzEF3K6zVPeCjmD",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"MoM-z14\", \"url\": \"https://en.wikipedia.org/wiki/MoM-z14\", \"snippet\": \"Telescope (JWST). That image captured the galaxy during its formation about 280 million years after the Big Bang , during the Reionization Era of the early\"}, {\"title\": \"JADES-GS-z14-0\", \"url\": \"https://en.wikipedia.org/wiki/JADES-GS-z14-0\", \"snippet\": \"billion years ago, approximately 300 million years after the Big Bang , or about 2% of its current age. JADES-GS- z14 -0 was observed using the James Webb\"}, {\"title\": \"List of the most distant astronomical objects\", \"url\": \"https://en.wikipedia.org/wiki/List_of_the_most_distant_astronomical_objects\", \"snippet\": \"galaxy MoM - z14 \\\". Big Think. Isaac Schultz (24 May 2025). \\\"Image Reveals the Most Distant Galaxy Ever Seen, From Just 280 Million Years After the Big Bang\\\"\"}, {\"title\": \"Chronology of the universe\", \"url\": \"https://en.wikipedia.org/wiki/Chronology_of_the_universe\", \"snippet\": \"Zinin, Andrew (eds.). \\\"The new, farthest galaxy has been found by JWST, only 280 million years after the Big Bang \\\". phys.org. Retrieved 22 August 2025. Ryden\"}, {\"title\": \"List of galaxies\", \"url\": \"https://en.wikipedia.org/wiki/List_of_galaxies\", \"snippet\": \"May 2025). \\\"Image Reveals the Most Distant Galaxy Ever Seen, From Just 280 Million Years After the Big Bang \\\". Gizmodo. Robert Lea (20 May 2024). \\\"James\"}]}",
+      "elapsed_s": 0.921202131001337
+    },
+    {
+      "type": "llm",
+      "step": 5,
+      "tools_enabled": true,
+      "cost_usd": 0.00018225,
+      "prompt_tokens": 1955,
+      "completion_tokens": 7,
+      "request_id": "gen-1793376732-nM8H5ZsvzqBd2ysDnXr0",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: 280 million years",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 0.7069119029983995
+    }
+  ],
+  "id": "fresh-130",
+  "question": "According to ESA/Webb’s 28 January 2026 announcement, how many years after the Big Bang did the confirmed galaxy MoM-z14 exist?",
+  "expected": "280 million years",
+  "correct": true,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T16:12:13.028578+00:00"
+}

@@ -1,0 +1,117 @@
+{
+  "final": "unknown",
+  "steps": 3,
+  "elapsed_s": 7.191357789000904,
+  "cost_usd": 0.0002791499999999919,
+  "known_cost_usd": 0.0002791499999999919,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "repeated_tool_call",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.0001152,
+      "prompt_tokens": 664,
+      "completion_tokens": 26,
+      "request_id": "gen-1793374914-NZ7l2sz1LhTJPF35HcHN",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_DRBz9FDi1SYrrtupMiC8GP5T",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"ESA CAS mission May 19 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.237045654001122
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "ESA CAS mission May 19 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_DRBz9FDi1SYrrtupMiC8GP5T",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.5282617529992422
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.00012195,
+      "prompt_tokens": 709,
+      "completion_tokens": 26,
+      "request_id": "gen-1793374916-VLmvBYHzqBUTZHCW0dtn",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_J0kcUx6Xamkp4NecPIwbHiZA",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"ESA CAS mission May 19 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.4058385669995914
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "ESA CAS mission May 19 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_J0kcUx6Xamkp4NecPIwbHiZA",
+      "output": "{\"error\": \"repeated_tool_call\"}",
+      "elapsed_s": 5.412099926616065e-05
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": false,
+      "cost_usd": 4.2e-05,
+      "prompt_tokens": 268,
+      "completion_tokens": 3,
+      "request_id": "gen-1793374919-mC8u8yPHFwzwKxmtTyrO",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: unknown",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 2.017945169001905
+    }
+  ],
+  "id": "fresh-112",
+  "question": "What mission was launched by ESA and CAS on May 19, 2026?",
+  "expected": "SMILE",
+  "correct": false,
+  "config": "cheap_search_read",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:42:00.339261+00:00"
+}

@@ -1,0 +1,77 @@
+{
+  "final": "80",
+  "steps": 2,
+  "elapsed_s": 3.859411090001231,
+  "cost_usd": 0.00022754999999999304,
+  "known_cost_usd": 0.00022754999999999304,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 9e-05,
+      "prompt_tokens": 488,
+      "completion_tokens": 28,
+      "request_id": "gen-1793375786-c9xBj1bRcpDKuS7Hhgrj",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_kpUAsYdN8OJl12KilxVZO4R9",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Karachi shopping mall fire January 17 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.9855147620000935
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Karachi shopping mall fire January 17 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_kpUAsYdN8OJl12KilxVZO4R9",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2026 Gul Plaza Shopping Mall fire\", \"url\": \"https://en.wikipedia.org/wiki/2026_Gul_Plaza_Shopping_Mall_fire\", \"snippet\": \"On 17 January 2026 , a fire at the Gul Plaza shopping mall in Karachi , Pakistan, killed 80 people and injured over 20. The fire started after an unattended\"}, {\"title\": \"2026 in Pakistan\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_Pakistan\", \"snippet\": \"people and injuring 36 others. A fire erupts at the Gul Plaza mall in Karachi , killing at least 79 people. 19 January – A magnitude 6.0 earthquake hits\"}, {\"title\": \"List of building or structure fires\", \"url\": \"https://en.wikipedia.org/wiki/List_of_building_or_structure_fires\", \"snippet\": \"1 January – 2026 Crans-Montana bar fire in Switzerland killed 41. 17 January – 2026 Gul Plaza Shopping Mall fire in Pakistan killed 80. 26 January – A\"}, {\"title\": \"2012 Pakistan factory fires\", \"url\": \"https://en.wikipedia.org/wiki/2012_Pakistan_factory_fires\", \"snippet\": \"Pakistan List of industrial disasters 2026 Gul Plaza Shopping Mall fire Mansoor, Kamran (12 September 2012). \\\" Karachi inferno toll hits 298\\\". The News International\"}, {\"title\": \"2026\", \"url\": \"https://en.wikipedia.org/wiki/2026\", \"snippet\": \"opposition candidate Bobi Wine. January 17 – A fire at a shopping mall in Karachi , Pakistan, kills 80 people. January 18 – 46 people are killed and 292\"}]}",
+      "elapsed_s": 0.5621645579994947
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.00013755,
+      "prompt_tokens": 897,
+      "completion_tokens": 5,
+      "request_id": "gen-1793375788-A4xWIJDIPb6WOTl8Ku8j",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: 80",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 1.3107489199974225
+    }
+  ],
+  "id": "fresh-54",
+  "question": "How many people were killed in the fire at a shopping mall in Karachi on January 17, 2026?",
+  "expected": "80",
+  "correct": true,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:56:29.741364+00:00"
+}

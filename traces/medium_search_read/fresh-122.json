@@ -1,0 +1,76 @@
+{
+  "final": "Angus Taylor ousted Sussan Ley in February 2026 (specifically February 13, 2026) in Australian politics. Taylor was elected as the new leader of the Liberal Party of Australia, defeating incumbent leader Sussan Ley in a leadership spill.",
+  "steps": 2,
+  "elapsed_s": 6.094162960001995,
+  "cost_usd": 0.0043360000000001175,
+  "known_cost_usd": 0.0043360000000001175,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.001921,
+      "prompt_tokens": 1461,
+      "completion_tokens": 92,
+      "request_id": "gen-1793377393-Hx4Y0Kzx79RRVa2ab3OV",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "I'll search for information about Sussan Ley and events in February 2026 in Australian politics.",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_0196y5CLtBXuAM6pLyW1f6we",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"Sussan Ley ousted February 2026 Australian politics\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.3418573580020166
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Sussan Ley ousted February 2026 Australian politics"
+      },
+      "tool_call_id": "toolu_bdrk_0196y5CLtBXuAM6pLyW1f6we",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"Sussan Ley\", \"url\": \"https://en.wikipedia.org/wiki/Sussan_Ley\", \"snippet\": \"Sussan Penelope Ley (née Braybrooks; born 14 December 1961) is an Australian retired politician who served as the leader of the Opposition from 2025 to\"}, {\"title\": \"Opinion polling for the next Australian federal election\", \"url\": \"https://en.wikipedia.org/wiki/Opinion_polling_for_the_next_Australian_federal_election\", \"snippet\": \"PHON\\\" (Tweet). Retrieved 11 February 2026 – via X (formerly Twitter). Brown, Greg (8 February 2026 ). \\\"Newspoll: Sussan Ley's Liberals hit historic low and\"}, {\"title\": \"Next Australian federal election\", \"url\": \"https://en.wikipedia.org/wiki/Next_Australian_federal_election\", \"snippet\": \"Nation at the by-election in May 2026 following the resignation of former Opposition Leader Sussan Ley on 27 February 2026 . Party leader Robbie Katter sits\"}, {\"title\": \"2026 Liberal Party of Australia leadership spill\", \"url\": \"https://en.wikipedia.org/wiki/2026_Liberal_Party_of_Australia_leadership_spill\", \"snippet\": \"the Opposition. Angus Taylor was elected, defeating incumbent leader Sussan Ley . A spill for the deputy leadership was held concurrently, with Jane Hume\"}, {\"title\": \"2026 in politics\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_politics\", \"snippet\": \"landslide victory. February 13 – Sussan Ley , the first female leader of the Liberal Party of Australia , was ousted by Angus Taylor. February 17 – Peruvian\"}]}",
+      "elapsed_s": 0.9332330790020933
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.002415,
+      "prompt_tokens": 2015,
+      "completion_tokens": 80,
+      "request_id": "gen-1793377396-NNUs8LtQbAnvhsJyojDG",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "Based on the search results, I have found the answer.\n\nFINAL: Angus Taylor ousted Sussan Ley in February 2026 (specifically February 13, 2026) in Australian politics. Taylor was elected as the new leader of the Liberal Party of Australia, defeating incumbent leader Sussan Ley in a leadership spill.",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 2.8179407620009442
+    }
+  ],
+  "id": "fresh-122",
+  "question": "Who ousted Sussan Ley in February 2026 in Australian politics?",
+  "expected": "Angus Taylor",
+  "correct": true,
+  "config": "medium_search_read",
+  "model": "anthropic/claude-haiku-4.5",
+  "measured": true,
+  "recorded_at": "2026-10-30T16:23:18.029585+00:00"
+}

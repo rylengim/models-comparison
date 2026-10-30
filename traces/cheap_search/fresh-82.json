@@ -1,0 +1,117 @@
+{
+  "final": "28",
+  "steps": 3,
+  "elapsed_s": 8.806655090000277,
+  "cost_usd": 0.00042179999999999995,
+  "known_cost_usd": 0.00042179999999999995,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 8.895e-05,
+      "prompt_tokens": 485,
+      "completion_tokens": 27,
+      "request_id": "gen-1793376131-rTNqBrI3dB6S8XZylGxd",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_g8neGmhyE6QZ8qMVfB83rbN0",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"China shoe factory fire July 2026 death toll\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.969589817999804
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "China shoe factory fire July 2026 death toll",
+        "language": "en"
+      },
+      "tool_call_id": "call_g8neGmhyE6QZ8qMVfB83rbN0",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2026 in China\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_China\", \"snippet\": \"Retrieved 10 July 2026 . \\\"宜宾通报\\\"7·8\\\"高县地震情况：4人轻微伤，初排房屋受损四千多户\\\" (in Chinese ). The Paper. July 9, 2026 . Retrieved July 11, 2026 . \\\" Factory fire kills at least\"}, {\"title\": \"List of building or structure fires\", \"url\": \"https://en.wikipedia.org/wiki/List_of_building_or_structure_fires\", \"snippet\": \"killed 15. 9 July – Huiteng Shoes factory fire in China killed 28. 12 July – 2026 Bangkok pub fire in Thailand killed 41. 16 July – A fire at an orphanage\"}, {\"title\": \"List of explosions\", \"url\": \"https://en.wikipedia.org/wiki/List_of_explosions\", \"snippet\": \"2026. Retrieved 21 April 2026 . \\\" Death toll rises to 37 in China fireworks factory blast\\\". Reuters. 8 May 2026 . Retrieved 8 May 2026 . \\\"Explosion at coal mine\"}, {\"title\": \"List of disasters in the United States by death toll\", \"url\": \"https://en.wikipedia.org/wiki/List_of_disasters_in_the_United_States_by_death_toll\", \"snippet\": \"This list of United States disasters by death toll includes disasters that occurred either in the United States, at diplomatic missions of the United States\"}, {\"title\": \"2026 Minab school attack\", \"url\": \"https://en.wikipedia.org/wiki/2026_Minab_school_attack\", \"snippet\": \"Persian). 28 February 2026 . Retrieved 28 February 2026 . \\\"Minab Girls School Attack Death Toll Mounts to 148\\\". Kashmir Observer. 1 March 2026 . Archived from the\"}]}",
+      "elapsed_s": 0.8579729790035344
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.00015765,
+      "prompt_tokens": 943,
+      "completion_tokens": 27,
+      "request_id": "gen-1793376134-5gnoWFmpTEq6YyxgBbe1",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_JIliaDkL33IHEWsLMr3Bz9ts",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Huiteng Shoes factory fire July 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.213012496002193
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "Huiteng Shoes factory fire July 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_JIliaDkL33IHEWsLMr3Bz9ts",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"Huiteng Shoes factory fire\", \"url\": \"https://en.wikipedia.org/wiki/Huiteng_Shoes_factory_fire\", \"snippet\": \"12:04 pm (CST) on 9 July 2026 , a fire erupted on the first floor in a flammable material storage area at the Huiteng Shoe Company factory in Jinjiang, Fujian\"}, {\"title\": \"List of building or structure fires\", \"url\": \"https://en.wikipedia.org/wiki/List_of_building_or_structure_fires\", \"snippet\": \"killed 15. 9 July – Huiteng Shoes factory fire in China killed 28. 12 July – 2026 Bangkok pub fire in Thailand killed 41. 16 July – A fire at an orphanage\"}]}",
+      "elapsed_s": 0.5289285010003368
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.0001752,
+      "prompt_tokens": 1148,
+      "completion_tokens": 5,
+      "request_id": "gen-1793376137-7atkGjOZLYQ8kJTdQUlF",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: 28",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 2.236260530000436
+    }
+  ],
+  "id": "fresh-82",
+  "question": "What was the death toll from the fire at a shoe factory in China in July 2026?",
+  "expected": "28 people",
+  "correct": false,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T16:02:18.227686+00:00"
+}

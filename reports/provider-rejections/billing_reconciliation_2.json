@@ -1,0 +1,17 @@
+{
+  "checked_at": "2026-10-30T15:11:54.846367+00:00",
+  "known_total_before_recovery_usd": 0.3499161,
+  "provider_usage_usd": {
+    "key": 0.3499161,
+    "credits": 0.3499161
+  },
+  "unreported_request_charge_usd": 0,
+  "aborted_attempt_known_cost_usd": 0.00726585,
+  "traces": [
+    "cheap_search-fresh-29-attempt-1.json",
+    "cheap_search_read-fresh-8-attempt-1.json",
+    "medium_search_read-fresh-12-attempt-1.json"
+  ],
+  "method": "Two consecutive read-only billing checks after all workers stopped, no intervening generation. Both agree exactly with all known charges. Earlier check total: 0.3499161.",
+  "treatment": "Preserve all aborted attempts and include their cost in operational overhead; rerun only incomplete questions on unchanged package/data."
+}

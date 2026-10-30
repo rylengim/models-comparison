@@ -1,0 +1,237 @@
+{
+  "final": "unknown",
+  "steps": 6,
+  "elapsed_s": 14.209381812001084,
+  "cost_usd": 0.000861150000000005,
+  "known_cost_usd": 0.000861150000000005,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "max_steps",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.00012075,
+      "prompt_tokens": 677,
+      "completion_tokens": 32,
+      "request_id": "gen-1793374891-HeM2c6MO97RedemP7yHe",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_Lzp8Pr5XdQ7m3My8VkENKmH5",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Georgia 14th congressional district special election April 7 2026 winner\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.021213156000158
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Georgia 14th congressional district special election April 7 2026 winner",
+        "language": "en"
+      },
+      "tool_call_id": "call_Lzp8Pr5XdQ7m3My8VkENKmH5",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2026 United States House of Representatives elections\", \"url\": \"https://en.wikipedia.org/wiki/2026_United_States_House_of_Representatives_elections\", \"snippet\": \"Retrieved April 13, 2026 . \\\"California 14th Congressional District Special Nonpartisan Runoff Election Results\\\". The New York Times. August 18, 2026 . Retrieved\"}, {\"title\": \"Georgia's 6th congressional district\", \"url\": \"https://en.wikipedia.org/wiki/Georgia%27s_6th_congressional_district\", \"snippet\": \"Georgia's 6th congressional district is a congressional district in the U.S. state of Georgia . As of 2024[update], it is represented by Democrat Lucy\"}, {\"title\": \"2026 Georgia gubernatorial election\", \"url\": \"https://en.wikipedia.org/wiki/2026_Georgia_gubernatorial_election\", \"snippet\": \"The 2026 Georgia gubernatorial election will take place on November 3, 2026 , to elect the governor of Georgia . Incumbent Republican governor Brian Kemp\"}, {\"title\": \"2026 United States House of Representatives elections in Texas\", \"url\": \"https://en.wikipedia.org/wiki/2026_United_States_House_of_Representatives_elections_in_Texas\", \"snippet\": \"state's thirty-eight congressional districts . The elections will coincide with other elections to the House of Representatives, elections to the United States\"}, {\"title\": \"2026 United States elections\", \"url\": \"https://en.wikipedia.org/wiki/2026_United_States_elections\", \"snippet\": \"resigned on April 14, 2026 , following accusations of sexual misconduct. The district has a partisan index of D+20. Georgia's 13th congressional district : Democrat\"}]}",
+      "elapsed_s": 0.839721003001614
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.00018495,
+      "prompt_tokens": 1105,
+      "completion_tokens": 32,
+      "request_id": "gen-1793374894-Fci27zkSywyT9XViliUX",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_xh160ua9nwJOER51J4J7PQXP",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Marjorie Taylor Greene replacement special election results April 7 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.8037545869992755
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "Marjorie Taylor Greene replacement special election results April 7 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_xh160ua9nwJOER51J4J7PQXP",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.2268886410020059
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.0001134,
+      "prompt_tokens": 1156,
+      "completion_tokens": 28,
+      "request_id": "gen-1793374896-EI7shvFyHbjm1qVtNkfL",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_QzPZEA7vOn6zyhdvhuZJtuH7",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"2026 Georgia 14th congressional district special election results\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.029204970000137
+    },
+    {
+      "type": "tool",
+      "step": 3,
+      "name": "web_search",
+      "arguments": {
+        "query": "2026 Georgia 14th congressional district special election results",
+        "language": "en"
+      },
+      "tool_call_id": "call_QzPZEA7vOn6zyhdvhuZJtuH7",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.5462700300013239
+    },
+    {
+      "type": "llm",
+      "step": 4,
+      "tools_enabled": true,
+      "cost_usd": 0.00011145,
+      "prompt_tokens": 1203,
+      "completion_tokens": 29,
+      "request_id": "gen-1793374899-Nt04uf3H2OpUngQ4EQKM",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_DVgNbnL71oTj00ZTlNYBRbLQ",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Georgia 14th congressional district special election April 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.9587337390003086
+    },
+    {
+      "type": "tool",
+      "step": 4,
+      "name": "web_search",
+      "arguments": {
+        "query": "Georgia 14th congressional district special election April 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_DVgNbnL71oTj00ZTlNYBRbLQ",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.4879070030001458
+    },
+    {
+      "type": "llm",
+      "step": 5,
+      "tools_enabled": true,
+      "cost_usd": 0.00020625,
+      "prompt_tokens": 1251,
+      "completion_tokens": 31,
+      "request_id": "gen-1793374901-tAxl9ZsNYLoMhmWJ5WcA",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_Ofm6HKTncKu104WT6rMLARmY",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"April 7 2026 special election Georgia 14th congressional district\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.156319274999987
+    },
+    {
+      "type": "tool",
+      "step": 5,
+      "name": "web_search",
+      "arguments": {
+        "query": "April 7 2026 special election Georgia 14th congressional district",
+        "language": "en"
+      },
+      "tool_call_id": "call_Ofm6HKTncKu104WT6rMLARmY",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.48131606799870497
+    },
+    {
+      "type": "llm",
+      "step": 6,
+      "tools_enabled": false,
+      "cost_usd": 0.00012435,
+      "prompt_tokens": 817,
+      "completion_tokens": 3,
+      "request_id": "gen-1793374904-PGlbfmwA6cpdri3msrRj",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: unknown",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 1.6569208159999107
+    }
+  ],
+  "id": "fresh-110",
+  "question": "Who won the 7 April 2026 special election for Georgia’s 14th U.S. congressional district to replace Marjorie Taylor Greene?",
+  "expected": "Clay Fuller",
+  "correct": false,
+  "config": "cheap_search_read",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:41:45.246981+00:00"
+}

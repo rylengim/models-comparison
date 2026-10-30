@@ -1,0 +1,188 @@
+{
+  "final": "unknown",
+  "steps": 5,
+  "elapsed_s": 29.998643995997554,
+  "cost_usd": 0.0005619000000000041,
+  "known_cost_usd": 0.0005619000000000041,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "error",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 8.895e-05,
+      "prompt_tokens": 481,
+      "completion_tokens": 28,
+      "request_id": "gen-1793373211-09c4XWNML2kdQMroStXU",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_BOGSG08VkUwVXE1k2LFIpwjb",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Archibald Prize winner May 8 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 7.377733696001087
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Archibald Prize winner May 8 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_BOGSG08VkUwVXE1k2LFIpwjb",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"Archibald Prize\", \"url\": \"https://en.wikipedia.org/wiki/Archibald_Prize\", \"snippet\": \"The Archibald Prize is an Australian portraiture art prize for painting, generally seen as the most prestigious portrait prize in Australia. It was first\"}, {\"title\": \"List of Archibald Prize winners\", \"url\": \"https://en.wikipedia.org/wiki/List_of_Archibald_Prize_winners\", \"snippet\": \"(Heysen) Lists of Archibald Prize finalists Winner : Archibald Prize 1921, Art Gallery of NSW. (AGNSW Collection entry) Winner : Archibald Prize 1922, Art Gallery\"}, {\"title\": \"List of Archibald Prize 2026 finalists\", \"url\": \"https://en.wikipedia.org/wiki/List_of_Archibald_Prize_2026_finalists\", \"snippet\": \"finalists for the 2026 Archibald Prize for portraiture (listed as Artist – Title). Of the 1,034 entries received for the Archibald Prize , 59 artworks were\"}, {\"title\": \"2026 in art\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_art\", \"snippet\": \"artist wins Archibald prize in unanimous vote\\\". ABC News. 8 May 2026 . Retrieved 30 August 2026 . Small, Zachary; Reneau, Frank (18 June 2026 ). \\\"While Knicks\"}, {\"title\": \"Robert Hannaford\", \"url\": \"https://en.wikipedia.org/wiki/Robert_Hannaford\", \"snippet\": \"Choice Award at the Archibald Prize , 1998 with a portrait of academic Rolf Prince 1998 - Inaugural winner of the Fleurieu Art Prize 2001 - Centenary Medal\"}]}",
+      "elapsed_s": 0.6336385989998234
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.00015045,
+      "prompt_tokens": 903,
+      "completion_tokens": 25,
+      "request_id": "gen-1793373219-1FcA6YAUAPfNfbgZ05BW",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_ULWOZ9rQdld1ixckiP799wBE",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Archibald Prize winner 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 7.052863558001263
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "Archibald Prize winner 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_ULWOZ9rQdld1ixckiP799wBE",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.22183217500059982
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.00015705,
+      "prompt_tokens": 947,
+      "completion_tokens": 25,
+      "request_id": "gen-1793373226-ayMg6YPZCnqpLXScfgpd",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_FDwjzORhUGlV3LGMNO8FZ8eX",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Archibald Prize 2026 winner\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 7.032722045998526
+    },
+    {
+      "type": "tool",
+      "step": 3,
+      "name": "web_search",
+      "arguments": {
+        "query": "Archibald Prize 2026 winner",
+        "language": "en"
+      },
+      "tool_call_id": "call_FDwjzORhUGlV3LGMNO8FZ8eX",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.4702082240000891
+    },
+    {
+      "type": "llm",
+      "step": 4,
+      "tools_enabled": true,
+      "cost_usd": 0.00016545,
+      "prompt_tokens": 991,
+      "completion_tokens": 28,
+      "request_id": "gen-1793373231-6v2wMdtAeIGiX7tFNStn",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_ICKepxt3N2utf8IwOxyVDRHy",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Archibald Prize 2026 winner May 8\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 6.735488737998821
+    },
+    {
+      "type": "tool",
+      "step": 4,
+      "name": "web_search",
+      "arguments": {
+        "query": "Archibald Prize 2026 winner May 8",
+        "language": "en"
+      },
+      "tool_call_id": "call_ICKepxt3N2utf8IwOxyVDRHy",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.47284804599985364
+    },
+    {
+      "type": "llm",
+      "step": 5,
+      "tools_enabled": true,
+      "error": "Shared request gate BLOCKED after an unknown charge; no request sent. Reconcile billing before continuing.",
+      "cost_usd": 0.0,
+      "elapsed_s": 4.05569990107324e-05
+    }
+  ],
+  "id": "fresh-32",
+  "question": "Who won the Archibald Prize on May 8, 2026?",
+  "expected": "Richard Lewer",
+  "correct": false,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:13:55.352298+00:00"
+}

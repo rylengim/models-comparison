@@ -1,0 +1,237 @@
+{
+  "final": "unknown",
+  "steps": 6,
+  "elapsed_s": 17.487147762996756,
+  "cost_usd": 0.000598949999999987,
+  "known_cost_usd": 0.000598949999999987,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "max_steps",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 9.315e-05,
+      "prompt_tokens": 489,
+      "completion_tokens": 33,
+      "request_id": "gen-1793376582-gvKNhBbSc33VU546UQbo",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_5U0jseK58UpQe4LdHI69ssfD",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"cross-border railway route resumed passenger service Georgia Independence Day May 26 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 3.2159537090010417
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "cross-border railway route resumed passenger service Georgia Independence Day May 26 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_5U0jseK58UpQe4LdHI69ssfD",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.717842155998369
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 9.915e-05,
+      "prompt_tokens": 541,
+      "completion_tokens": 30,
+      "request_id": "gen-1793376585-lMqAKWjvwfwEN8Gw9v4W",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_RWMTlTxYopkAScVB7F3hoCWw",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Georgia Independence Day May 26 2026 cross-border railway route\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.352846263001993
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "Georgia Independence Day May 26 2026 cross-border railway route",
+        "language": "en"
+      },
+      "tool_call_id": "call_RWMTlTxYopkAScVB7F3hoCWw",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.6800656999985222
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.0001053,
+      "prompt_tokens": 590,
+      "completion_tokens": 28,
+      "request_id": "gen-1793376587-YoG8ielMr6OzdlVD9B0J",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_qcPCpX95SUL4uJLAhw0w9y5g",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Georgia railway passenger service resumed May 26 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.1357951809986844
+    },
+    {
+      "type": "tool",
+      "step": 3,
+      "name": "web_search",
+      "arguments": {
+        "query": "Georgia railway passenger service resumed May 26 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_qcPCpX95SUL4uJLAhw0w9y5g",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 1.48003133200109
+    },
+    {
+      "type": "llm",
+      "step": 4,
+      "tools_enabled": true,
+      "cost_usd": 0.00011415,
+      "prompt_tokens": 637,
+      "completion_tokens": 31,
+      "request_id": "gen-1793376590-oKD39mbANqxOUXHkokss",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_ujt8vpVHE5lM8TLeJE7RVYuE",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"cross-border railway route Georgia resumed passenger service May 26 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.0044155969990243
+    },
+    {
+      "type": "tool",
+      "step": 4,
+      "name": "web_search",
+      "arguments": {
+        "query": "cross-border railway route Georgia resumed passenger service May 26 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_ujt8vpVHE5lM8TLeJE7RVYuE",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 2.6637806770013412
+    },
+    {
+      "type": "llm",
+      "step": 5,
+      "tools_enabled": true,
+      "cost_usd": 0.00012045,
+      "prompt_tokens": 687,
+      "completion_tokens": 29,
+      "request_id": "gen-1793376593-sVrBiYcYQZVDO5GwC79v",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_0ZoV5FrWLQ9q4CnwusdGRBUp",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Georgia Independence Day railway service resumed May 26 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.1763637629992445
+    },
+    {
+      "type": "tool",
+      "step": 5,
+      "name": "web_search",
+      "arguments": {
+        "query": "Georgia Independence Day railway service resumed May 26 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_0ZoV5FrWLQ9q4CnwusdGRBUp",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.6905704370001331
+    },
+    {
+      "type": "llm",
+      "step": 6,
+      "tools_enabled": false,
+      "cost_usd": 6.675e-05,
+      "prompt_tokens": 433,
+      "completion_tokens": 3,
+      "request_id": "gen-1793376596-ceNucCNlWmR9qsO0FKPD",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: unknown",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 2.368725139996968
+    }
+  ],
+  "id": "fresh-119",
+  "question": "Which cross-border railway route resumed passenger service after six years on Georgia’s Independence Day, 26 May 2026?",
+  "expected": "Baku–Tbilisi",
+  "correct": false,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T16:09:57.905138+00:00"
+}

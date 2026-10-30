@@ -1,0 +1,117 @@
+{
+  "final": "unknown",
+  "steps": 3,
+  "elapsed_s": 7.8997355489991605,
+  "cost_usd": 0.00028245000000000353,
+  "known_cost_usd": 0.00028245000000000353,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "repeated_tool_call",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.0001164,
+      "prompt_tokens": 664,
+      "completion_tokens": 28,
+      "request_id": "gen-1793374906-Vok16XVLkd4bhSZQy2Q7",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_DLOBS1DRFkH5lc8mR257hMSA",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Keir Starmer resignation July 20 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 3.113241709997965
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Keir Starmer resignation July 20 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_DLOBS1DRFkH5lc8mR257hMSA",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.4885335090002627
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.00012345,
+      "prompt_tokens": 711,
+      "completion_tokens": 28,
+      "request_id": "gen-1793374909-mtYftHHRpwrOaFYeGmZM",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_HqkEBBY9FAJF77y6wWHbUA0n",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Keir Starmer resignation July 20 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.6847933600001852
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "Keir Starmer resignation July 20 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_HqkEBBY9FAJF77y6wWHbUA0n",
+      "output": "{\"error\": \"repeated_tool_call\"}",
+      "elapsed_s": 0.00017260100139537826
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": false,
+      "cost_usd": 4.26e-05,
+      "prompt_tokens": 272,
+      "completion_tokens": 3,
+      "request_id": "gen-1793374911-I7IaoYtaHwQkEHz7BjUi",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: unknown",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 2.6116966339977807
+    }
+  ],
+  "id": "fresh-111",
+  "question": "What office did Keir Starmer resign from on 20 July 2026?",
+  "expected": "Prime Minister",
+  "correct": false,
+  "config": "cheap_search_read",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:41:53.147344+00:00"
+}

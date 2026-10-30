@@ -1,0 +1,237 @@
+{
+  "final": "unknown",
+  "steps": 6,
+  "elapsed_s": 15.391851879001479,
+  "cost_usd": 0.0007646999999999932,
+  "known_cost_usd": 0.0007646999999999932,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "max_steps",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.00011565,
+      "prompt_tokens": 663,
+      "completion_tokens": 27,
+      "request_id": "gen-1793375029-h24OzOnFwbH2B3oANGUU",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_gJSDVlfwdqbmtW9lAgtCwg4c",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Sussan Ley ousted February 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.3781170430011116
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Sussan Ley ousted February 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_gJSDVlfwdqbmtW9lAgtCwg4c",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.7587163749994943
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.00012135,
+      "prompt_tokens": 709,
+      "completion_tokens": 25,
+      "request_id": "gen-1793375031-jUS1sO1eXqU1jcQIjyTz",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_HYRcYmZhnbzG9L4HeS6aCs5F",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Sussan Ley February 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.6531244600009813
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "Sussan Ley February 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_HYRcYmZhnbzG9L4HeS6aCs5F",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.49582356799874105
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.00012915,
+      "prompt_tokens": 753,
+      "completion_tokens": 27,
+      "request_id": "gen-1793375034-ViASKOA44pWBYhUK6V6v",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_CAF1CrMLdjVJAyXeaQXp6aMF",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Sussan Ley Australian politics February 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.999886833000346
+    },
+    {
+      "type": "tool",
+      "step": 3,
+      "name": "web_search",
+      "arguments": {
+        "query": "Sussan Ley Australian politics February 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_CAF1CrMLdjVJAyXeaQXp6aMF",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.511224868001591
+    },
+    {
+      "type": "llm",
+      "step": 4,
+      "tools_enabled": true,
+      "cost_usd": 0.00013665,
+      "prompt_tokens": 799,
+      "completion_tokens": 28,
+      "request_id": "gen-1793375036-rSqWZuEM09EZl8RpihTP",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_WleJ2wnY0Yi6rbo1hLB4iFfP",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Sussan Ley ousted February 2026 news\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.072395791998133
+    },
+    {
+      "type": "tool",
+      "step": 4,
+      "name": "web_search",
+      "arguments": {
+        "query": "Sussan Ley ousted February 2026 news",
+        "language": "en"
+      },
+      "tool_call_id": "call_WleJ2wnY0Yi6rbo1hLB4iFfP",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.6063046279996342
+    },
+    {
+      "type": "llm",
+      "step": 5,
+      "tools_enabled": true,
+      "cost_usd": 0.0001431,
+      "prompt_tokens": 846,
+      "completion_tokens": 27,
+      "request_id": "gen-1793375039-szwLAqlAOyB4jkf6hcNV",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_a20LaxEpf0f5tW1RrehhpV1F",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Sussan Ley February 2026 political news\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.8948442210021312
+    },
+    {
+      "type": "tool",
+      "step": 5,
+      "name": "web_search",
+      "arguments": {
+        "query": "Sussan Ley February 2026 political news",
+        "language": "en"
+      },
+      "tool_call_id": "call_a20LaxEpf0f5tW1RrehhpV1F",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2026 in politics\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_politics\", \"snippet\": \"(13 February 2026 ). \\\" Sussan Ley and the glass cliff: Does Australian politics still have a problem with women?\\\". BBC News . Retrieved 15 February 2026 . Villegas\"}, {\"title\": \"Sussan Ley\", \"url\": \"https://en.wikipedia.org/wiki/Sussan_Ley\", \"snippet\": \"Sussan Penelope Ley (née Braybrooks; born 14 December 1961) is an Australian retired politician who served as the leader of the Opposition from 2025 to\"}, {\"title\": \"Opinion polling for the next Australian federal election\", \"url\": \"https://en.wikipedia.org/wiki/Opinion_polling_for_the_next_Australian_federal_election\", \"snippet\": \"the original on 1 February 2026 . Retrieved 1 February 2026 . McHugh, Finn (26 January 2026 ). \\\"Pauline Hanson moves ahead of Sussan Ley as preferred PM as\"}, {\"title\": \"2026 Iran war\", \"url\": \"https://en.wikipedia.org/wiki/2026_Iran_war\", \"snippet\": \"Babaie, Sussan (1 April 2026 ). \\\"In a Month of War, Iran's Cultural Heritage Has Suffered Huge Damage\\\". The Art Newspaper - International art news and events\"}, {\"title\": \"Next Australian federal election\", \"url\": \"https://en.wikipedia.org/wiki/Next_Australian_federal_election\", \"snippet\": \"Nation at the by-election in May 2026 following the resignation of former Opposition Leader Sussan Ley on 27 February 2026 . Party leader Robbie Katter sits\"}]}",
+      "elapsed_s": 0.8765179850015556
+    },
+    {
+      "type": "llm",
+      "step": 6,
+      "tools_enabled": false,
+      "cost_usd": 0.0001188,
+      "prompt_tokens": 780,
+      "completion_tokens": 3,
+      "request_id": "gen-1793375041-Mjtv12ooLG2eaCszLZwy",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: unknown",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 2.1433931430001394
+    }
+  ],
+  "id": "fresh-122",
+  "question": "Who ousted Sussan Ley in February 2026 in Australian politics?",
+  "expected": "Angus Taylor",
+  "correct": false,
+  "config": "cheap_search_read",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:44:03.297690+00:00"
+}

@@ -1,0 +1,243 @@
+{
+  "final": "unknown",
+  "steps": 6,
+  "elapsed_s": 16.136292848001176,
+  "cost_usd": 0.0007891500000000023,
+  "known_cost_usd": 0.0007891500000000023,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "max_steps",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.0001257,
+      "prompt_tokens": 690,
+      "completion_tokens": 37,
+      "request_id": "gen-1793374528-rfCrwCUg0frq0aQCPcsd",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_hTZtiamkY4k6bG1qoOWKZ2XI",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"RASolute 302 trial daraxonrasib median overall survival pancreatic cancer RAS G12 mutations\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.7892112740009907
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "RASolute 302 trial daraxonrasib median overall survival pancreatic cancer RAS G12 mutations",
+        "language": "en"
+      },
+      "tool_call_id": "call_hTZtiamkY4k6bG1qoOWKZ2XI",
+      "output": "{\"source\": \"Wikipedia\", \"results\": []}",
+      "elapsed_s": 0.4079820449987892
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.0001389,
+      "prompt_tokens": 746,
+      "completion_tokens": 45,
+      "request_id": "gen-1793374530-a23wwBXdDXKa9W5JJICJ",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_SW7xSyK84AUvxxpLLaAtoeHX",
+            "function": {
+              "name": "page_find",
+              "arguments": "{\"title\":\"RASolute 302 trial\",\"keywords\":[\"daraxonrasib\",\"median overall survival\",\"pancreatic cancer\",\"RAS G12 mutations\"],\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.9507885500024713
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "page_find",
+      "arguments": {
+        "title": "RASolute 302 trial",
+        "keywords": [
+          "daraxonrasib",
+          "median overall survival",
+          "pancreatic cancer",
+          "RAS G12 mutations"
+        ],
+        "language": "en"
+      },
+      "tool_call_id": "call_SW7xSyK84AUvxxpLLaAtoeHX",
+      "output": "{\"found\": false, \"title\": \"RASolute 302 trial\", \"excerpts\": []}",
+      "elapsed_s": 0.26700819799953024
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.00014055,
+      "prompt_tokens": 821,
+      "completion_tokens": 29,
+      "request_id": "gen-1793374533-a5UJRxjA7EbMF8ig3mYA",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_kUhXra3WMRPv0fS59h5flIF5",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"daraxonrasib RASolute 302 trial results\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.1974564620031742
+    },
+    {
+      "type": "tool",
+      "step": 3,
+      "name": "web_search",
+      "arguments": {
+        "query": "daraxonrasib RASolute 302 trial results",
+        "language": "en"
+      },
+      "tool_call_id": "call_kUhXra3WMRPv0fS59h5flIF5",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.223386412999389
+    },
+    {
+      "type": "llm",
+      "step": 4,
+      "tools_enabled": true,
+      "cost_usd": 0.00015015,
+      "prompt_tokens": 869,
+      "completion_tokens": 33,
+      "request_id": "gen-1793374535-osQKGYWr8tXucW4UGe0q",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_bcBBmPe5JmdbuPOUWpqPf3nh",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"daraxonrasib RASolute 302 trial median overall survival pancreatic cancer\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 3.31853658700129
+    },
+    {
+      "type": "tool",
+      "step": 4,
+      "name": "web_search",
+      "arguments": {
+        "query": "daraxonrasib RASolute 302 trial median overall survival pancreatic cancer",
+        "language": "en"
+      },
+      "tool_call_id": "call_bcBBmPe5JmdbuPOUWpqPf3nh",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.5104256020022149
+    },
+    {
+      "type": "llm",
+      "step": 5,
+      "tools_enabled": true,
+      "cost_usd": 0.00015855,
+      "prompt_tokens": 921,
+      "completion_tokens": 34,
+      "request_id": "gen-1793374538-FMtetu29TK82see6Qjc3",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_EhomUD66TQOBqVQ7nKdZIZaw",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"daraxonrasib RASolute 302 trial results published May 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.4967131619996508
+    },
+    {
+      "type": "tool",
+      "step": 5,
+      "name": "web_search",
+      "arguments": {
+        "query": "daraxonrasib RASolute 302 trial results published May 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_EhomUD66TQOBqVQ7nKdZIZaw",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.4883905640017474
+    },
+    {
+      "type": "llm",
+      "step": 6,
+      "tools_enabled": false,
+      "cost_usd": 7.53e-05,
+      "prompt_tokens": 490,
+      "completion_tokens": 3,
+      "request_id": "gen-1793374541-TfqFp4jYw3kbgZEaaSI0",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: unknown",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 2.485224477000884
+    }
+  ],
+  "id": "fresh-78",
+  "question": "In the RASolute 302 trial published online on 31 May 2026, what was median overall survival with daraxonrasib in previously treated metastatic pancreatic cancer patients with RAS G12 mutations?",
+  "expected": "13.2 months",
+  "correct": false,
+  "config": "cheap_search_read",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:35:43.046717+00:00"
+}

@@ -1,0 +1,154 @@
+{
+  "final": "unknown",
+  "steps": 4,
+  "elapsed_s": 12.284145354999055,
+  "cost_usd": 0.00822199999999998,
+  "known_cost_usd": 0.00822199999999998,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.001964,
+      "prompt_tokens": 1474,
+      "completion_tokens": 98,
+      "request_id": "gen-1793375848-h7xLzUtiUzT6k9NZO0Uw",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "I'll search for information about ISRO's GSLV-F17 launch on September 4, 2026.",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_0154miZQgM1Px3aSBycVgj4M",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"ISRO GSLV-F17 September 4 2026\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.867661031003081
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "ISRO GSLV-F17 September 4 2026"
+      },
+      "tool_call_id": "toolu_bdrk_0154miZQgM1Px3aSBycVgj4M",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.787341153001762
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.001965,
+      "prompt_tokens": 1595,
+      "completion_tokens": 74,
+      "request_id": "gen-1793375851-s0DHiWkxBPqq8BDD9OFs",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "Let me try a different search approach:",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_012NUCKz7T1z4FVHqCqMBeFg",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"GSLV-F17 satellite launch 2026\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.3741045820024738
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "GSLV-F17 satellite launch 2026"
+      },
+      "tool_call_id": "toolu_bdrk_012NUCKz7T1z4FVHqCqMBeFg",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.4934960669997963
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.002072,
+      "prompt_tokens": 1692,
+      "completion_tokens": 76,
+      "request_id": "gen-1793375854-HwuVsDbCdgyUeqwOsG1n",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "Let me try searching for GSLV-F17 more generally:",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_01L4wavpNmW1UToJ1XwxX21z",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"GSLV-F17\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.314513375000388
+    },
+    {
+      "type": "tool",
+      "step": 3,
+      "name": "web_search",
+      "arguments": {
+        "query": "GSLV-F17"
+      },
+      "tool_call_id": "toolu_bdrk_01L4wavpNmW1UToJ1XwxX21z",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.47597109399794135
+    },
+    {
+      "type": "llm",
+      "step": 4,
+      "tools_enabled": true,
+      "cost_usd": 0.002221,
+      "prompt_tokens": 1791,
+      "completion_tokens": 86,
+      "request_id": "gen-1793375857-tecgWdHOfzoNOdsSboh2",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "I'm unable to retrieve information about GSLV-F17 from the available search tools. The search is returning errors. Additionally, I should note that September 4, 2026 is a future date (from my knowledge cutoff perspective), so this may be a planned mission that hasn't occurred yet or information about it may not be readily available in Wikipedia sources.\n\nFINAL: unknown",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 2.969958425997902
+    }
+  ],
+  "id": "fresh-17",
+  "question": "Which satellite did ISRO’s GSLV-F17 successfully place in orbit on 4 September 2026, Indian Standard Time?",
+  "expected": "EOS-05",
+  "correct": false,
+  "config": "medium_search_read",
+  "model": "anthropic/claude-haiku-4.5",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:57:39.491407+00:00"
+}

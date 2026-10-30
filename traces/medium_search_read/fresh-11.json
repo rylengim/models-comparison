@@ -1,0 +1,76 @@
+{
+  "final": "Helter Skelter",
+  "steps": 2,
+  "elapsed_s": 14.707037601001502,
+  "cost_usd": 0.0038809999999999956,
+  "known_cost_usd": 0.0038809999999999956,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.001951,
+      "prompt_tokens": 1476,
+      "completion_tokens": 95,
+      "request_id": "gen-1793373000-F70hhUUzhuFFFn9SryCy",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "I'll search for information about this Arthur Jafa and Richard Prince exhibition at Fondazione Prada in Venice.",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_01BWa3V81nyQM44NGbJiViCk",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"Arthur Jafa Richard Prince Fondazione Prada Venice May 2026\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 8.280398695998883
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Arthur Jafa Richard Prince Fondazione Prada Venice May 2026"
+      },
+      "tool_call_id": "toolu_bdrk_01BWa3V81nyQM44NGbJiViCk",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2026 in art\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_art\", \"snippet\": \"untî Jsnuary 31, 2027. May 9 until May 23 – Helter Skelter: Arthur Jafa and Richard Prince at Fondazione Prada in Venice . May 9 until November 29 – Wilderness\"}, {\"title\": \"Nancy Spector\", \"url\": \"https://en.wikipedia.org/wiki/Nancy_Spector\", \"snippet\": \"Maurizio Cattelan. In 2026 , she curated Helter Skelter at Fondazione Prada , an exhibition containing works by Richard Prince and Arthur Jafa which took place\"}]}",
+      "elapsed_s": 0.9268112979989382
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.00193,
+      "prompt_tokens": 1770,
+      "completion_tokens": 32,
+      "request_id": "gen-1793373007-qN8YlzwqzjCkikBzUIBB",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "Perfect! I found the information. The exhibition title is \"Helter Skelter.\"\n\nFINAL: Helter Skelter",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 5.4986632250002
+    }
+  ],
+  "id": "fresh-11",
+  "question": "What was the title of the Arthur Jafa and Richard Prince exhibition that opened at Fondazione Prada in Venice on 9 May 2026?",
+  "expected": "Helter Skelter",
+  "correct": true,
+  "config": "medium_search_read",
+  "model": "anthropic/claude-haiku-4.5",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:10:08.950172+00:00"
+}

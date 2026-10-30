@@ -1,0 +1,76 @@
+{
+  "final": "Night train service",
+  "steps": 2,
+  "elapsed_s": 6.493647529001464,
+  "cost_usd": 0.004099000000000075,
+  "known_cost_usd": 0.004099000000000075,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.001882,
+      "prompt_tokens": 1467,
+      "completion_tokens": 83,
+      "request_id": "gen-1793376437-8pS3TOXoJLkvmJDLT5GN",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "I'll search for information about European Sleeper's service launch on that date.",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_01Tg6HmpboFCFMypUEraC6FF",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"European Sleeper Paris Brussels Berlin March 26 2026\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.920164093000494
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "European Sleeper Paris Brussels Berlin March 26 2026"
+      },
+      "tool_call_id": "toolu_bdrk_01Tg6HmpboFCFMypUEraC6FF",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"European Sleeper\", \"url\": \"https://en.wikipedia.org/wiki/European_Sleeper\", \"snippet\": \"services: one between Brussels and Prague, which launched in May 2023; another between Paris Nord and Berlin , which it launched in March 2026 ; and a third route\"}, {\"title\": \"Brussels Islamic State terror cell\", \"url\": \"https://en.wikipedia.org/wiki/Brussels_Islamic_State_terror_cell\", \"snippet\": \"The Brussels Islamic State terror cell was a sleeper cell of the Islamic State (IS), an Islamic jihadist terrorist organisation primarily based in Syria\"}, {\"title\": \"Brussels-South railway station\", \"url\": \"https://en.wikipedia.org/wiki/Brussels-South_railway_station\", \"snippet\": \"Antwerp - Brussels Airport - Brussels High speed services (ECD) Lelystad - Almere - Amsterdam - Rotterdam - Antwerp - Brussels European Sleeper service\"}, {\"title\": \"2026 in rail transport\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_rail_transport\", \"snippet\": \"axed just 3 months later. 26 March – European Sleeper begins a night train service between Paris , Brussels , and Berlin . 27 March – Uzbek Railways launches\"}, {\"title\": \"2026 Iranian diaspora protests\", \"url\": \"https://en.wikipedia.org/wiki/2026_Iranian_diaspora_protests\", \"snippet\": \"on 1 March 2026 . Retrieved 1 March 2026 . \\\"Iran sleeper cell fears rise after Austin shooting, Canada gym attack\\\". Iran International. 2 March 2026 . Archived\"}]}",
+      "elapsed_s": 0.8095677089986566
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.002217,
+      "prompt_tokens": 1962,
+      "completion_tokens": 51,
+      "request_id": "gen-1793376440-V1tqzEtbGGvw02A8gIqf",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "Perfect! I found the information. According to the search results, on 26 March 2026, European Sleeper launched a **night train service** between Paris, Brussels, and Berlin.\n\nFINAL: Night train service",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 2.7625452329994005
+    }
+  ],
+  "id": "fresh-70",
+  "question": "What type of service did European Sleeper launch between Paris, Brussels and Berlin on 26 March 2026?",
+  "expected": "night train service",
+  "correct": true,
+  "config": "medium_search_read",
+  "model": "anthropic/claude-haiku-4.5",
+  "measured": true,
+  "recorded_at": "2026-10-30T16:07:21.826202+00:00"
+}

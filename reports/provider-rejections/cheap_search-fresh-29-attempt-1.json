@@ -1,0 +1,68 @@
+{
+  "final": "unknown",
+  "steps": 2,
+  "elapsed_s": 8.370886480999616,
+  "cost_usd": 9.465000000000168e-05,
+  "known_cost_usd": 9.465000000000168e-05,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "error",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 9.465e-05,
+      "prompt_tokens": 499,
+      "completion_tokens": 33,
+      "request_id": "gen-1793373025-Z9snCXwLvs7fltjwu1VA",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_f7fsKGozbQP6kmdSmOCsMHkI",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Spanish government report 11 February 2026 Adamuz train accident victims Pedro Sánchez\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 4.767667785999947
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Spanish government report 11 February 2026 Adamuz train accident victims Pedro Sánchez",
+        "language": "en"
+      },
+      "tool_call_id": "call_f7fsKGozbQP6kmdSmOCsMHkI",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2026 in Spain\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_Spain\", \"snippet\": \"Events in the year 2026 in Spain . Monarch – Felipe VI Prime Minister – Pedro Sánchez ( Sánchez III Government ) President of the Congress of Deputies –\"}, {\"title\": \"List of national days of mourning (2020–present)\", \"url\": \"https://en.wikipedia.org/wiki/List_of_national_days_of_mourning_%282020%E2%80%93present%29\", \"snippet\": \"Retrieved 27 February 2026 . \\\" Spain declares 3 days of mourning in wake of deadly high-speed train crash\\\". www.aa.com.tr. Retrieved 20 January 2026 . \\\"Albanese\"}, {\"title\": \"2020s\", \"url\": \"https://en.wikipedia.org/wiki/2020s\", \"snippet\": \"2021. McDonnell, Patrick J.; Linthicum, Kate; Sánchez , Cecilia (4 May 2021). \\\"In Mexico, a deadly train wreck that many saw coming\\\". Los Angeles Times\"}, {\"title\": \"Presidency of Yamandú Orsi\", \"url\": \"https://en.wikipedia.org/wiki/Presidency_of_Yamand%C3%BA_Orsi\", \"snippet\": \"met with both King Felipe VI and the Spanish prime minister Pedro Sánchez . In late July, Orsi met with Sánchez at a summit held in Chile with other presidents\"}]}",
+      "elapsed_s": 0.7562277360011649
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "error": "Shared request gate BLOCKED after an unknown charge; no request sent. Reconcile billing before continuing.",
+      "cost_usd": 0.0,
+      "elapsed_s": 2.846101238999836
+    }
+  ],
+  "id": "fresh-29",
+  "question": "According to the Spanish government’s report of 11 February 2026, how many victims of the 18 January Adamuz train accident did Prime Minister Pedro Sánchez commemorate?",
+  "expected": "46",
+  "correct": false,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:10:30.120910+00:00"
+}

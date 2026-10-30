@@ -1,0 +1,237 @@
+{
+  "final": "unknown",
+  "steps": 6,
+  "elapsed_s": 18.14359822500046,
+  "cost_usd": 0.0005753999999999759,
+  "known_cost_usd": 0.0005753999999999759,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "max_steps",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 9.15e-05,
+      "prompt_tokens": 486,
+      "completion_tokens": 31,
+      "request_id": "gen-1793376326-RwECuASdr1pNoECVvkEY",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_Us06h8TIjmrLPcuOn2JU9bLE",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Artemis II maximum distance from Earth April 6 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 3.4124976940001943
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Artemis II maximum distance from Earth April 6 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_Us06h8TIjmrLPcuOn2JU9bLE",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.22399404399766354
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 9.42e-05,
+      "prompt_tokens": 536,
+      "completion_tokens": 23,
+      "request_id": "gen-1793376329-zwtxzlwn8dSKUg79joEV",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_VE8fOcJSnXTS6LS4OZIEA0fG",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Artemis II mission details\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.621512692003307
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "Artemis II mission details",
+        "language": "en"
+      },
+      "tool_call_id": "call_VE8fOcJSnXTS6LS4OZIEA0fG",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.9176731279985688
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.0001023,
+      "prompt_tokens": 578,
+      "completion_tokens": 26,
+      "request_id": "gen-1793376332-O3zYIQNf8UTGyI8g3YFV",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_K1VBpaUME9gvAgNObA2fyxGA",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Artemis II mission maximum distance from Earth\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.2267736329995387
+    },
+    {
+      "type": "tool",
+      "step": 3,
+      "name": "web_search",
+      "arguments": {
+        "query": "Artemis II mission maximum distance from Earth",
+        "language": "en"
+      },
+      "tool_call_id": "call_K1VBpaUME9gvAgNObA2fyxGA",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.491763436999463
+    },
+    {
+      "type": "llm",
+      "step": 4,
+      "tools_enabled": true,
+      "cost_usd": 0.00010845,
+      "prompt_tokens": 623,
+      "completion_tokens": 25,
+      "request_id": "gen-1793376335-1qWvNYTaMYEqr3lJEBiL",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_Ogy1g21oa0w6Vh5db7I9CiUa",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Artemis II mission distance from Earth\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.7996167870005593
+    },
+    {
+      "type": "tool",
+      "step": 4,
+      "name": "web_search",
+      "arguments": {
+        "query": "Artemis II mission distance from Earth",
+        "language": "en"
+      },
+      "tool_call_id": "call_Ogy1g21oa0w6Vh5db7I9CiUa",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.5219262570026331
+    },
+    {
+      "type": "llm",
+      "step": 5,
+      "tools_enabled": true,
+      "cost_usd": 0.00011565,
+      "prompt_tokens": 667,
+      "completion_tokens": 26,
+      "request_id": "gen-1793376338-KlkrhWDogUAEFKZee9At",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_xXY5KDhp94itpBNyIk2V8VMP",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Artemis II mission April 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.0455378989972814
+    },
+    {
+      "type": "tool",
+      "step": 5,
+      "name": "web_search",
+      "arguments": {
+        "query": "Artemis II mission April 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_xXY5KDhp94itpBNyIk2V8VMP",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.49232525499974145
+    },
+    {
+      "type": "llm",
+      "step": 6,
+      "tools_enabled": false,
+      "cost_usd": 6.33e-05,
+      "prompt_tokens": 410,
+      "completion_tokens": 3,
+      "request_id": "gen-1793376341-tHkqgp3vhwEU7YEwlnau",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: unknown",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 2.3892556419996254
+    }
+  ],
+  "id": "fresh-100",
+  "question": "What maximum distance did the crew of Artemis II reach from Earth on April 6, 2026?",
+  "expected": "252,756 miles",
+  "correct": false,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T16:05:41.911300+00:00"
+}

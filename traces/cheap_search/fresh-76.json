@@ -1,0 +1,237 @@
+{
+  "final": "unknown",
+  "steps": 6,
+  "elapsed_s": 15.918904684000154,
+  "cost_usd": 0.0005784000000000067,
+  "known_cost_usd": 0.0005784000000000067,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "max_steps",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 8.925e-05,
+      "prompt_tokens": 487,
+      "completion_tokens": 27,
+      "request_id": "gen-1793376038-rVcrZQ2XoPMte5mMfAcM",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_lr49o4hJWt2p8G1EvSATarjX",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Yoon Suk Yeol sentence February 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.3556213169977127
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Yoon Suk Yeol sentence February 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_lr49o4hJWt2p8G1EvSATarjX",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.4718135359980806
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 9.615e-05,
+      "prompt_tokens": 533,
+      "completion_tokens": 27,
+      "request_id": "gen-1793376041-dnHjSWir0EUMdvHicwoe",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_wsYbA4U6ui31A0zFXPypETgm",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Yoon Suk Yeol sentence February 2026\",\"language\":\"ru\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.719596325998282
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "Yoon Suk Yeol sentence February 2026",
+        "language": "ru"
+      },
+      "tool_call_id": "call_wsYbA4U6ui31A0zFXPypETgm",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.8748701080003229
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.00010305,
+      "prompt_tokens": 579,
+      "completion_tokens": 27,
+      "request_id": "gen-1793376044-A9XkiSn8BMtwpfOvybD1",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_k8Udcc1uJDPzpl8cXAMLEvtL",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Yoon Suk Yeol February 2026 news\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.8840757990001293
+    },
+    {
+      "type": "tool",
+      "step": 3,
+      "name": "web_search",
+      "arguments": {
+        "query": "Yoon Suk Yeol February 2026 news",
+        "language": "en"
+      },
+      "tool_call_id": "call_k8Udcc1uJDPzpl8cXAMLEvtL",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 1.5329385379991436
+    },
+    {
+      "type": "llm",
+      "step": 4,
+      "tools_enabled": true,
+      "cost_usd": 0.00010935,
+      "prompt_tokens": 625,
+      "completion_tokens": 26,
+      "request_id": "gen-1793376046-L4nwzkIgCc36XRaBDkCm",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_9A3gfPiINjLMIzZWx7JwJZep",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Yoon Suk Yeol February 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 0.9167600330001733
+    },
+    {
+      "type": "tool",
+      "step": 4,
+      "name": "web_search",
+      "arguments": {
+        "query": "Yoon Suk Yeol February 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_9A3gfPiINjLMIzZWx7JwJZep",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.5254371459996037
+    },
+    {
+      "type": "llm",
+      "step": 5,
+      "tools_enabled": true,
+      "cost_usd": 0.0001167,
+      "prompt_tokens": 670,
+      "completion_tokens": 27,
+      "request_id": "gen-1793376048-ePHPPISFebl2h6177NUE",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_rlNcoPCtwph7tAltPCDxdscJ",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Yoon Suk Yeol news February 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.0790185290024965
+    },
+    {
+      "type": "tool",
+      "step": 5,
+      "name": "web_search",
+      "arguments": {
+        "query": "Yoon Suk Yeol news February 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_rlNcoPCtwph7tAltPCDxdscJ",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.46649897799943574
+    },
+    {
+      "type": "llm",
+      "step": 6,
+      "tools_enabled": false,
+      "cost_usd": 6.39e-05,
+      "prompt_tokens": 414,
+      "completion_tokens": 3,
+      "request_id": "gen-1793376051-9MkjmYztAIJwecxtOskm",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: unknown",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 3.091377726999781
+    }
+  ],
+  "id": "fresh-76",
+  "question": "What was the sentence given to former president Yoon Suk Yeol in South Korea in February 2026?",
+  "expected": "life imprisonment",
+  "correct": false,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T16:00:52.796934+00:00"
+}

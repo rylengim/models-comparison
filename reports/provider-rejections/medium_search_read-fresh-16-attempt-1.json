@@ -1,0 +1,67 @@
+{
+  "final": "unknown",
+  "steps": 2,
+  "elapsed_s": 8.218669155998214,
+  "cost_usd": 0.0018970000000000098,
+  "known_cost_usd": 0.0018970000000000098,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "error",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.001897,
+      "prompt_tokens": 1462,
+      "completion_tokens": 87,
+      "request_id": "gen-1793373502-VIMoNivSvEYjS3B569ms",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "I'll search for information about the Walter Cup in ice hockey and the winner on May 20, 2026.",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_01UGJKemgBBRjrsynocb2TXy",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"Walter Cup ice hockey May 20 2026\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 4.918806820998725
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Walter Cup ice hockey May 20 2026"
+      },
+      "tool_call_id": "toolu_bdrk_01UGJKemgBBRjrsynocb2TXy",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"Walter Cup\", \"url\": \"https://en.wikipedia.org/wiki/Walter_Cup\", \"snippet\": \"in 2026 . The Walter Cup is permanently on display at the Hockey Hall of Fame in Toronto. In contrast to the Stanley Cup , a replica of the Walter Cup is\"}, {\"title\": \"2026 Walter Cup playoffs\", \"url\": \"https://en.wikipedia.org/wiki/2026_Walter_Cup_playoffs\", \"snippet\": \"The 2026 Walter Cup playoffs was the playoff tournament of the Professional Women's Hockey League (PWHL) for the 2025–26 season. The playoffs began on\"}, {\"title\": \"2026 in ice hockey\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_ice_hockey\", \"snippet\": \"ice hockey for the year 2026 throughout the world. The 2026 Winter Olympics and Paralympics took place in Milan and Cortina d'Ampezzo, Italy. The ice\"}, {\"title\": \"2026 Walter Cup Finals\", \"url\": \"https://en.wikipedia.org/wiki/2026_Walter_Cup_Finals\", \"snippet\": \"The 2026 Walter Cup Finals was the championship series of the Professional Women's Hockey League 2025–26 PWHL season and the culmination of the 2026 Walter\"}, {\"title\": \"Dara Greig\", \"url\": \"https://en.wikipedia.org/wiki/Dara_Greig\", \"snippet\": \"the Montreal Victoire, but signed to Ottawa in 2026 . Greig won the Walter cup with the Victoire in 2026 . Dara and her brother Ridly became one of the first\"}]}",
+      "elapsed_s": 0.7133089279996057
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "error": "Shared request gate BLOCKED after an unknown charge; no request sent. Reconcile billing before continuing.",
+      "cost_usd": 0.0,
+      "elapsed_s": 2.5853348639975593
+    }
+  ],
+  "id": "fresh-16",
+  "question": "In ice hockey, which team won their first Walter Cup on May 20, 2026?",
+  "expected": "Montreal Victoire",
+  "correct": false,
+  "config": "medium_search_read",
+  "model": "anthropic/claude-haiku-4.5",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:18:27.280743+00:00"
+}

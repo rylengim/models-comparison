@@ -1,0 +1,115 @@
+{
+  "final": "unknown",
+  "steps": 3,
+  "elapsed_s": 8.960987965998356,
+  "cost_usd": 0.005927000000000016,
+  "known_cost_usd": 0.005927000000000016,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.001928,
+      "prompt_tokens": 1468,
+      "completion_tokens": 92,
+      "request_id": "gen-1793376401-jJrMWP9iRWbKClD82crs",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "I'll search for information about a hotel collapse in Anuppur, Madhya Pradesh in April 2026.",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_01SdHLNrpWehm8gRiSsFyMn7",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"hotel collapse Anuppur Madhya Pradesh April 2026\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.801632052000059
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "hotel collapse Anuppur Madhya Pradesh April 2026"
+      },
+      "tool_call_id": "toolu_bdrk_01SdHLNrpWehm8gRiSsFyMn7",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.5905841439998767
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.001933,
+      "prompt_tokens": 1583,
+      "completion_tokens": 70,
+      "request_id": "gen-1793376404-wvTJgiq0uh0OYNB0DfpC",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "Let me try a different search approach:",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_019ewyk9WtViPsr5USjPMaDT",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"Anuppur hotel collapse 2026\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.4067162909996114
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "Anuppur hotel collapse 2026"
+      },
+      "tool_call_id": "toolu_bdrk_019ewyk9WtViPsr5USjPMaDT",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.4917153940004937
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.002066,
+      "prompt_tokens": 1676,
+      "completion_tokens": 78,
+      "request_id": "gen-1793376407-XLMCJxk9vLgQfuJTeNbL",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "I'm unable to retrieve information about this incident. The search is returning errors, and I cannot find reliable data about a hotel collapse in Anuppur, Madhya Pradesh in April 2026. Additionally, April 2026 is in the future from my knowledge cutoff, so this event would not be in my training data.\n\nFINAL: unknown",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 2.668721361998905
+    }
+  ],
+  "id": "fresh-66",
+  "question": "How many people were reportedly trapped after a hotel collapse in Anuppur, Madhya Pradesh in April 2026?",
+  "expected": "at least six",
+  "correct": false,
+  "config": "medium_search_read",
+  "model": "anthropic/claude-haiku-4.5",
+  "measured": true,
+  "recorded_at": "2026-10-30T16:06:48.462615+00:00"
+}

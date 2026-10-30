@@ -1,0 +1,197 @@
+{
+  "final": "unknown",
+  "steps": 5,
+  "elapsed_s": 8.710717406000185,
+  "cost_usd": 0.0004992000000000052,
+  "known_cost_usd": 0.0004992000000000052,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 8.865e-05,
+      "prompt_tokens": 483,
+      "completion_tokens": 27,
+      "request_id": "gen-1793375743-jMnuz1Hz6ZZWaM6mtlyh",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_NqJEjSRPDpGjhBhLWlDK11Lv",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Dharmendra Pradhan resignation July 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.2037645540003723
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Dharmendra Pradhan resignation July 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_NqJEjSRPDpGjhBhLWlDK11Lv",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.5283279869981925
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 9.555e-05,
+      "prompt_tokens": 529,
+      "completion_tokens": 27,
+      "request_id": "gen-1793375745-1cdhM2OZaoByPC76AcTd",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_28WQ0cKRKSsTOscLPiKkcRb0",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Dharmendra Pradhan July 2026 resignation\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 0.9602797480001755
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "Dharmendra Pradhan July 2026 resignation",
+        "language": "en"
+      },
+      "tool_call_id": "call_28WQ0cKRKSsTOscLPiKkcRb0",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.48752098299883073
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.00010245,
+      "prompt_tokens": 575,
+      "completion_tokens": 27,
+      "request_id": "gen-1793375746-MW2nLtHkQSnTtIeRhINZ",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_3jQjRCCeQnjva3kauqhddQha",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Dharmendra Pradhan news July 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.0110781450021022
+    },
+    {
+      "type": "tool",
+      "step": 3,
+      "name": "web_search",
+      "arguments": {
+        "query": "Dharmendra Pradhan news July 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_3jQjRCCeQnjva3kauqhddQha",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.4699588639996364
+    },
+    {
+      "type": "llm",
+      "step": 4,
+      "tools_enabled": true,
+      "cost_usd": 0.00010995,
+      "prompt_tokens": 621,
+      "completion_tokens": 28,
+      "request_id": "gen-1793375748-BAxxdEiAQulxlc2SxieQ",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_ciy1YNINwBHAQ1gmuuE7FguH",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Dharmendra Pradhan position resignation July 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.8189464979986951
+    },
+    {
+      "type": "tool",
+      "step": 4,
+      "name": "web_search",
+      "arguments": {
+        "query": "Dharmendra Pradhan position resignation July 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_ciy1YNINwBHAQ1gmuuE7FguH",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.46274293800161104
+    },
+    {
+      "type": "llm",
+      "step": 5,
+      "tools_enabled": true,
+      "cost_usd": 0.0001026,
+      "prompt_tokens": 668,
+      "completion_tokens": 4,
+      "request_id": "gen-1793375750-Qvndsput3006ZDfEEK6Q",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: unknown",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 0.7673418980011775
+    }
+  ],
+  "id": "fresh-47",
+  "question": "What position did Dharmendra Pradhan resign from in India in July 2026?",
+  "expected": "Education Minister",
+  "correct": false,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:55:51.413977+00:00"
+}

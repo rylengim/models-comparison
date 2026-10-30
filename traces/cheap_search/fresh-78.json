@@ -1,0 +1,237 @@
+{
+  "final": "unknown",
+  "steps": 6,
+  "elapsed_s": 18.30988926200007,
+  "cost_usd": 0.0007225500000000162,
+  "known_cost_usd": 0.0007225500000000162,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "max_steps",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 9.84e-05,
+      "prompt_tokens": 508,
+      "completion_tokens": 37,
+      "request_id": "gen-1793376066-5MXGtZfLfZC6fF0nsL3I",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_W2rYtOXyuXRmcZ52GDahTH0z",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"RASolute 302 trial median overall survival daraxonrasib pancreatic cancer RAS G12 mutations\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 3.288444501002232
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "RASolute 302 trial median overall survival daraxonrasib pancreatic cancer RAS G12 mutations",
+        "language": "en"
+      },
+      "tool_call_id": "call_W2rYtOXyuXRmcZ52GDahTH0z",
+      "output": "{\"source\": \"Wikipedia\", \"results\": []}",
+      "elapsed_s": 0.39461624800242134
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.0001062,
+      "prompt_tokens": 564,
+      "completion_tokens": 36,
+      "request_id": "gen-1793376069-zXRzW83aVVfPQgIN7erP",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_5KuXpyeX3Pog4Wz45K0hg4DE",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"RASolute 302 trial daraxonrasib overall survival pancreatic cancer RAS G12 mutations\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.7792453080000996
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "RASolute 302 trial daraxonrasib overall survival pancreatic cancer RAS G12 mutations",
+        "language": "en"
+      },
+      "tool_call_id": "call_5KuXpyeX3Pog4Wz45K0hg4DE",
+      "output": "{\"source\": \"Wikipedia\", \"results\": []}",
+      "elapsed_s": 0.3860732629982522
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.00011085,
+      "prompt_tokens": 619,
+      "completion_tokens": 30,
+      "request_id": "gen-1793376072-eTsmBenQN6SLxRUetBcv",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_YFFziZUrOhngYqkheZEGcpEI",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"RASolute 302 trial results daraxonrasib pancreatic cancer\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.4661115480012086
+    },
+    {
+      "type": "tool",
+      "step": 3,
+      "name": "web_search",
+      "arguments": {
+        "query": "RASolute 302 trial results daraxonrasib pancreatic cancer",
+        "language": "en"
+      },
+      "tool_call_id": "call_YFFziZUrOhngYqkheZEGcpEI",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"Daraxonrasib\", \"url\": \"https://en.wikipedia.org/wiki/Daraxonrasib\", \"snippet\": \"Daraxonrasib , sold under the brand name Rasonque, is an anti- cancer medication used for the treatment of pancreatic cancer . It is an inhibitor of the RAS\"}, {\"title\": \"Ras GTPase\", \"url\": \"https://en.wikipedia.org/wiki/Ras_GTPase\", \"snippet\": \"activity. In 2026, the novel RAS inhibitor daraxonrasib completed a phase 3 clinical trial ( RASolute 302 ) to assess efficacy compared to standard-of-care\"}]}",
+      "elapsed_s": 0.5540590199998405
+    },
+    {
+      "type": "llm",
+      "step": 4,
+      "tools_enabled": true,
+      "cost_usd": 0.00013845,
+      "prompt_tokens": 803,
+      "completion_tokens": 30,
+      "request_id": "gen-1793376075-uwpSSbMgT5HoyPZhKPHX",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_ryb6TlfVkyopBVRFvJduF01S",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"RASolute 302 trial daraxonrasib overall survival results\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.697913100997539
+    },
+    {
+      "type": "tool",
+      "step": 4,
+      "name": "web_search",
+      "arguments": {
+        "query": "RASolute 302 trial daraxonrasib overall survival results",
+        "language": "en"
+      },
+      "tool_call_id": "call_ryb6TlfVkyopBVRFvJduF01S",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"Daraxonrasib\", \"url\": \"https://en.wikipedia.org/wiki/Daraxonrasib\", \"snippet\": \"different treatment setting. A phase III study ( RASolute 302 ) assessed the efficacy of daraxonrasib in second line (previously treated) metastatic PDAC\"}]}",
+      "elapsed_s": 0.577306889997999
+    },
+    {
+      "type": "llm",
+      "step": 5,
+      "tools_enabled": true,
+      "cost_usd": 0.0001572,
+      "prompt_tokens": 916,
+      "completion_tokens": 33,
+      "request_id": "gen-1793376078-8blxoO89TAzO7KNwhjgd",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_3sHLJoIR9im3DkBXBqbBLMVl",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"daraxonrasib RASolute 302 trial results overall survival pancreatic cancer\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.155340527999215
+    },
+    {
+      "type": "tool",
+      "step": 5,
+      "name": "web_search",
+      "arguments": {
+        "query": "daraxonrasib RASolute 302 trial results overall survival pancreatic cancer",
+        "language": "en"
+      },
+      "tool_call_id": "call_3sHLJoIR9im3DkBXBqbBLMVl",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"Daraxonrasib\", \"url\": \"https://en.wikipedia.org/wiki/Daraxonrasib\", \"snippet\": \"Daraxonrasib , sold under the brand name Rasonque, is an anti- cancer medication used for the treatment of pancreatic cancer . It is an inhibitor of the RAS\"}]}",
+      "elapsed_s": 0.6897845189996588
+    },
+    {
+      "type": "llm",
+      "step": 6,
+      "tools_enabled": false,
+      "cost_usd": 0.00011145,
+      "prompt_tokens": 731,
+      "completion_tokens": 3,
+      "request_id": "gen-1793376081-ChkVaul53WkAxByh6W1J",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: unknown",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 2.3202980460009712
+    }
+  ],
+  "id": "fresh-78",
+  "question": "In the RASolute 302 trial published online on 31 May 2026, what was median overall survival with daraxonrasib in previously treated metastatic pancreatic cancer patients with RAS G12 mutations?",
+  "expected": "13.2 months",
+  "correct": false,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T16:01:22.457268+00:00"
+}

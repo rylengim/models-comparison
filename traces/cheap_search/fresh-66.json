@@ -1,0 +1,77 @@
+{
+  "final": "At least six others were reportedly trapped after a hotel collapse in Anuppur, Madhya Pradesh in April 2026.",
+  "steps": 2,
+  "elapsed_s": 4.730088972999511,
+  "cost_usd": 0.00022199999999999998,
+  "known_cost_usd": 0.00022199999999999998,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 9.075e-05,
+      "prompt_tokens": 489,
+      "completion_tokens": 29,
+      "request_id": "gen-1793375899-NEuMcqo8dcMjZiOIzu3L",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_yK1tQHmH01MGPbjdszqHHSKD",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"hotel collapse Anuppur Madhya Pradesh April 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.9319034430009197
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "hotel collapse Anuppur Madhya Pradesh April 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_yK1tQHmH01MGPbjdszqHHSKD",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"Madhya Pradesh\", \"url\": \"https://en.wikipedia.org/wiki/Madhya_Pradesh\", \"snippet\": \"Madhya Pradesh (/ˌmɑːdjə prəˈdɛʃ/; Hindi: [ˈmədʱjə pɾəˈdeːʃ] ; lit. 'Central Province') is a state in central India. Its capital is Bhopal. Other major\"}, {\"title\": \"2026 in India\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_India\", \"snippet\": \"4 April – One person is killed and at least six others are reportedly trapped after a four-story hotel collapses in Anuppur , Madhya Pradesh . 6 April –\"}, {\"title\": \"2025 in India\", \"url\": \"https://en.wikipedia.org/wiki/2025_in_India\", \"snippet\": \"others are injured after a jeep and a motorcycle collide in Anuppur district, Madhya Pradesh . Three children from a family are killed after allegedly consuming\"}]}",
+      "elapsed_s": 0.7309592470010102
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.00013125,
+      "prompt_tokens": 763,
+      "completion_tokens": 28,
+      "request_id": "gen-1793375902-QvjAuz8KU71BLMHfxlNG",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: At least six others were reportedly trapped after a hotel collapse in Anuppur, Madhya Pradesh in April 2026.",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 2.0664919410010043
+    }
+  ],
+  "id": "fresh-66",
+  "question": "How many people were reportedly trapped after a hotel collapse in Anuppur, Madhya Pradesh in April 2026?",
+  "expected": "at least six",
+  "correct": true,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:58:23.899215+00:00"
+}

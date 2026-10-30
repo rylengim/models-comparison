@@ -1,0 +1,77 @@
+{
+  "final": "209",
+  "steps": 2,
+  "elapsed_s": 5.435323443998641,
+  "cost_usd": 0.00023414999999998853,
+  "known_cost_usd": 0.00023414999999998853,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 9.225e-05,
+      "prompt_tokens": 491,
+      "completion_tokens": 31,
+      "request_id": "gen-1793375841-22WtbrEE5NpjGwRkMU1z",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_Vg3AhRbxK2sObnRGidjT9xPv",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Ankara security-force raids arrests June 23 2026 NATO summit\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.717791672999738
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Ankara security-force raids arrests June 23 2026 NATO summit",
+        "language": "en"
+      },
+      "tool_call_id": "call_Vg3AhRbxK2sObnRGidjT9xPv",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2026 in Turkey\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_Turkey\", \"snippet\": \"11 June –19 July – Turkey participates at the 2026 FIFA World Cup 23 June – At least 209 people are arrested in raids by security forces across Ankara ahead\"}, {\"title\": \"2026\", \"url\": \"https://en.wikipedia.org/wiki/2026\", \"snippet\": \"participate in future Olympic Games. July 7–8 – The 2026 NATO summit is held in Ankara , Turkey. July 8 – 2026 Iran war: The Islamabad Memorandum between the\"}, {\"title\": \"Timeline of the Russo-Ukrainian war (12 November 2022 – 7 June 2023)\", \"url\": \"https://en.wikipedia.org/wiki/Timeline_of_the_Russo-Ukrainian_war_%2812_November_2022_%E2%80%93_7_June_2023%29\", \"snippet\": \"Patriot missile battery deployed in Slovakia to Lithuania to secure the NATO summit to be held in Vilnius in July. The Prosecutor-General of Ukraine released\"}, {\"title\": \"Greenland crisis\", \"url\": \"https://en.wikipedia.org/wiki/Greenland_crisis\", \"snippet\": \"pre-existing commitments from a 1951 US–Denmark treaty. At the 2026 Ankara NATO summit in July, Trump restated his opinion that it would be better if\"}, {\"title\": \"Kurdistan Workers' Party insurgency\", \"url\": \"https://en.wikipedia.org/wiki/Kurdistan_Workers%27_Party_insurgency\", \"snippet\": \"AKP. On 28 June , the first day of the 2022 NATO summit in Madrid, the Turkish delegation dropped their opposition to Finland and Sweden's NATO membership\"}]}",
+      "elapsed_s": 0.6339585249988886
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.0001419,
+      "prompt_tokens": 926,
+      "completion_tokens": 5,
+      "request_id": "gen-1793375844-8szJw9Ez34RQ2benUJ4F",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: 209",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 2.082892295999045
+    }
+  ],
+  "id": "fresh-60",
+  "question": "At least how many people were arrested in security-force raids across Ankara on 23 June 2026 ahead of the NATO summit?",
+  "expected": "209",
+  "correct": true,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:57:25.188157+00:00"
+}

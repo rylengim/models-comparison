@@ -1,0 +1,68 @@
+{
+  "final": "unknown",
+  "steps": 2,
+  "elapsed_s": 23.75982237200151,
+  "cost_usd": null,
+  "known_cost_usd": 0.0001152000000000002,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "cost_unknown",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.0001152,
+      "prompt_tokens": 664,
+      "completion_tokens": 26,
+      "request_id": "gen-1793373010-ezvudNKCECPEpGFdXPoD",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_bQJeNph8z3q311l174Qtpzqb",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"FSB charges July 29 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 7.487951265000447
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "FSB charges July 29 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_bQJeNph8z3q311l174Qtpzqb",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2026 in Russia\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_Russia\", \"snippet\": \"27 July – The FSB arrests a 55-year-old man in Khabarovsk on charges of spying for the New Zealand Security Intelligence Service. 29 July – The FSB charges\"}, {\"title\": \"Evan Gershkovich\", \"url\": \"https://en.wikipedia.org/wiki/Evan_Gershkovich\", \"snippet\": \"Service on charges of espionage in March 2023, marking the first time a journalist working for an American outlet had been arrested on charges of spying\"}, {\"title\": \"Timeline of the Russo-Ukrainian war (1 June 2026 – 31 August 2026)\", \"url\": \"https://en.wikipedia.org/wiki/Timeline_of_the_Russo-Ukrainian_war_%281_June_2026_%E2%80%93_31_August_2026%29\", \"snippet\": \"July 2026 . \\\"Russia charges Telegram founder Durov with aiding terrorism, he gives Moscow the finger\\\". Reuters. 29 July 2026 . Retrieved 30 July 2026 .\"}, {\"title\": \"Federal Security Service\", \"url\": \"https://en.wikipedia.org/wiki/Federal_Security_Service\", \"snippet\": \"The Federal Security Service of the Russian Federation ( FSB ) is the principal security agency of Russia and the main successor agency to the Soviet Union's\"}, {\"title\": \"Pavel Durov\", \"url\": \"https://en.wikipedia.org/wiki/Pavel_Durov\", \"snippet\": \"Spanish). Moscow: El País. 29 July 2026 . Retrieved 29 July 2026 .{{cite news}}: CS1 maint: url-status (link) \\\"Russia charges Telegram founder Pavel Durov\"}]}",
+      "elapsed_s": 0.794130006001069
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "error": "OpenRouter network failure; request not retried because billing is uncertain.",
+      "cost_usd": null,
+      "elapsed_s": 15.476553085001797
+    }
+  ],
+  "id": "fresh-8",
+  "question": "Who was charged by the FSB in Russia on 29 July 2026?",
+  "expected": "Pavel Durov",
+  "correct": false,
+  "config": "cheap_search_read",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:10:27.640696+00:00"
+}

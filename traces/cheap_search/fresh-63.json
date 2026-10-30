@@ -1,0 +1,77 @@
+{
+  "final": "2 people",
+  "steps": 2,
+  "elapsed_s": 5.911728785999003,
+  "cost_usd": 0.0001941000000000026,
+  "known_cost_usd": 0.0001941000000000026,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 8.925e-05,
+      "prompt_tokens": 483,
+      "completion_tokens": 28,
+      "request_id": "gen-1793375880-92IGQMfGeacQ6Q7z9Hi8",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_QVnrqiQY7oWKZpTcDtgHCv2w",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"avalanche near Ratschings March 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 3.3524606170030893
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "avalanche near Ratschings March 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_QVnrqiQY7oWKZpTcDtgHCv2w",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2026 in Italy\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_Italy\", \"snippet\": \"Kuwait. 21 March – Two people are killed in an avalanche at the Hohe Ferse near Ratschings . 22 March – Three paintings by Auguste Renoir, Paul Cézanne\"}, {\"title\": \"Deaths in September 2022\", \"url\": \"https://en.wikipedia.org/wiki/Deaths_in_September_2022\", \"snippet\": \"Bangladeshi journalist. Hilaree Nelson, 49, American ski mountaineer, avalanche . Carlos Pairetti, 86, Argentine stock car racing driver, lung failure\"}]}",
+      "elapsed_s": 0.8722246470024402
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.00010485,
+      "prompt_tokens": 675,
+      "completion_tokens": 6,
+      "request_id": "gen-1793375883-5CKZn64WLz8ebOptvnyh",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: 2 people",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 1.6861394100014877
+    }
+  ],
+  "id": "fresh-63",
+  "question": "How many people were killed in the avalanche near Ratschings in March 2026?",
+  "expected": "Two",
+  "correct": false,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:58:04.142010+00:00"
+}

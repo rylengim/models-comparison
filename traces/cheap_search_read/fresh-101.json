@@ -1,0 +1,237 @@
+{
+  "final": "unknown",
+  "steps": 6,
+  "elapsed_s": 15.04267738300041,
+  "cost_usd": 0.0007223999999999842,
+  "known_cost_usd": 0.0007223999999999842,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "max_steps",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.00012,
+      "prompt_tokens": 672,
+      "completion_tokens": 32,
+      "request_id": "gen-1793374782-nv2NHxrSxELxdw4BujOh",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_ENfyqxkuwMbqgwmpCKPYGxFn",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"US-brokered Israel Lebanon ceasefire April 16 2026 duration\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.7336854509994737
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "US-brokered Israel Lebanon ceasefire April 16 2026 duration",
+        "language": "en"
+      },
+      "tool_call_id": "call_ENfyqxkuwMbqgwmpCKPYGxFn",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.21769423500154517
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.00012525,
+      "prompt_tokens": 723,
+      "completion_tokens": 28,
+      "request_id": "gen-1793374785-PzSDAnlWEvjwwQXP2QoV",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_WdjUAhjRPZlToiouWbYrsC6y",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Israel Lebanon ceasefire April 16 2026 duration\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.01512947500305
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "Israel Lebanon ceasefire April 16 2026 duration",
+        "language": "en"
+      },
+      "tool_call_id": "call_WdjUAhjRPZlToiouWbYrsC6y",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.5690311479993397
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.0001317,
+      "prompt_tokens": 770,
+      "completion_tokens": 27,
+      "request_id": "gen-1793374787-gqcvJzyMtftUbpjnN6s8",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_qbCumMGmOVHtL1M8jG3klXkd",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Israel Lebanon ceasefire April 16 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.979116028000135
+    },
+    {
+      "type": "tool",
+      "step": 3,
+      "name": "web_search",
+      "arguments": {
+        "query": "Israel Lebanon ceasefire April 16 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_qbCumMGmOVHtL1M8jG3klXkd",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.4945764119984233
+    },
+    {
+      "type": "llm",
+      "step": 4,
+      "tools_enabled": true,
+      "cost_usd": 0.0001374,
+      "prompt_tokens": 816,
+      "completion_tokens": 25,
+      "request_id": "gen-1793374790-8zommO1uQpAmyX8ZiziL",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_Y7wvB49dco36Cv1nmBRBn0wn",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Israel Lebanon ceasefire April 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.0947059270001773
+    },
+    {
+      "type": "tool",
+      "step": 4,
+      "name": "web_search",
+      "arguments": {
+        "query": "Israel Lebanon ceasefire April 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_Y7wvB49dco36Cv1nmBRBn0wn",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.48681360199771007
+    },
+    {
+      "type": "llm",
+      "step": 5,
+      "tools_enabled": true,
+      "cost_usd": 0.0001434,
+      "prompt_tokens": 860,
+      "completion_tokens": 24,
+      "request_id": "gen-1793374792-Iv7lX0ahaRrVfqAfyxgi",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_N7s1rNJl1K0BVVL9d7GbaAfd",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Israel Lebanon ceasefire 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.0150255570006266
+    },
+    {
+      "type": "tool",
+      "step": 5,
+      "name": "web_search",
+      "arguments": {
+        "query": "Israel Lebanon ceasefire 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_N7s1rNJl1K0BVVL9d7GbaAfd",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.4829791789998126
+    },
+    {
+      "type": "llm",
+      "step": 6,
+      "tools_enabled": false,
+      "cost_usd": 6.465e-05,
+      "prompt_tokens": 419,
+      "completion_tokens": 3,
+      "request_id": "gen-1793374795-4FtJA8Zo8ZWbsjva89Pc",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: unknown",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 1.9526819419988897
+    }
+  ],
+  "id": "fresh-101",
+  "question": "How long was the US-brokered Israel–Lebanon ceasefire that took effect on 16 April 2026?",
+  "expected": "10-day",
+  "correct": false,
+  "config": "cheap_search_read",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:39:56.206313+00:00"
+}

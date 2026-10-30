@@ -1,0 +1,77 @@
+{
+  "final": "13 July 2026",
+  "steps": 2,
+  "elapsed_s": 6.416474113997538,
+  "cost_usd": 0.0002037000000000011,
+  "known_cost_usd": 0.0002037000000000011,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 9.54e-05,
+      "prompt_tokens": 496,
+      "completion_tokens": 35,
+      "request_id": "gen-1793371867-yVLVj17AKdAHG2P7n4c8",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_kg6vq1GOEOIxAIsvpbX8lh1w",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Munich court Iraqi couple Islamic State enslaving raping Yazidi girls date 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 3.2204908919993613
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Munich court Iraqi couple Islamic State enslaving raping Yazidi girls date 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_kg6vq1GOEOIxAIsvpbX8lh1w",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"Yazidi genocide\", \"url\": \"https://en.wikipedia.org/wiki/Yazidi_genocide\", \"snippet\": \"The Yazidi genocide also known as the 74th firman by Yazidis , was perpetrated by the Islamic State in Iraq and Syria between 2014 and 2017. It was characterized\"}, {\"title\": \"2026 in Germany\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_Germany\", \"snippet\": \"Germany. 13 July – A Munich court imprisons an Iraqi couple who were members of Islamic State for enslaving and raping Yazidi girls . 25 July A small plane\"}]}",
+      "elapsed_s": 0.8396226850018138
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.0001083,
+      "prompt_tokens": 686,
+      "completion_tokens": 9,
+      "request_id": "gen-1793371870-ZpI5OkhCjOSMJORenrPh",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: 13 July 2026",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 2.355615131000377
+    }
+  ],
+  "id": "fresh-18",
+  "question": "On what date in 2026 did a Munich court imprison an Iraqi couple who had belonged to Islamic State for enslaving and raping Yazidi girls?",
+  "expected": "13 July",
+  "correct": true,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T14:51:11.406953+00:00"
+}

@@ -1,0 +1,67 @@
+{
+  "final": "unknown",
+  "steps": 2,
+  "elapsed_s": 4.612923739998223,
+  "cost_usd": 0.0019970000000000265,
+  "known_cost_usd": 0.0019970000000000265,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "error",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.001997,
+      "prompt_tokens": 1472,
+      "completion_tokens": 105,
+      "request_id": "gen-1793376654-CAtBthBcxzee87OZqNRu",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "I'll search for information about the VB-G RAM-G scheme and Shivraj Singh Chouhan's announcement in July 2026.",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_01JB2stoHWuXEkvJRB1Q4FiJ",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"Shivraj Singh Chouhan VB-G RAM-G scheme July 2026\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.72461454400036
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Shivraj Singh Chouhan VB-G RAM-G scheme July 2026"
+      },
+      "tool_call_id": "toolu_bdrk_01JB2stoHWuXEkvJRB1Q4FiJ",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 1.092772234002041
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "error": "OpenRouter rejected request (HTTP 429); no retry.",
+      "cost_usd": 0.0,
+      "elapsed_s": 0.7944696129998192
+    }
+  ],
+  "id": "fresh-91",
+  "question": "What was the amount released by Shivraj Singh Chouhan for the VB-G RAM-G scheme in July 2026?",
+  "expected": "₹25,863 crore",
+  "correct": false,
+  "config": "medium_search_read",
+  "model": "anthropic/claude-haiku-4.5",
+  "measured": true,
+  "recorded_at": "2026-10-30T16:10:58.218109+00:00"
+}

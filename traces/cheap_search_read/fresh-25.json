@@ -1,0 +1,241 @@
+{
+  "final": "unknown",
+  "steps": 6,
+  "elapsed_s": 15.184077504000015,
+  "cost_usd": 0.0007354499999999986,
+  "known_cost_usd": 0.0007354499999999986,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "max_steps",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.0001191,
+      "prompt_tokens": 670,
+      "completion_tokens": 31,
+      "request_id": "gen-1793373753-B3r7WytKGfwKIHPowt9Z",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_9aWCNU7iqlYZOcIaDLMgIcUk",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Afghanistan Pakistan war February 26 2026 declaration by Pakistan government\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.7220120079982735
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Afghanistan Pakistan war February 26 2026 declaration by Pakistan government",
+        "language": "en"
+      },
+      "tool_call_id": "call_9aWCNU7iqlYZOcIaDLMgIcUk",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2025 Afghanistan–Pakistan conflict\", \"url\": \"https://en.wikipedia.org/wiki/2025_Afghanistan%E2%80%93Pakistan_conflict\", \"snippet\": \"that Afghanistan and Pakistan had agreed to a ceasefire after extensive Doha talks mediated by Qatar and Turkey. Under this ceasefire declaration , the\"}, {\"title\": \"Pakistan\", \"url\": \"https://en.wikipedia.org/wiki/Pakistan\", \"snippet\": \"and is separated from Tajikistan in the northwest by Afghanistan's narrow Wakhan Corridor. Pakistan is the site of several ancient cultures, including\"}, {\"title\": \"Afghanistan\", \"url\": \"https://en.wikipedia.org/wiki/Afghanistan\", \"snippet\": \"27 September 2026 . \\\" Pakistan defence minister says country in 'open war ' with Afghanistan after strikes\\\". www.bbc.com. 27 February 2026 . Retrieved 27\"}, {\"title\": \"Economy of Pakistan\", \"url\": \"https://en.wikipedia.org/wiki/Economy_of_Pakistan\", \"snippet\": \"economy by purchasing power parity (PPP) as of 2026 . In per capita terms, the Pakistani economic output ranks 160th by nominal GDP and 138th by PPP GDP\"}, {\"title\": \"Pakistan and state-sponsored terrorism\", \"url\": \"https://en.wikipedia.org/wiki/Pakistan_and_state-sponsored_terrorism\", \"snippet\": \"organisations. Pakistan has been frequently accused by various countries, including its neighbours Afghanistan , Iran, and India, as well as by the United\"}]}",
+      "elapsed_s": 0.6851149770009215
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.0001779,
+      "prompt_tokens": 1038,
+      "completion_tokens": 37,
+      "request_id": "gen-1793373756-vw1F0i5fetTrphkVsQyH",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_dSenfJAbIzMei4Bzt6348zCO",
+            "function": {
+              "name": "page_find",
+              "arguments": "{\"title\":\"2025 Afghanistan–Pakistan conflict\",\"keywords\":[\"February 26 2026\",\"Pakistan government declaration\"],\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.783244405996811
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "page_find",
+      "arguments": {
+        "title": "2025 Afghanistan–Pakistan conflict",
+        "keywords": [
+          "February 26 2026",
+          "Pakistan government declaration"
+        ],
+        "language": "en"
+      },
+      "tool_call_id": "call_dSenfJAbIzMei4Bzt6348zCO",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.22641060599926277
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.0001047,
+      "prompt_tokens": 1094,
+      "completion_tokens": 29,
+      "request_id": "gen-1793373758-KBWA2wPpA0CPIYn6MVNf",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_7PIj9Cij6J2hxPpP0IIwi7Pg",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"February 26 2026 Pakistan government declaration Afghanistan Pakistan conflict\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.774577195999882
+    },
+    {
+      "type": "tool",
+      "step": 3,
+      "name": "web_search",
+      "arguments": {
+        "query": "February 26 2026 Pakistan government declaration Afghanistan Pakistan conflict",
+        "language": "en"
+      },
+      "tool_call_id": "call_7PIj9Cij6J2hxPpP0IIwi7Pg",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.46796665100191603
+    },
+    {
+      "type": "llm",
+      "step": 4,
+      "tools_enabled": true,
+      "cost_usd": 0.0001107,
+      "prompt_tokens": 1142,
+      "completion_tokens": 27,
+      "request_id": "gen-1793373761-TwdSBKIJ295lGqN8gd4X",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_uybAxaVkHKkkOi3tDxMotnK6",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"February 26 2026 Pakistan government statement Afghanistan\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.4478931609992287
+    },
+    {
+      "type": "tool",
+      "step": 4,
+      "name": "web_search",
+      "arguments": {
+        "query": "February 26 2026 Pakistan government statement Afghanistan",
+        "language": "en"
+      },
+      "tool_call_id": "call_uybAxaVkHKkkOi3tDxMotnK6",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.5010053379992314
+    },
+    {
+      "type": "llm",
+      "step": 5,
+      "tools_enabled": true,
+      "cost_usd": 0.0001086,
+      "prompt_tokens": 1188,
+      "completion_tokens": 28,
+      "request_id": "gen-1793373763-hpuEgF35RNkqIZLLS77o",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_opMxvKsmM1bAJsiQerM7HCyb",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Pakistan February 26 2026 ceasefire declaration Afghanistan\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.487007794999954
+    },
+    {
+      "type": "tool",
+      "step": 5,
+      "name": "web_search",
+      "arguments": {
+        "query": "Pakistan February 26 2026 ceasefire declaration Afghanistan",
+        "language": "en"
+      },
+      "tool_call_id": "call_opMxvKsmM1bAJsiQerM7HCyb",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.48859526199885295
+    },
+    {
+      "type": "llm",
+      "step": 6,
+      "tools_enabled": false,
+      "cost_usd": 0.00011445,
+      "prompt_tokens": 751,
+      "completion_tokens": 3,
+      "request_id": "gen-1793373766-LWYlw2gnnaFbVmNX3Kre",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: unknown",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 1.5983377329976065
+    }
+  ],
+  "id": "fresh-25",
+  "question": "In the Afghanistan–Pakistan war, what did the government of Pakistan declare on February 26, 2026?",
+  "expected": "\"open war\"",
+  "correct": false,
+  "config": "cheap_search_read",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:22:47.726033+00:00"
+}

@@ -1,0 +1,77 @@
+{
+  "final": "Michaelmas Island",
+  "steps": 2,
+  "elapsed_s": 5.844903511999291,
+  "cost_usd": 0.00022335000000001104,
+  "known_cost_usd": 0.00022335000000001104,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 8.985e-05,
+      "prompt_tokens": 487,
+      "completion_tokens": 28,
+      "request_id": "gen-1793376426-nFOIckjuec35JDYGUCPn",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_kMMCrPcosvWUdeXwOhrBTuRb",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"shark attack Western Australia June 6 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.967961046997516
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "shark attack Western Australia June 6 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_kMMCrPcosvWUdeXwOhrBTuRb",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"List of fatal shark attacks in Australia\", \"url\": \"https://en.wikipedia.org/wiki/List_of_fatal_shark_attacks_in_Australia\", \"snippet\": \"of fatal shark attacks in Australia . The Australian Shark -Incident Database includes 312 fatal shark attacks between 1791 and January 2026 . Since 2000\"}, {\"title\": \"Shark attack\", \"url\": \"https://en.wikipedia.org/wiki/Shark_attack\", \"snippet\": \"\\\"Timeline of shark attacks along the Western Australian coast\\\". WA Today. Retrieved 6 June 2026 . \\\" Shark attacks and whale migration in Western Australia \\\". Retrieved\"}, {\"title\": \"List of fatal shark attacks in the United States\", \"url\": \"https://en.wikipedia.org/wiki/List_of_fatal_shark_attacks_in_the_United_States\", \"snippet\": \"fatal shark attacks that occurred in United States territorial waters by decade in chronological order. Citations \\\"1640 First Human Death from a Shark Encounter\"}, {\"title\": \"2026 in Australia\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_Australia\", \"snippet\": \"harassment. 6 June – A man is killed in a shark attack off Michaelmas Island in Western Australia . 13 June – A woman is injured in a shark attack off Coogee\"}, {\"title\": \"Tiger shark\", \"url\": \"https://en.wikipedia.org/wiki/Tiger_shark\", \"snippet\": \"The tiger shark is second only to the great white in recorded fatal attacks on humans, but these events are still exceedingly rare. The shark was first\"}]}",
+      "elapsed_s": 0.6378977380009019
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.0001335,
+      "prompt_tokens": 866,
+      "completion_tokens": 6,
+      "request_id": "gen-1793376429-Epf3BLG1t6iaeMKCDhxr",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: Michaelmas Island",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 2.238330637999752
+    }
+  ],
+  "id": "fresh-108",
+  "question": "Off which island in Western Australia was a man killed in a shark attack on 6 June 2026?",
+  "expected": "Michaelmas Island",
+  "correct": true,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T16:07:10.470600+00:00"
+}

@@ -1,0 +1,135 @@
+{
+  "final": "unknown",
+  "steps": 3,
+  "elapsed_s": 7.773442527999578,
+  "cost_usd": 0.0066709999999999825,
+  "known_cost_usd": 0.0066709999999999825,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.002298,
+      "prompt_tokens": 1493,
+      "completion_tokens": 161,
+      "request_id": "gen-1793376513-8ZipCmQuJ7wSWXgz8Jr5",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "I'll search for information about the RASolute 302 trial and the median overall survival data you're asking about.",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_01FMNjHoTtTDjJ8mwvtUSS5A",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"RASolute 302 trial daraxonrasib pancreatic cancer RAS G12 May 2026\"}"
+            }
+          },
+          {
+            "type": "function",
+            "index": 1,
+            "id": "toolu_bdrk_01X8TxudjB4VemZdwYxajRSs",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"RASolute 302 median overall survival daraxonrasib metastatic pancreatic\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.3357751879993884
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "RASolute 302 trial daraxonrasib pancreatic cancer RAS G12 May 2026"
+      },
+      "tool_call_id": "toolu_bdrk_01FMNjHoTtTDjJ8mwvtUSS5A",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.47651025999948615
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "RASolute 302 median overall survival daraxonrasib metastatic pancreatic"
+      },
+      "tool_call_id": "toolu_bdrk_01X8TxudjB4VemZdwYxajRSs",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.48863375300061307
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.002124,
+      "prompt_tokens": 1739,
+      "completion_tokens": 77,
+      "request_id": "gen-1793376516-bQxwtnKx07Hhjqa52HfT",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "Let me try a different search approach:",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_01JaQRA54KomxC9bnvioXbyD",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"RASolute 302 daraxonrasib pancreatic cancer\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.9255976040003588
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "RASolute 302 daraxonrasib pancreatic cancer"
+      },
+      "tool_call_id": "toolu_bdrk_01JaQRA54KomxC9bnvioXbyD",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.4911292519973358
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.002249,
+      "prompt_tokens": 1839,
+      "completion_tokens": 82,
+      "request_id": "gen-1793376519-CbdExVACoWySnSRtomEy",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "I'm unable to retrieve information about the RASolute 302 trial from available sources. The search is returning errors, and I cannot access the specific data about median overall survival with daraxonrasib in previously treated metastatic pancreatic cancer patients with RAS G12 mutations from the trial published on May 31, 2026.\n\nFINAL: unknown",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 3.0545568950001325
+    }
+  ],
+  "id": "fresh-78",
+  "question": "In the RASolute 302 trial published online on 31 May 2026, what was median overall survival with daraxonrasib in previously treated metastatic pancreatic cancer patients with RAS G12 mutations?",
+  "expected": "13.2 months",
+  "correct": false,
+  "config": "medium_search_read",
+  "model": "anthropic/claude-haiku-4.5",
+  "measured": true,
+  "recorded_at": "2026-10-30T16:08:41.585695+00:00"
+}

@@ -1,0 +1,77 @@
+{
+  "final": "11th",
+  "steps": 2,
+  "elapsed_s": 5.874203944997134,
+  "cost_usd": 0.0002253000000000116,
+  "known_cost_usd": 0.0002253000000000116,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 8.7e-05,
+      "prompt_tokens": 480,
+      "completion_tokens": 25,
+      "request_id": "gen-1793376258-zUikKYxb8RGCjeLtoH7B",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_pcZr0FKTnUdSlqfFbZ4ee0Ks",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"France Monroe Eurovision 2026 Austria results\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 3.459626546002255
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "France Monroe Eurovision 2026 Austria results",
+        "language": "en"
+      },
+      "tool_call_id": "call_pcZr0FKTnUdSlqfFbZ4ee0Ks",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"France in the Eurovision Song Contest 2026\", \"url\": \"https://en.wikipedia.org/wiki/France_in_the_Eurovision_Song_Contest_2026\", \"snippet\": \"France was represented at the Eurovision Song Contest 2026 with the song \\\"Regarde!\\\", written by Christopher Cohen, Fredie Marche, Maxime Morise, and Fred\"}, {\"title\": \"Eurovision Song Contest 2026\", \"url\": \"https://en.wikipedia.org/wiki/Eurovision_Song_Contest_2026\", \"snippet\": \"The Eurovision Song Contest 2026 was the 70th edition of the Eurovision Song Contest. It consisted of two semi-finals on 12 and 14 May and a final on\"}, {\"title\": \"France in the Eurovision Song Contest\", \"url\": \"https://en.wikipedia.org/wiki/France_in_the_Eurovision_Song_Contest\", \"snippet\": \"France has been represented at the Eurovision Song Contest 68 times since its debut at the first contest in 1956. France is one of only seven countries\"}, {\"title\": \"2026 in France\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_France\", \"snippet\": \"UK that results in their boat running aground near Neufchatel-Hardelot. 16 May – France's Monroe finishes 11th at Eurovision 2026 in Austria with their\"}, {\"title\": \"France in the Eurovision Song Contest 2023\", \"url\": \"https://en.wikipedia.org/wiki/France_in_the_Eurovision_Song_Contest_2023\", \"snippet\": \"France was represented at the Eurovision Song Contest 2023 with the song \\\"Évidemment\\\", written by Fatima Zahra Hafdi, Ahmed Saghir, Yannick Rastogi, and\"}]}",
+      "elapsed_s": 0.6744287490000715
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.0001383,
+      "prompt_tokens": 898,
+      "completion_tokens": 6,
+      "request_id": "gen-1793376261-jBtLI3MmC1Qeh94jdmrE",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: 11th",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 1.739459962998808
+    }
+  ],
+  "id": "fresh-94",
+  "question": "What position did France's Monroe finish at Eurovision 2026 in Austria?",
+  "expected": "11th",
+  "correct": true,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T16:04:22.440506+00:00"
+}

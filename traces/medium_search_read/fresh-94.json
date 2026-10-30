@@ -1,0 +1,96 @@
+{
+  "final": "11th",
+  "steps": 2,
+  "elapsed_s": 9.230582349999167,
+  "cost_usd": 0.004984999999999906,
+  "known_cost_usd": 0.004984999999999906,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.002068,
+      "prompt_tokens": 1458,
+      "completion_tokens": 122,
+      "request_id": "gen-1793377043-7fJMeJtuZ83EdXxvQURT",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "I'll search for information about France's entry at Eurovision 2026 in Austria.",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_01Wnm1AC61i6UrDYvQW8TnWj",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"Eurovision 2026 Austria France Monroe\"}"
+            }
+          },
+          {
+            "type": "function",
+            "index": 1,
+            "id": "toolu_bdrk_01KnHCnuULZ8Krc75GKT2YJv",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"Eurovision 2026 Austria results France\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 3.8157839909981703
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Eurovision 2026 Austria France Monroe"
+      },
+      "tool_call_id": "toolu_bdrk_01Wnm1AC61i6UrDYvQW8TnWj",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"France in the Eurovision Song Contest 2026\", \"url\": \"https://en.wikipedia.org/wiki/France_in_the_Eurovision_Song_Contest_2026\", \"snippet\": \"France was represented at the Eurovision Song Contest 2026 with the song \\\"Regarde!\\\", written by Christopher Cohen, Fredie Marche, Maxime Morise, and Fred\"}, {\"title\": \"Eurovision Song Contest 2026\", \"url\": \"https://en.wikipedia.org/wiki/Eurovision_Song_Contest_2026\", \"snippet\": \"The Eurovision Song Contest 2026 was the 70th edition of the Eurovision Song Contest. It consisted of two semi-finals on 12 and 14 May and a final on\"}, {\"title\": \"2026 in France\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_France\", \"snippet\": \"Neufchatel-Hardelot. 16 May – France's Monroe finishes 11th at Eurovision 2026 in Austria with their single \\\"Regarde!\\\". 20 May – France begins refusing temporary\"}, {\"title\": \"France in the Eurovision Song Contest\", \"url\": \"https://en.wikipedia.org/wiki/France_in_the_Eurovision_Song_Contest\", \"snippet\": \"France has been represented at the Eurovision Song Contest 68 times since its debut at the first contest in 1956. France is one of only seven countries\"}, {\"title\": \"Regarde!\", \"url\": \"https://en.wikipedia.org/wiki/Regarde%21\", \"snippet\": \"influences. The song represented France in the Eurovision Song Contest 2026 , finishing 11th with 158 points. According to Monroe , the song was inspired by themes\"}]}",
+      "elapsed_s": 0.7966102010032046
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Eurovision 2026 Austria results France"
+      },
+      "tool_call_id": "toolu_bdrk_01KnHCnuULZ8Krc75GKT2YJv",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"Eurovision Song Contest 2026\", \"url\": \"https://en.wikipedia.org/wiki/Eurovision_Song_Contest_2026\", \"snippet\": \"The Eurovision Song Contest 2026 was the 70th edition of the Eurovision Song Contest. It consisted of two semi-finals on 12 and 14 May and a final on\"}, {\"title\": \"Eurovision Young Musicians 2026\", \"url\": \"https://en.wikipedia.org/wiki/Eurovision_Young_Musicians_2026\", \"snippet\": \"Eurovision Young Musicians 2026 was the 22nd edition of Eurovision Young Musicians, held on 6 June 2026 at the Yerevan Opera Theatre in Yerevan, Armenia\"}, {\"title\": \"Austria in the Eurovision Song Contest 2026\", \"url\": \"https://en.wikipedia.org/wiki/Austria_in_the_Eurovision_Song_Contest_2026\", \"snippet\": \"Austria was represented at the Eurovision Song Contest 2026 with the song \\\"Tanzschein\\\", written by Benjamin Gedeon, Elias Stejskal and Ella Stern, and\"}, {\"title\": \"France in the Eurovision Song Contest 2026\", \"url\": \"https://en.wikipedia.org/wiki/France_in_the_Eurovision_Song_Contest_2026\", \"snippet\": \"France was represented at the Eurovision Song Contest 2026 with the song \\\"Regarde!\\\", written by Christopher Cohen, Fredie Marche, Maxime Morise, and Fred\"}, {\"title\": \"Austria in the Eurovision Song Contest\", \"url\": \"https://en.wikipedia.org/wiki/Austria_in_the_Eurovision_Song_Contest\", \"snippet\": \"Austria has been represented at the Eurovision Song Contest 58 times since its debut in 1957. The country has won three times, in 1966, 2014 and 2025.\"}]}",
+      "elapsed_s": 0.7370453089970397
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.002917,
+      "prompt_tokens": 2497,
+      "completion_tokens": 84,
+      "request_id": "gen-1793377048-CghLHUCuLhXuP3JudUFK",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "Based on the search results, I found the answer. According to the Wikipedia article \"2026 in France,\" France's Monroe finished 11th at Eurovision 2026 in Austria with their single \"Regarde!\". This is also confirmed by the \"Regarde!\" Wikipedia article which states the song finished 11th with 158 points.\n\nFINAL: 11th",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 3.8799105459984276
+    }
+  ],
+  "id": "fresh-94",
+  "question": "What position did France's Monroe finish at Eurovision 2026 in Austria?",
+  "expected": "11th",
+  "correct": true,
+  "config": "medium_search_read",
+  "model": "anthropic/claude-haiku-4.5",
+  "measured": true,
+  "recorded_at": "2026-10-30T16:17:30.103136+00:00"
+}

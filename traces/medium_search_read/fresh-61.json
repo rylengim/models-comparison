@@ -1,0 +1,115 @@
+{
+  "final": "unknown",
+  "steps": 3,
+  "elapsed_s": 9.22076675399876,
+  "cost_usd": 0.00583699999999987,
+  "known_cost_usd": 0.00583699999999987,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.001871,
+      "prompt_tokens": 1461,
+      "completion_tokens": 82,
+      "request_id": "gen-1793376351-I3J3c7bQDmq4FgwRYQPc",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "I'll search for information about the Daejeon factory fire in March 2026.",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_01FyPPvexAjtxwENzHFDdHFq",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"Daejeon factory fire March 2026\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.8077260479985853
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Daejeon factory fire March 2026"
+      },
+      "tool_call_id": "toolu_bdrk_01FyPPvexAjtxwENzHFDdHFq",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.5469411019985273
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.001921,
+      "prompt_tokens": 1566,
+      "completion_tokens": 71,
+      "request_id": "gen-1793376354-aazyFig4OzxWQWHFrYZF",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "Let me try a different search approach.",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_01Aoy3PhvKSDGVobCUjnofEq",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"Daejeon fire 2026 deaths\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.8055588460010767
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "Daejeon fire 2026 deaths"
+      },
+      "tool_call_id": "toolu_bdrk_01Aoy3PhvKSDGVobCUjnofEq",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.5290297600004124
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.002045,
+      "prompt_tokens": 1660,
+      "completion_tokens": 77,
+      "request_id": "gen-1793376357-jJee4Z6zio4vzfCO6vmO",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "I'm unable to retrieve information about a Daejeon factory fire in March 2026. This could be because:\n\n1. The event may not have occurred yet (if we're currently before March 2026)\n2. The event may not be documented in Wikipedia\n3. There may be a technical issue with the search\n\nFINAL: unknown",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 2.5284620720012754
+    }
+  ],
+  "id": "fresh-61",
+  "question": "How many people were killed in the Daejeon factory fire in March 2026?",
+  "expected": "Fourteen",
+  "correct": false,
+  "config": "medium_search_read",
+  "model": "anthropic/claude-haiku-4.5",
+  "measured": true,
+  "recorded_at": "2026-10-30T16:05:59.069816+00:00"
+}

@@ -1,0 +1,154 @@
+{
+  "final": "unknown",
+  "steps": 4,
+  "elapsed_s": 11.793020146000345,
+  "cost_usd": 0.008101999999999998,
+  "known_cost_usd": 0.008101999999999998,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.00193,
+      "prompt_tokens": 1465,
+      "completion_tokens": 93,
+      "request_id": "gen-1793376216-9qy0c8aCXyseiVLj29yH",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "I'll search for information about Asiya Andrabi and any sentencing on March 24, 2026.",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_01EPrdFYRV43pif2RTDgePvB",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"Asiya Andrabi sentence March 24 2026 India\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.370531505999679
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Asiya Andrabi sentence March 24 2026 India"
+      },
+      "tool_call_id": "toolu_bdrk_01EPrdFYRV43pif2RTDgePvB",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.7111305030011863
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.001946,
+      "prompt_tokens": 1581,
+      "completion_tokens": 73,
+      "request_id": "gen-1793376219-v6mLGMBRZQ1a8R0JnmV5",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "Let me try a different search approach:",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_01GrPXuzcaNDMXVXZu9KXyXb",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"Asiya Andrabi 2026 sentencing\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.451543684997887
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "Asiya Andrabi 2026 sentencing"
+      },
+      "tool_call_id": "toolu_bdrk_01GrPXuzcaNDMXVXZu9KXyXb",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.7137285739991057
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.002047,
+      "prompt_tokens": 1677,
+      "completion_tokens": 74,
+      "request_id": "gen-1793376222-dcKvYD097daPmCC4CTyo",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "Let me search for Asiya Andrabi more generally:",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_01NL4DFfBL39w8E7uzRmiTj9",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"Asiya Andrabi Kashmir activist\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.361657252000441
+    },
+    {
+      "type": "tool",
+      "step": 3,
+      "name": "web_search",
+      "arguments": {
+        "query": "Asiya Andrabi Kashmir activist"
+      },
+      "tool_call_id": "toolu_bdrk_01NL4DFfBL39w8E7uzRmiTj9",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.5241354969984968
+    },
+    {
+      "type": "llm",
+      "step": 4,
+      "tools_enabled": true,
+      "cost_usd": 0.002179,
+      "prompt_tokens": 1774,
+      "completion_tokens": 81,
+      "request_id": "gen-1793376225-eBGxWt4GZdXStP0yrZIT",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "I'm unable to retrieve information about Asiya Andrabi's sentencing on March 24, 2026, as my search attempts are encountering errors. Additionally, March 24, 2026 is a future date (from my knowledge cutoff perspective), so this event may not yet have occurred or may not be documented in available sources.\n\nFINAL: unknown",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 2.6592698929998733
+    }
+  ],
+  "id": "fresh-49",
+  "question": "What was the sentence given to Asiya Andrabi in India on March 24, 2026?",
+  "expected": "life imprisonment",
+  "correct": false,
+  "config": "medium_search_read",
+  "model": "anthropic/claude-haiku-4.5",
+  "measured": true,
+  "recorded_at": "2026-10-30T16:03:47.333345+00:00"
+}

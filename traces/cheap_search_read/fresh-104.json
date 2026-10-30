@@ -1,0 +1,251 @@
+{
+  "final": "21",
+  "steps": 6,
+  "elapsed_s": 15.140308699999878,
+  "cost_usd": 0.0009572999999999943,
+  "known_cost_usd": 0.0009572999999999943,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "max_steps",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.0001266,
+      "prompt_tokens": 688,
+      "completion_tokens": 39,
+      "request_id": "gen-1793374828-2rBRBKobz9clYakD6pk9",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_ImpoXMF3BYQqIugfFUiqFeJy",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Udhampur bus accident April 20 2026 site:timesofindia.indiatimes.com\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.8643351629980316
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Udhampur bus accident April 20 2026 site:timesofindia.indiatimes.com",
+        "language": "en"
+      },
+      "tool_call_id": "call_ImpoXMF3BYQqIugfFUiqFeJy",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"Indira Gandhi International Airport\", \"url\": \"https://en.wikipedia.org/wiki/Indira_Gandhi_International_Airport\", \"snippet\": \"India. Retrieved 10 April 2026 . \\\"Air India introduces daily direct flights to Maldives from Delhi and Mumbai\\\". timesofindia . indiatimes . 6 December 2024.\"}, {\"title\": \"List of megaprojects in India\", \"url\": \"https://en.wikipedia.org/wiki/List_of_megaprojects_in_India\", \"snippet\": \"2024. https://punemirror. com /city/pune/mumbai-pune-expressway-missing-link-bridge-completion/ https:// timesofindia . indiatimes . com /city/mumbai/mumbai-pun\"}]}",
+      "elapsed_s": 0.6800547550010378
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.00015375,
+      "prompt_tokens": 909,
+      "completion_tokens": 29,
+      "request_id": "gen-1793374830-pTpog4xIWzlGJmRqpcnt",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_896qp4vp3KjEgSqVOA0hR0jg",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Udhampur bus accident April 20 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.6215013039982296
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "Udhampur bus accident April 20 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_896qp4vp3KjEgSqVOA0hR0jg",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"List of traffic collisions (2000–present)\", \"url\": \"https://en.wikipedia.org/wiki/List_of_traffic_collisions_%282000%E2%80%93present%29\", \"snippet\": \"killed in road accident in Myanmar's Thaton township\\\". The Star (Malaysia). April 20 , 2026 . Retrieved April 20 , 2026 . \\\"At least 21 killed as bus crashes into\"}, {\"title\": \"2026 in India\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_India\", \"snippet\": \"Tamil Nadu. 20 April – A bus falls into a gorge in Udhampur , Jammu and Kashmir, killing 21 people and injuring 45 others. 21 April – At least 13 people are\"}, {\"title\": \"2025 in India\", \"url\": \"https://en.wikipedia.org/wiki/2025_in_India\", \"snippet\": \"Jawans Killed, 10 Injured As Vehicle Overturns In J&K's Udhampur \\\". NDTV. 7 August 2025. Retrieved 20 August 2025. \\\"2 Indian soldiers and a suspected militant\"}, {\"title\": \"Tiruchirappalli International Airport\", \"url\": \"https://en.wikipedia.org/wiki/Tiruchirappalli_International_Airport\", \"snippet\": \"November 2022. \\\"Direct bus services from airport to Central bus stand\\\". The Hindu. 22 September 2016. Archived from the original on 9 April 2023. Retrieved 1\"}, {\"title\": \"Kazi Nazrul Islam Airport\", \"url\": \"https://en.wikipedia.org/wiki/Kazi_Nazrul_Islam_Airport\", \"snippet\": \"for March 2026 (PDF) (Report). Airports Authority of India. April 2026 . Archived from the original on 28 April 2026 . Retrieved 17 July 2026 .{{cite report}}:\"}]}",
+      "elapsed_s": 0.6517557009974553
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.00023055,
+      "prompt_tokens": 1373,
+      "completion_tokens": 41,
+      "request_id": "gen-1793374833-3jdqJCYOw8IopCKGuBMf",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_1nN0wz9pGvpz7OckDulE8jCe",
+            "function": {
+              "name": "page_find",
+              "arguments": "{\"title\":\"2026 in India\",\"keywords\":[\"Udhampur\",\"bus\",\"accident\",\"April 20\",\"deaths\"],\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.3464478080022673
+    },
+    {
+      "type": "tool",
+      "step": 3,
+      "name": "page_find",
+      "arguments": {
+        "title": "2026 in India",
+        "keywords": [
+          "Udhampur",
+          "bus",
+          "accident",
+          "April 20",
+          "deaths"
+        ],
+        "language": "en"
+      },
+      "tool_call_id": "call_1nN0wz9pGvpz7OckDulE8jCe",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.2070180970004003
+    },
+    {
+      "type": "llm",
+      "step": 4,
+      "tools_enabled": true,
+      "cost_usd": 0.00014715,
+      "prompt_tokens": 1433,
+      "completion_tokens": 47,
+      "request_id": "gen-1793374835-tx9W4vgsAVJh95bRNUgY",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_ZSpMobmXEUT5kX8PA3RZd1TU",
+            "function": {
+              "name": "page_find",
+              "arguments": "{\"title\":\"List of traffic collisions (2000–present)\",\"keywords\":[\"Udhampur\",\"bus\",\"accident\",\"April 20\",\"deaths\"],\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.0318387760016776
+    },
+    {
+      "type": "tool",
+      "step": 4,
+      "name": "page_find",
+      "arguments": {
+        "title": "List of traffic collisions (2000–present)",
+        "keywords": [
+          "Udhampur",
+          "bus",
+          "accident",
+          "April 20",
+          "deaths"
+        ],
+        "language": "en"
+      },
+      "tool_call_id": "call_ZSpMobmXEUT5kX8PA3RZd1TU",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.4806396589992801
+    },
+    {
+      "type": "llm",
+      "step": 5,
+      "tools_enabled": true,
+      "cost_usd": 0.00013725,
+      "prompt_tokens": 1499,
+      "completion_tokens": 30,
+      "request_id": "gen-1793374838-fTHKXtLuAdgKgS734Fed",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_IAIgfoKCGew5yyY3dSzEQey5",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Udhampur bus accident April 20 2026 deaths\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.6745381670007191
+    },
+    {
+      "type": "tool",
+      "step": 5,
+      "name": "web_search",
+      "arguments": {
+        "query": "Udhampur bus accident April 20 2026 deaths",
+        "language": "en"
+      },
+      "tool_call_id": "call_IAIgfoKCGew5yyY3dSzEQey5",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.5342606959966361
+    },
+    {
+      "type": "llm",
+      "step": 6,
+      "tools_enabled": false,
+      "cost_usd": 0.000162,
+      "prompt_tokens": 1064,
+      "completion_tokens": 4,
+      "request_id": "gen-1793374840-9SjQBHDtU0tqs6Xdh2CL",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: 21",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 2.046672499000124
+    }
+  ],
+  "id": "fresh-104",
+  "question": "According to The Times of India’s 21 April 2026 report, at least how many passengers died when a bus fell into a gorge in Udhampur on 20 April 2026?",
+  "expected": "21",
+  "correct": true,
+  "config": "cheap_search_read",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:40:42.028741+00:00"
+}

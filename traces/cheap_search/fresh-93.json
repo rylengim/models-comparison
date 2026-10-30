@@ -1,0 +1,77 @@
+{
+  "final": "unknown",
+  "steps": 2,
+  "elapsed_s": 6.003896254002029,
+  "cost_usd": 0.00022469999999999435,
+  "known_cost_usd": 0.00022469999999999435,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 8.64e-05,
+      "prompt_tokens": 484,
+      "completion_tokens": 23,
+      "request_id": "gen-1793376252-uuwvTWrx8t00sSHThfrb",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_nzggmBtMf2jSFHQGjiAc1Hn4",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"2026 FIFA World Cup winner\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 3.276125079002668
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "2026 FIFA World Cup winner",
+        "language": "en"
+      },
+      "tool_call_id": "call_nzggmBtMf2jSFHQGjiAc1Hn4",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2026 FIFA World Cup\", \"url\": \"https://en.wikipedia.org/wiki/2026_FIFA_World_Cup\", \"snippet\": \"The 2026 FIFA World Cup was the 23rd FIFA World Cup , the quadrennial international men's soccer championship contested by the national teams of the member\"}, {\"title\": \"2026 FIFA World Cup knockout stage\", \"url\": \"https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_knockout_stage\", \"snippet\": \"of the 2026 FIFA World Cup was the second and final stage of the competition, following the group stage. Played from June 28 to July 19, 2026 , the knockout\"}, {\"title\": \"2026 FIFA World Cup Group A\", \"url\": \"https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_Group_A\", \"snippet\": \"Group A of the 2026 FIFA World Cup took place from June 11 to 24, 2026 . The group consisted of national football teams representing Mexico (co-host),\"}, {\"title\": \"2026 FIFA World Cup Group D\", \"url\": \"https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_Group_D\", \"snippet\": \"Group D of the 2026 FIFA World Cup took place from June 12 to 25, 2026 . The group consisted of the United States (co-host), Paraguay, Australia, and Turkey\"}, {\"title\": \"2026 FIFA World Cup qualification (CAF)\", \"url\": \"https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_qualification_%28CAF%29\", \"snippet\": \"The 2026 FIFA World Cup qualification (CAF) was the African section of the qualification tournament for the 2026 FIFA World Cup , held in the United States\"}]}",
+      "elapsed_s": 0.7282493530001375
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.0001383,
+      "prompt_tokens": 906,
+      "completion_tokens": 4,
+      "request_id": "gen-1793376255-0YOzVWRSQoGUkNLfAQje",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: unknown",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 1.9988235769997118
+    }
+  ],
+  "id": "fresh-93",
+  "question": "Which country wins the 2026 FIFA World Cup on July 19, 2026?",
+  "expected": "Spain",
+  "correct": false,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T16:04:16.565639+00:00"
+}

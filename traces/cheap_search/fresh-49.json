@@ -1,0 +1,77 @@
+{
+  "final": "Asiya Andrabi was sentenced to life imprisonment on March 24, 2026.",
+  "steps": 2,
+  "elapsed_s": 3.7176847949995135,
+  "cost_usd": 0.00023804999999998966,
+  "known_cost_usd": 0.00023804999999998966,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 8.97e-05,
+      "prompt_tokens": 486,
+      "completion_tokens": 28,
+      "request_id": "gen-1793375759-AaY3tvmrRXv5T0kfAduC",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_FVqCOBQEQGuXlLOD5hEyLGWr",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Asiya Andrabi sentence March 24 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.5102725270007795
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Asiya Andrabi sentence March 24 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_FVqCOBQEQGuXlLOD5hEyLGWr",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"Asiya Andrabi\", \"url\": \"https://en.wikipedia.org/wiki/Asiya_Andrabi\", \"snippet\": \"Asiya Andrabi is a Kashmiri separatist and founding leader of Dukhtaran-e-Millat. This group is part of the separatist organisation All Parties Hurriyat\"}, {\"title\": \"2026 in India\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_India\", \"snippet\": \"fourth Asian nation to host the event. 24 March – A special NIA court sentences Kashmiri separatist Asiya Andrabi to life imprisonment for her involvement\"}, {\"title\": \"Unlawful Activities (Prevention) Act, 1967\", \"url\": \"https://en.wikipedia.org/wiki/Unlawful_Activities_%28Prevention%29_Act%2C_1967\", \"snippet\": \"( 24 March 2026 ). \\\"Delhi court sentences Kashmiri separatist Asiya Andrabi to life imprisonment\\\". The Hindu. ISSN 0971-751X. Retrieved 25 March 2026 . The\"}, {\"title\": \"Yasin Malik\", \"url\": \"https://en.wikipedia.org/wiki/Yasin_Malik\", \"snippet\": \"Shakeel Bakshi and Hilal A. War. The others named were Shabir Shah, Asiya Andrabi , Masarat Alam Bhat and Engineer Rashid. Others whose houses were raided\"}, {\"title\": \"Ashraf Sehrai\", \"url\": \"https://en.wikipedia.org/wiki/Ashraf_Sehrai\", \"snippet\": \"for engaging in anti-India sloganeering at his funeral. Yasin Malik Asiya Andrabi Mirwaiz Umar Farooq Maqbool Bhat Operation Gibraltar \\\"Ashraf Sehrai\"}]}",
+      "elapsed_s": 0.9145540249992337
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.00014835,
+      "prompt_tokens": 905,
+      "completion_tokens": 21,
+      "request_id": "gen-1793375762-7D2Dp42h9azD1pgRWHNt",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: Asiya Andrabi was sentenced to life imprisonment on March 24, 2026.",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 1.2921109569979308
+    }
+  ],
+  "id": "fresh-49",
+  "question": "What was the sentence given to Asiya Andrabi in India on March 24, 2026?",
+  "expected": "life imprisonment",
+  "correct": true,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:56:03.115926+00:00"
+}

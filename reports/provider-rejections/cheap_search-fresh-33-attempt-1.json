@@ -1,0 +1,68 @@
+{
+  "final": "unknown",
+  "steps": 2,
+  "elapsed_s": 6.051099350999721,
+  "cost_usd": 9.85500000000028e-05,
+  "known_cost_usd": 9.85500000000028e-05,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "error",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 9.855e-05,
+      "prompt_tokens": 497,
+      "completion_tokens": 40,
+      "request_id": "gen-1793373505-uyBuzfcdQoXOvvne6BAI",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_2DtFSmv8DAW8W0II0MrOPoo2",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Canadian MP Sarnia—Lambton—Bkejwanong Conservative Party Liberal Party April 8 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 5.362297379000665
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Canadian MP Sarnia—Lambton—Bkejwanong Conservative Party Liberal Party April 8 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_2DtFSmv8DAW8W0II0MrOPoo2",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"Sarnia—Lambton—Bkejwanong\", \"url\": \"https://en.wikipedia.org/wiki/Sarnia%E2%80%94Lambton%E2%80%94Bkejwanong\", \"snippet\": \"Sarnia — Lambton — Bkejwanong (pronounced SAR-nee-a-LAMP-tun-bu-KEZH-wa-nong[citation needed], formerly known as Sarnia — Lambton ) is a federal electoral district\"}, {\"title\": \"46th Canadian federal election\", \"url\": \"https://en.wikipedia.org/wiki/46th_Canadian_federal_election\", \"snippet\": \"join Liberals , putting Carney two seats shy of majority\\\". CTV News. Retrieved March 11, 2026 . Dyk, Spencer Van ( April 8 , 2026 ). \\\" Conservative MP Marilyn\"}, {\"title\": \"45th Canadian Parliament\", \"url\": \"https://en.wikipedia.org/wiki/45th_Canadian_Parliament\", \"snippet\": \"Conservative MP Marilyn Gladu for Sarnia — Lambton — Bkejwanong crosses the floor to the Liberal Party . April 13 – Liberal candidates Doly Begum, Tatiana Auguste\"}, {\"title\": \"2026 in Canada\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_Canada\", \"snippet\": \"while the Liberals and Québec Solidaire vote against it. April 8 – Sarnia — Lambton — Bkejwanong MP Marilyn Gladu defects from the Conservative Party to the\"}, {\"title\": \"List of House members of the 45th Parliament of Canada\", \"url\": \"https://en.wikipedia.org/wiki/List_of_House_members_of_the_45th_Parliament_of_Canada\", \"snippet\": \"original on 9 April 2026 . Retrieved 9 April 2026 . Rana, Uday ( 8 April 2026 ). \\\"Ex- Conservative MP Marilyn Gladu crosses floor to Liberals \\\". Global News\"}]}",
+      "elapsed_s": 0.6880883860030735
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "error": "Shared request gate BLOCKED after an unknown charge; no request sent. Reconcile billing before continuing.",
+      "cost_usd": 0.0,
+      "elapsed_s": 3.221099905204028e-05
+    }
+  ],
+  "id": "fresh-33",
+  "question": "Which Canadian MP for Sarnia—Lambton—Bkejwanong crossed from the Conservative Party to the Liberal Party on 8 April 2026?",
+  "expected": "Marilyn Gladu",
+  "correct": false,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:18:27.136495+00:00"
+}

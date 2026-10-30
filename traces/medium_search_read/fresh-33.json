@@ -1,0 +1,76 @@
+{
+  "final": "Marilyn Gladu",
+  "steps": 2,
+  "elapsed_s": 6.400998811997852,
+  "cost_usd": 0.004499000000000031,
+  "known_cost_usd": 0.004499000000000031,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.002074,
+      "prompt_tokens": 1479,
+      "completion_tokens": 119,
+      "request_id": "gen-1793376024-y48O5PolE8LvuQY5nsX9",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "I'll search for information about a Canadian MP from Sarnia—Lambton—Bkejwanong who crossed from the Conservative Party to the Liberal Party on April 8, 2026.",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_01SxqHFbChhSVBJ86G78goUt",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"Sarnia Lambton Bkejwanong MP Conservative Liberal April 8 2026\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 3.062765373997536
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Sarnia Lambton Bkejwanong MP Conservative Liberal April 8 2026"
+      },
+      "tool_call_id": "toolu_bdrk_01SxqHFbChhSVBJ86G78goUt",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"Sarnia—Lambton—Bkejwanong\", \"url\": \"https://en.wikipedia.org/wiki/Sarnia%E2%80%94Lambton%E2%80%94Bkejwanong\", \"snippet\": \"Sarnia — Lambton — Bkejwanong (pronounced SAR-nee-a-LAMP-tun-bu-KEZH-wa-nong[citation needed], formerly known as Sarnia — Lambton ) is a federal electoral district\"}, {\"title\": \"45th Canadian Parliament\", \"url\": \"https://en.wikipedia.org/wiki/45th_Canadian_Parliament\", \"snippet\": \"Democratic MP Lori Idlout for Nunavut crosses the floor to the Liberal Party. April 8 – Conservative MP Marilyn Gladu for Sarnia — Lambton — Bkejwanong crosses\"}, {\"title\": \"46th Canadian federal election\", \"url\": \"https://en.wikipedia.org/wiki/46th_Canadian_federal_election\", \"snippet\": \"join Liberals , putting Carney two seats shy of majority\\\". CTV News. Retrieved March 11, 2026 . Dyk, Spencer Van ( April 8 , 2026 ). \\\" Conservative MP Marilyn\"}, {\"title\": \"2026 in Canada\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_Canada\", \"snippet\": \"while the Liberals and Québec Solidaire vote against it. April 8 – Sarnia — Lambton — Bkejwanong MP Marilyn Gladu defects from the Conservative Party to the\"}, {\"title\": \"List of Canadian politicians who have switched parties\", \"url\": \"https://en.wikipedia.org/wiki/List_of_Canadian_politicians_who_have_switched_parties\", \"snippet\": \"switched to the Liberals in 2000, ran as the Liberal candidate for Churchill in 2004. Marilyn Gladu – Conservative MP for Sarnia — Lambton — Bkejwanong joined the\"}]}",
+      "elapsed_s": 0.7436966540008143
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.002425,
+      "prompt_tokens": 2115,
+      "completion_tokens": 62,
+      "request_id": "gen-1793376027-vqd6Hfhx2Zh38Wn6iwxg",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "Perfect! The search results clearly show that Marilyn Gladu, the Conservative MP for Sarnia—Lambton—Bkejwanong, crossed to the Liberal Party on April 8, 2026.\n\nFINAL: Marilyn Gladu",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 2.592143419999047
+    }
+  ],
+  "id": "fresh-33",
+  "question": "Which Canadian MP for Sarnia—Lambton—Bkejwanong crossed from the Conservative Party to the Liberal Party on 8 April 2026?",
+  "expected": "Marilyn Gladu",
+  "correct": true,
+  "config": "medium_search_read",
+  "model": "anthropic/claude-haiku-4.5",
+  "measured": true,
+  "recorded_at": "2026-10-30T16:00:29.269492+00:00"
+}

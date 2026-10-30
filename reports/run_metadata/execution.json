@@ -1,0 +1,169 @@
+{
+  "date": "2026-10-30",
+  "package_signature": {
+    "dataset_sha256": "46d33a363dd819c002ab470ec4808dfa23ea630ec24329d30865e1b489cd04fb",
+    "n": 145,
+    "configs": {
+      "strong_no_tools": {
+        "model": "anthropic/claude-sonnet-4.6",
+        "tools": []
+      },
+      "cheap_no_tools": {
+        "model": "openai/gpt-4o-mini",
+        "tools": []
+      },
+      "cheap_search": {
+        "model": "openai/gpt-4o-mini",
+        "tools": [
+          "web_search",
+          "calculator",
+          "python_exec"
+        ]
+      },
+      "cheap_search_read": {
+        "model": "openai/gpt-4o-mini",
+        "tools": [
+          "web_search",
+          "page_find",
+          "calculator",
+          "python_exec"
+        ]
+      },
+      "medium_search_read": {
+        "model": "anthropic/claude-haiku-4.5",
+        "tools": [
+          "web_search",
+          "page_find",
+          "calculator",
+          "python_exec"
+        ]
+      },
+      "cheap_extra_search": {
+        "model": "openai/gpt-4o-mini",
+        "tools": [
+          "web_search",
+          "page_find",
+          "calculator",
+          "python_exec",
+          "web_search_extra"
+        ]
+      },
+      "cascade": {
+        "model": "openai/gpt-4o-mini",
+        "fallback_model": "anthropic/claude-haiku-4.5",
+        "tools": [
+          "web_search",
+          "page_find",
+          "calculator",
+          "python_exec",
+          "web_search_extra"
+        ]
+      }
+    },
+    "max_steps": 6,
+    "code_sha256": "0277cb954194ca5763bf26a5b515f52654d2a34766e4f50074da2d5041fca149"
+  },
+  "pacing_runner_commit": "a64f352",
+  "pacing_interval_s": null,
+  "shared_gate": "tmp/openrouter-request-gate.timestamp",
+  "budget_policy": "Thresholds checked between requests; last request can exceed threshold. Aggregate working ceiling $5 incl. pilot and recovery overhead.",
+  "workers": [
+    {
+      "config": "cheap_search",
+      "traces": "traces",
+      "out": "reports",
+      "resume": true,
+      "budget_usd": 0.75
+    },
+    {
+      "config": "cheap_search_read",
+      "traces": "tmp/final-cheap-read/traces",
+      "out": "tmp/final-cheap-read/report",
+      "resume": false,
+      "budget_usd": 1.0
+    },
+    {
+      "config": "medium_search_read",
+      "traces": "tmp/final-medium/traces",
+      "out": "tmp/final-medium/report",
+      "resume": false,
+      "budget_usd": 2.5
+    }
+  ],
+  "preexisting_pilots_usd": 0.04370935,
+  "preexisting_aborted_attempt_usd": 0.00023955,
+  "timing_limitation": "First 50 completed Sonnet answers unpaced; remaining Sonnet, cheap_no_tools and first 21 cheap_search locally paced at 3.5s. Tool workers then shared 2.5s; cheap_search_read completed in sequential phase. Persistent Session introduced at cheap_search fresh42, then cheap_search and medium shared 1.5s. Final medium from fresh91 uses one worker at 3.5s. Wall time includes queue, tools and HTTP; excludes manual recovery pauses and archived attempts. Not a pure model latency benchmark.",
+  "transport_diagnostics_added_after_reconciliation": 3,
+  "transport_diagnostics": "Exception classes only; no retries or request changes",
+  "phase_change_after_reconciliation_4": {
+    "execution": "One worker at a time, same shared 2.5s gate",
+    "reason": "Repeated transport errors during concurrent workers; observed ReadTimeout. Causality not proven.",
+    "started_with": "cheap_search_read",
+    "payload_changes": false
+  },
+  "next_phase": {
+    "started_at": "2026-10-30T15:50:11.155504+00:00",
+    "config": "cheap_search",
+    "start_id": "fresh-33",
+    "interval_s": 1.5,
+    "concurrent_workers": 1,
+    "reason": "Paid models have no platform-level request cap; upstream limits may vary. Prior Sonnet HTTP429 does not establish the limit of GPT-4o mini. Stop-on-error remains enabled.",
+    "source": "https://openrouter.ai/docs/api_reference/limits"
+  },
+  "cheap_search_read_completed": {
+    "n": 145,
+    "correct": 70,
+    "cost_usd": 0.10463385
+  },
+  "persistent_transport_started": {
+    "at": "2026-10-30T15:55:14.096685+00:00",
+    "config": "cheap_search",
+    "start_id": "fresh-42",
+    "interval_s": 1.5,
+    "change": "Single requests.Session per process, HTTPAdapter(max_retries=0), closed in finally",
+    "unchanged": [
+      "models",
+      "request body",
+      "timeout=(10,90)",
+      "core package",
+      "dataset",
+      "grading"
+    ]
+  },
+  "final_parallel_phase": {
+    "started_at": "2026-10-30T15:57:12.107077+00:00",
+    "configs": [
+      "cheap_search",
+      "medium_search_read"
+    ],
+    "medium_start_id": "fresh-16",
+    "shared_interval_s": 1.5,
+    "transport": "one persistent Session per worker; no retries",
+    "reason": "TLS handshake stage identified and repeated handshakes reduced. Independent paid model providers share one start limiter; BLOCKED remains global."
+  },
+  "transport_runner_commit": "ba0a55e",
+  "final_medium_phase": {
+    "started_at": "2026-10-30T16:16:58.478970+00:00",
+    "start_id": "fresh-91",
+    "interval_s": 3.5,
+    "concurrent_workers": 1,
+    "reason": "HTTP429 on second call; ledger reconciled twice after all workers stopped. First billing check did not match; no generation until later checks converged.",
+    "payload_changes": false
+  },
+  "pacing_interval_note": "Multiple phases: see timing_limitation and phase records; runner default is 2.5s.",
+  "cheap_search_completed": {
+    "n": 145,
+    "correct": 57,
+    "cost_usd": 0.08106975
+  },
+  "completed_at": "2026-10-30T16:32:53.360021+00:00",
+  "all_generators_stopped": true,
+  "medium_search_read_completed": {
+    "n": 145,
+    "correct": 71,
+    "cost_usd": 1.325504
+  },
+  "merge": "Copied disjoint completed worker directories into traces after identical manifests, final audit and two matching billing checks; no existing trace overwritten.",
+  "completed_questions": 725,
+  "completed_attempt_llm_requests": 2107
+}

@@ -1,0 +1,148 @@
+{
+  "final": "unknown",
+  "steps": 4,
+  "elapsed_s": 18.505781078001746,
+  "cost_usd": null,
+  "known_cost_usd": 0.0003769499999999974,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "cost_unknown",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.00011895,
+      "prompt_tokens": 673,
+      "completion_tokens": 30,
+      "request_id": "gen-1793373769-U6hwV9Lan0y13IVgqYlf",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_fzCZLaG6unltChJeQb5Y9Dul",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Japan leisure boat collision Haneda Airport August 24 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.3759068139988813
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Japan leisure boat collision Haneda Airport August 24 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_fzCZLaG6unltChJeQb5Y9Dul",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.4642382900019584
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.0001257,
+      "prompt_tokens": 722,
+      "completion_tokens": 29,
+      "request_id": "gen-1793373771-IG1xKLxMMX6xX7e1TApY",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_shzzsdqVO1mKPRXeaCz6FQla",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Haneda Airport leisure boat collision August 24 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 1.9053696730006777
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "Haneda Airport leisure boat collision August 24 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_shzzsdqVO1mKPRXeaCz6FQla",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.46786858399718767
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.0001323,
+      "prompt_tokens": 770,
+      "completion_tokens": 28,
+      "request_id": "gen-1793373773-HGFLx7m2B7O3FE8uMGJB",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_XI20iiYb4kOHfoxUAM8Qjw3t",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"August 24 2026 boat collision Haneda Airport\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.1475396740024735
+    },
+    {
+      "type": "tool",
+      "step": 3,
+      "name": "web_search",
+      "arguments": {
+        "query": "August 24 2026 boat collision Haneda Airport",
+        "language": "en"
+      },
+      "tool_call_id": "call_XI20iiYb4kOHfoxUAM8Qjw3t",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.46873327600042103
+    },
+    {
+      "type": "llm",
+      "step": 4,
+      "tools_enabled": true,
+      "error": "OpenRouter network failure; request not retried because billing is uncertain.",
+      "cost_usd": null,
+      "elapsed_s": 10.675057659998856
+    }
+  ],
+  "id": "fresh-26",
+  "question": "In Japan, how many people were injured in the leisure boat collision near Haneda Airport on August 24, 2026?",
+  "expected": "nine",
+  "correct": false,
+  "config": "cheap_search_read",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:23:06.232484+00:00"
+}

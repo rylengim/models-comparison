@@ -1,0 +1,197 @@
+{
+  "final": "The government of Pakistan declared \"open war\" against the Taliban in Afghanistan on February 26, 2026.",
+  "steps": 5,
+  "elapsed_s": 38.61722539699986,
+  "cost_usd": 0.0007405500000000065,
+  "known_cost_usd": 0.0007405500000000065,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 9.06e-05,
+      "prompt_tokens": 488,
+      "completion_tokens": 29,
+      "request_id": "gen-1793372877-r79SCE3G5tLb7Xf4AtnT",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_RQrOE6lbfLRJqw3iGTaWxEVh",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Pakistan government declaration February 26 2026 Afghanistan Pakistan war\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 6.845011990997591
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Pakistan government declaration February 26 2026 Afghanistan Pakistan war",
+        "language": "en"
+      },
+      "tool_call_id": "call_RQrOE6lbfLRJqw3iGTaWxEVh",
+      "output": "{\"error\": \"Source request failed: HTTPError\"}",
+      "elapsed_s": 0.465538825999829
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 9.78e-05,
+      "prompt_tokens": 536,
+      "completion_tokens": 29,
+      "request_id": "gen-1793372885-IM5wtWlX0RxbaMSk7xFK",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_kbgLNxH5GZimGIdyrkfeqmwR",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"February 26 2026 Pakistan government declaration Afghanistan Pakistan war\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 7.1759702379968076
+    },
+    {
+      "type": "tool",
+      "step": 2,
+      "name": "web_search",
+      "arguments": {
+        "query": "February 26 2026 Pakistan government declaration Afghanistan Pakistan war",
+        "language": "en"
+      },
+      "tool_call_id": "call_kbgLNxH5GZimGIdyrkfeqmwR",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2025 Afghanistan–Pakistan conflict\", \"url\": \"https://en.wikipedia.org/wiki/2025_Afghanistan%E2%80%93Pakistan_conflict\", \"snippet\": \"that Afghanistan and Pakistan had agreed to a ceasefire after extensive Doha talks mediated by Qatar and Turkey. Under this ceasefire declaration , the\"}, {\"title\": \"Afghanistan\", \"url\": \"https://en.wikipedia.org/wiki/Afghanistan\", \"snippet\": \"27 September 2026 . \\\" Pakistan defence minister says country in 'open war ' with Afghanistan after strikes\\\". www.bbc.com. 27 February 2026 . Retrieved 27\"}, {\"title\": \"2026 Iran war\", \"url\": \"https://en.wikipedia.org/wiki/2026_Iran_war\", \"snippet\": \"Since 28 February 2026 , the United States and Israel have been at war with Iran and its regional allies. The war follows the Twelve-Day War in June 2025\"}, {\"title\": \"Pakistan\", \"url\": \"https://en.wikipedia.org/wiki/Pakistan\", \"snippet\": \"Riedel, Bruce (20 May 2010). \\\" Pakistan's Role in the Afghanistan War's Outcome\\\". Brookings Institution. Retrieved 26 August 2024. Rimmer, Peter J. (27\"}, {\"title\": \"Economy of Pakistan\", \"url\": \"https://en.wikipedia.org/wiki/Economy_of_Pakistan\", \"snippet\": \"as of 2026 . In per capita terms, the Pakistani economic output ranks 160th by nominal GDP and 138th by PPP GDP. Economic development in Pakistan is varied\"}]}",
+      "elapsed_s": 1.4558499449994997
+    },
+    {
+      "type": "llm",
+      "step": 3,
+      "tools_enabled": true,
+      "cost_usd": 0.00015495,
+      "prompt_tokens": 921,
+      "completion_tokens": 28,
+      "request_id": "gen-1793372892-CNyx6xogayptAW9M9OYv",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_97IVKI3AtIj0WdpgEXrxraQU",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"February 26 2026 Pakistan government statement Afghanistan conflict\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 5.827156187999208
+    },
+    {
+      "type": "tool",
+      "step": 3,
+      "name": "web_search",
+      "arguments": {
+        "query": "February 26 2026 Pakistan government statement Afghanistan conflict",
+        "language": "en"
+      },
+      "tool_call_id": "call_97IVKI3AtIj0WdpgEXrxraQU",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2026 Afghanistan–Pakistan war\", \"url\": \"https://en.wikipedia.org/wiki/2026_Afghanistan%E2%80%93Pakistan_war\", \"snippet\": \"Since February 2026 , Pakistan and Afghanistan have been engaged in the most sustained cross-border conflict between the two countries since the Taliban's\"}, {\"title\": \"2025 Afghanistan–Pakistan conflict\", \"url\": \"https://en.wikipedia.org/wiki/2025_Afghanistan%E2%80%93Pakistan_conflict\", \"snippet\": \"\\\" 2023 Afghanistan –Iran clash 2024 Iran– Pakistan conflict 2025 India– Pakistan conflict 2026 Afghanistan – Pakistan conflict Afghanistan – Pakistan relations\"}, {\"title\": \"Afghan conflict\", \"url\": \"https://en.wikipedia.org/wiki/Afghan_conflict\", \"snippet\": \"The Afghan conflict (Pashto: دافغانستان جنګونه; Farsi/Dari: درگیری افغانستان) is the series of events that have kept Afghanistan in a near-continuous state\"}, {\"title\": \"War in Afghanistan (2001–2021)\", \"url\": \"https://en.wikipedia.org/wiki/War_in_Afghanistan_%282001%E2%80%932021%29\", \"snippet\": \"The war in Afghanistan was a prolonged armed conflict from 2001 to 2021. It began with an invasion by a United States–led coalition under the name Operation\"}, {\"title\": \"2025 India–Pakistan conflict\", \"url\": \"https://en.wikipedia.org/wiki/2025_India%E2%80%93Pakistan_conflict\", \"snippet\": \"A brief armed conflict between India and Pakistan began on 7 May 2025, after India launched missile strikes on Pakistan , in a military campaign codenamed\"}]}",
+      "elapsed_s": 1.2304410700016888
+    },
+    {
+      "type": "llm",
+      "step": 4,
+      "tools_enabled": true,
+      "cost_usd": 0.00021555,
+      "prompt_tokens": 1333,
+      "completion_tokens": 26,
+      "request_id": "gen-1793372900-nNfxV7064RzRr2j7QEkz",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_L68gZn47fNFg3eizLztlCwcA",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"February 26 2026 Pakistan government announcement\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 6.296679897997819
+    },
+    {
+      "type": "tool",
+      "step": 4,
+      "name": "web_search",
+      "arguments": {
+        "query": "February 26 2026 Pakistan government announcement",
+        "language": "en"
+      },
+      "tool_call_id": "call_L68gZn47fNFg3eizLztlCwcA",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2026\", \"url\": \"https://en.wikipedia.org/wiki/2026\", \"snippet\": \"February 26 – 2026 Afghanistan– Pakistan war: The government of Pakistan declares \\\"open war\\\" against the Taliban in Afghanistan. February 27 – 2026 Zona da\"}, {\"title\": \"Syrian transitional government\", \"url\": \"https://en.wikipedia.org/wiki/Syrian_transitional_government\", \"snippet\": \"a new government . Germany: German Special Envoy to Syria Stefan Schnecke announced that Germany welcomes the announcement of a new government in Syria\"}, {\"title\": \"January–February 2026 Balochistan attacks\", \"url\": \"https://en.wikipedia.org/wiki/January%E2%80%93February_2026_Balochistan_attacks\", \"snippet\": \"Retrieved 1 February 2026 . \\\"Militants Attack Government Facilities In Pakistan's Balochistan\\\". www.afintl.com. 2 February 2026 . Retrieved 9 February 2026 . Khan\"}, {\"title\": \"Government of Peace and Unity\", \"url\": \"https://en.wikipedia.org/wiki/Government_of_Peace_and_Unity\", \"snippet\": \"Retrieved 2026 -01-16. \\\"MSN\\\". www.msn.com. \\\"Saudi Arabia, Qatar, Kuwait reject parallel Sudan government plan\\\". Sudan Tribune. 1 March 2025. \\\" Pakistan calls\"}, {\"title\": \"2025 India–Pakistan conflict\", \"url\": \"https://en.wikipedia.org/wiki/2025_India%E2%80%93Pakistan_conflict\", \"snippet\": \"22 April 2025 in which 26 civilians were killed. India accused Pakistan of supporting cross-border terrorism, which Pakistan denied. On 7 May, India\"}]}",
+      "elapsed_s": 0.7554659859997628
+    },
+    {
+      "type": "llm",
+      "step": 5,
+      "tools_enabled": true,
+      "cost_usd": 0.00018165,
+      "prompt_tokens": 1747,
+      "completion_tokens": 26,
+      "request_id": "gen-1793372907-FABBYulT55XZnOemZ7aS",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: The government of Pakistan declared \"open war\" against the Taliban in Afghanistan on February 26, 2026.",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 8.564314292001654
+    }
+  ],
+  "id": "fresh-25",
+  "question": "In the Afghanistan–Pakistan war, what did the government of Pakistan declare on February 26, 2026?",
+  "expected": "\"open war\"",
+  "correct": true,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:08:30.747191+00:00"
+}

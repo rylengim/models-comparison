@@ -1,0 +1,77 @@
+{
+  "final": "14",
+  "steps": 2,
+  "elapsed_s": 4.798654014000931,
+  "cost_usd": 0.0002872500000000028,
+  "known_cost_usd": 0.0002872500000000028,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.0001161,
+      "prompt_tokens": 666,
+      "completion_tokens": 27,
+      "request_id": "gen-1793374338-1arxSjKALPTbO2VTRjFy",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_cx7xI3LCOJNYEGSiisFcZkXj",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Daejeon factory fire March 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 2.94866541400188
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Daejeon factory fire March 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_cx7xI3LCOJNYEGSiisFcZkXj",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2026 Daejeon factory fire\", \"url\": \"https://en.wikipedia.org/wiki/2026_Daejeon_factory_fire\", \"snippet\": \"On 20 March 2026 , at 13:17 KST, a fire broke out at a car parts factory in Daedeok District, Daejeon , South Korea, killing 14 people and injuring 60 others\"}, {\"title\": \"SBS Gayo Daejeon\", \"url\": \"https://en.wikipedia.org/wiki/SBS_Gayo_Daejeon\", \"snippet\": \"SBS Gayo Daejeon (Korean: SBS 가요대전, broadly SBS Battle of the Bands) is an annual televised music festival that is broadcast by the Seoul Broadcasting\"}, {\"title\": \"2026 in South Korea\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_South_Korea\", \"snippet\": \"nearby military exercises in Daegu. 20 March – Fourteen people are killed in a fire at a car parts factory in Daejeon . 28 April – The Seoul High Court extends\"}, {\"title\": \"List of building or structure fires\", \"url\": \"https://en.wikipedia.org/wiki/List_of_building_or_structure_fires\", \"snippet\": \"2026 Daejeon factory fire in South Korea killed 14. 7 April – 2026 Kimberly-Clark distribution center fire in Ontario, California. 15 April – A fire at\"}, {\"title\": \"List of spaceflight launches in October–December 2026\", \"url\": \"https://en.wikipedia.org/wiki/List_of_spaceflight_launches_in_October%E2%80%93December_2026\", \"snippet\": \"launches in January– March 2026 , List of spaceflight launches in April–June 2026 , and List of spaceflight launches in July–September 2026 . \\\"SpaceX Crew-13\\\"\"}]}",
+      "elapsed_s": 0.5977756249994854
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.00017115,
+      "prompt_tokens": 1121,
+      "completion_tokens": 5,
+      "request_id": "gen-1793374340-a75Hwztfxrx6Y4aP9zLV",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: 14",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 1.2511953050016018
+    }
+  ],
+  "id": "fresh-61",
+  "question": "How many people were killed in the Daejeon factory fire in March 2026?",
+  "expected": "Fourteen",
+  "correct": false,
+  "config": "cheap_search_read",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:32:21.405566+00:00"
+}

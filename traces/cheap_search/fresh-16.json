@@ -1,0 +1,77 @@
+{
+  "final": "Montreal Victoire",
+  "steps": 2,
+  "elapsed_s": 7.071955655999773,
+  "cost_usd": 0.00022439999999998572,
+  "known_cost_usd": 0.00022439999999998572,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 8.835e-05,
+      "prompt_tokens": 485,
+      "completion_tokens": 26,
+      "request_id": "gen-1793371842-jS6zuh14yc27NTaIeHhd",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_zEa4CE4llWwEVIum7038WMPh",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Walter Cup winner May 20 2026\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 3.822672870999668
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Walter Cup winner May 20 2026",
+        "language": "en"
+      },
+      "tool_call_id": "call_zEa4CE4llWwEVIum7038WMPh",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2026 Walter Cup playoffs\", \"url\": \"https://en.wikipedia.org/wiki/2026_Walter_Cup_playoffs\", \"snippet\": \"began on April 30, 2026 , and concluded with the PWHL Finals on May 20 , 2026 , with the Montreal Victoire winning their first Walter Cup . The Boston Fleet\"}, {\"title\": \"Walter Cup\", \"url\": \"https://en.wikipedia.org/wiki/Walter_Cup\", \"snippet\": \"The Walter Cup (French: La coupe Walter ) is the championship trophy awarded to the winner of the Walter Cup playoffs (French: Séries éliminatoires de\"}, {\"title\": \"2026 FIFA World Cup knockout stage\", \"url\": \"https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_knockout_stage\", \"snippet\": \"of the 2026 FIFA World Cup was the second and final stage of the competition, following the group stage. Played from June 28 to July 19, 2026 , the knockout\"}, {\"title\": \"Walter Cup playoffs\", \"url\": \"https://en.wikipedia.org/wiki/Walter_Cup_playoffs\", \"snippet\": \"Women's Hockey League (PWHL) that determines the league champion and winner of the Walter Cup . The playoffs consist of two rounds: the semifinals and the PWHL\"}, {\"title\": \"2026 CONCACAF Champions Cup\", \"url\": \"https://en.wikipedia.org/wiki/2026_CONCACAF_Champions_Cup\", \"snippet\": \"The 2026 CONCACAF Champions Cup was the 61st season of the CONCACAF Champions Cup , the premier men's club association football tournament for North, Central\"}]}",
+      "elapsed_s": 0.6300729699978547
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.00013605,
+      "prompt_tokens": 883,
+      "completion_tokens": 6,
+      "request_id": "gen-1793371846-iA32F9Hg0ZjR6Uo8XN9q",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: Montreal Victoire",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 2.6183953799991286
+    }
+  ],
+  "id": "fresh-16",
+  "question": "In ice hockey, which team won their first Walter Cup on May 20, 2026?",
+  "expected": "Montreal Victoire",
+  "correct": true,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T14:50:47.050588+00:00"
+}

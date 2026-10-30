@@ -1,0 +1,76 @@
+{
+  "final": "850 job cuts",
+  "steps": 2,
+  "elapsed_s": 7.884034082999278,
+  "cost_usd": 0.004242000000000079,
+  "known_cost_usd": 0.004242000000000079,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 0.001874,
+      "prompt_tokens": 1459,
+      "completion_tokens": 83,
+      "request_id": "gen-1793377275-TIdikxZ49ePDfFEaw3Yl",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": "I'll search for information about Statistics Canada job cuts announced on January 13, 2026.",
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "toolu_bdrk_01ABHkBm29fABp3Jw52n5D77",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\": \"Statistics Canada job cuts January 13 2026\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 3.5843638079968514
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Statistics Canada job cuts January 13 2026"
+      },
+      "tool_call_id": "toolu_bdrk_01ABHkBm29fABp3Jw52n5D77",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2026 in Canada\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_Canada\", \"snippet\": \"Minister since 2017. January 13 – Statistics Canada announces 850 job cuts , with over 100 to happen in the following days. January 14 – François Legault\"}, {\"title\": \"Timeline of the 2025–2026 United States trade war with Canada\", \"url\": \"https://en.wikipedia.org/wiki/Timeline_of_the_2025%E2%80%932026_United_States_trade_war_with_Canada\", \"snippet\": \"CBC News. Retrieved July 1, 2026 . D Dale, Daniel ( January 13 , 2025b). \\\"Fact check: Debunking Trump's false claims about Canada \\\". CNN. Retrieved March 19\"}, {\"title\": \"2025–2026 Iranian protests\", \"url\": \"https://en.wikipedia.org/wiki/2025%E2%80%932026_Iranian_protests\", \"snippet\": \"the original on 13 January 2026 . Retrieved 8 January 2026 . \\\"Protests erupt in Iran's capital after exiled prince's call; internet cuts out soon after\\\"\"}, {\"title\": \"2025–2026 Canada–United States trade war\", \"url\": \"https://en.wikipedia.org/wiki/2025%E2%80%932026_Canada%E2%80%93United_States_trade_war\", \"snippet\": \"Canadian and Mexican goods\\\". ABC News. Archived from the original on January 14, 2026 . Retrieved 2025-03-06. Gillies, Rob (March 6, 2025). \\\" Canada's Tariffs\"}, {\"title\": \"Canada and the 2026 Iran war\", \"url\": \"https://en.wikipedia.org/wiki/Canada_and_the_2026_Iran_war\", \"snippet\": \"The Canadian government has officially abstained from joining in the 2026 Iran war. The Canadian government has prioritized diplomatic solutions to end\"}]}",
+      "elapsed_s": 0.8185781169995607
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.002368,
+      "prompt_tokens": 2048,
+      "completion_tokens": 64,
+      "request_id": "gen-1793377278-AxeiC7oLLTFMOiZ1ZnLn",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "Perfect! I found the information. According to the Wikipedia article on \"2026 in Canada,\" Statistics Canada announced 850 job cuts on January 13, 2026, with over 100 of those cuts to happen in the following days.\n\nFINAL: 850 job cuts",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 3.479804286998842
+    }
+  ],
+  "id": "fresh-113",
+  "question": "How many job cuts did Statistics Canada announce on January 13, 2026?",
+  "expected": "850",
+  "correct": true,
+  "config": "medium_search_read",
+  "model": "anthropic/claude-haiku-4.5",
+  "measured": true,
+  "recorded_at": "2026-10-30T16:21:20.833280+00:00"
+}

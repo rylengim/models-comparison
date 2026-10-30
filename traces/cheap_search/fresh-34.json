@@ -1,0 +1,77 @@
+{
+  "final": "6.3",
+  "steps": 2,
+  "elapsed_s": 5.326518797999597,
+  "cost_usd": 0.0002200499999999994,
+  "known_cost_usd": 0.0002200499999999994,
+  "cost_basis": "provider_reported",
+  "provider": "openrouter",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": 9.045e-05,
+      "prompt_tokens": 487,
+      "completion_tokens": 29,
+      "request_id": "gen-1793375423-q9HNPaxgO7ofv4Ssooyq",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "content": null,
+        "refusal": null,
+        "reasoning": null,
+        "tool_calls": [
+          {
+            "type": "function",
+            "index": 0,
+            "id": "call_Mb91BonBWkiaNQWM89Im867f",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"query\":\"Haixi prefecture Qinghai earthquake June 2026 magnitude\",\"language\":\"en\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 3.686439748998964
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "query": "Haixi prefecture Qinghai earthquake June 2026 magnitude",
+        "language": "en"
+      },
+      "tool_call_id": "call_Mb91BonBWkiaNQWM89Im867f",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2026 in China\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_China\", \"snippet\": \"Xingan, Guangxi. 16 June — A magnitude 6.3 earthquake hits Haixi prefecture of Qinghai , killing one person and injuring four others. 17 June — The State Administration\"}, {\"title\": \"Qinghai–Tibet railway\", \"url\": \"https://en.wikipedia.org/wiki/Qinghai%E2%80%93Tibet_railway\", \"snippet\": \"question marks, boxes, or other symbols instead of Tibetan characters. The Qinghai –Tibet railway or Qingzang railway (Standard Tibetan: མཚོ་བོད་ལྕགས་ལམ།,\"}, {\"title\": \"Xining\", \"url\": \"https://en.wikipedia.org/wiki/Xining\", \"snippet\": \"Xining is the capital and most populous city of Qinghai province in western China and the largest city on the Tibetan Plateau. As of the 2020 census,\"}, {\"title\": \"List of earthquakes in 2009\", \"url\": \"https://en.wikipedia.org/wiki/List_of_earthquakes_in_2009\", \"snippet\": \"notable, the 2009 Samoa earthquake and tsunami registered an 8.1 on the moment magnitude scale, the most powerful earthquake in 2009. The tsunami associated\"}]}",
+      "elapsed_s": 0.6128561119985534
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": 0.0001296,
+      "prompt_tokens": 836,
+      "completion_tokens": 7,
+      "request_id": "gen-1793375426-PhIa8cTY7wjYNTCnOWVp",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: 6.3",
+        "refusal": null,
+        "reasoning": null
+      },
+      "elapsed_s": 1.026229302999127
+    }
+  ],
+  "id": "fresh-34",
+  "question": "What was the magnitude of the earthquake that hit Haixi prefecture of Qinghai in June 2026?",
+  "expected": "6.3",
+  "correct": true,
+  "config": "cheap_search",
+  "model": "openai/gpt-4o-mini",
+  "measured": true,
+  "recorded_at": "2026-10-30T15:50:27.461009+00:00"
+}
