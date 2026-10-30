@@ -1,0 +1,1324 @@
+{
+  "checked_at": "2026-10-30",
+  "scope": "fresh-0 through fresh-61; no overlap with the 28 previously verified records",
+  "dataset_sha256_at_audit": "17b7597813125b73bb26701df2ecd5b375a2decae95a35f9efe23772613f6e54",
+  "summary": {
+    "verified": 44,
+    "issue": 18
+  },
+  "http_exact_evidence_matches": 59,
+  "limitations": [
+    "Verified means the supplied Wikipedia page was read and supports the stated event, unless a stronger source is explicitly recorded. It is not a blanket independent primary-source investigation of every underlying news report.",
+    "No API keys, .env files, paid LLMs, or Git operations were used. Dataset and code were not edited.",
+    "No inherited record is marked unverified solely because a secondary URL was blocked; source limitations are retained in notes.",
+    "Proposed patches are ready for review. Primary quotations are short; supplied-source text is excerpted from the existing dataset."
+  ],
+  "records": [
+    {
+      "id": "fresh-0",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_Ukraine",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://apnews.com/article/milan-cortina-paralympics-closing-ceremony-ukraine-russia-11442117dc6a3a427fd04a5d0f669954"
+      ]
+    },
+    {
+      "id": "fresh-1",
+      "verdict": "issue",
+      "checked_at": "2026-10-30",
+      "verification_level": "primary_or_specific_source",
+      "url": "https://en.wikipedia.org/wiki/2026_in_spaceflight",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": false,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "kind": "stale_evidence",
+      "note": "Launch date is confirmed by NASA, but the inherited long quote no longer matches Wikipedia because the resupply list changed. Replace it with a dated launch report.",
+      "proposed_fields": {
+        "question": "On what date did Roscosmos launch Progress MS-33 (NASA Progress 94) toward the International Space Station in 2026?",
+        "answer": "March 22, 2026",
+        "evidence": "The Progress 94 cargo spacecraft launches to the International Space Station on March 22, 2026.",
+        "url": "https://www.nasa.gov/blogs/spacestation/2026/03/22/progress-cargo-craft-launches-to-resupply-station-crew/",
+        "source": "fresh",
+        "checked_at": "2026-10-30",
+        "event_date": "2026-03-22",
+        "page": "Progress Cargo Craft Launches to Resupply Station Crew"
+      },
+      "evidence_links": [
+        "https://www.nasa.gov/blogs/spacestation/2026/03/22/progress-cargo-craft-launches-to-resupply-station-crew/"
+      ],
+      "proposed_patch_http_check": {
+        "http_status": 200,
+        "evidence_match": true
+      }
+    },
+    {
+      "id": "fresh-2",
+      "verdict": "issue",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_politics",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "kind": "underspecified_question",
+      "note": "The stem identifies no country, negotiating party, or topic. Many people can negotiate with an administration on a date.",
+      "proposed_fields": {
+        "question": "Which Cuban leader entered negotiations with the Trump administration on 13 March 2026 in an effort to end the U.S. embargo against Cuba?",
+        "answer": "Miguel Díaz-Canel",
+        "evidence": "First Secretary of the Communist Party of Cuba Miguel Díaz-Canel entered negotiations with the Trump administration",
+        "url": "https://en.wikipedia.org/wiki/2026_in_politics",
+        "source": "fresh",
+        "checked_at": "2026-10-30",
+        "event_date": "2026-03-13"
+      },
+      "evidence_links": [
+        "https://en.wikipedia.org/wiki/2026_in_politics"
+      ],
+      "underlying_reference_urls": [
+        "https://www.bbc.com/news/articles/cwy8zv9gp0go"
+      ],
+      "proposed_patch_http_check": {
+        "http_status": 200,
+        "evidence_match": true
+      }
+    },
+    {
+      "id": "fresh-3",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_Ukraine",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://kyivindependent.com/zelensky-in-romania-to-meet-president-dan/"
+      ]
+    },
+    {
+      "id": "fresh-4",
+      "verdict": "issue",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_Australia",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "kind": "underspecified_question",
+      "note": "A measure anywhere in Victoria over a whole month does not identify a single event.",
+      "proposed_fields": {
+        "question": "What statewide fire restriction came into force in Victoria on 9 January 2026 in response to the heatwave?",
+        "answer": "A total fire ban",
+        "evidence": "A total fire ban comes into force in Victoria in response to an ongoing heatwave.",
+        "url": "https://en.wikipedia.org/wiki/2026_in_Australia",
+        "source": "fresh",
+        "checked_at": "2026-10-30",
+        "event_date": "2026-01-09"
+      },
+      "evidence_links": [
+        "https://en.wikipedia.org/wiki/2026_in_Australia"
+      ],
+      "underlying_reference_urls": [
+        "https://www.theguardian.com/australia-news/live/2026/jan/08/australia-news-live-bluescope-stokes-extreme-weather-heatwave-bushfire-bondi-royal-commission-anthony-albanese-antisemitism-ntwnfb"
+      ],
+      "proposed_patch_http_check": {
+        "http_status": 200,
+        "evidence_match": true
+      }
+    },
+    {
+      "id": "fresh-5",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_Germany",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://www.bbc.com/news/articles/ckgpzgxgz58o"
+      ]
+    },
+    {
+      "id": "fresh-6",
+      "verdict": "issue",
+      "checked_at": "2026-10-30",
+      "verification_level": "primary_or_specific_source",
+      "url": "https://en.wikipedia.org/wiki/2026",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": false,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "kind": "wrong_scope_and_stale_toll",
+      "note": "The inherited quote is absent from current Wikipedia. Its 4,500 missing in Tibet is contradicted by the specific event article and the emergency authorities report carried by Xinhua: 519 as of 5 September. Do not substitute the cross-border total.",
+      "proposed_fields": {
+        "question": "According to Xinhua’s 6 September 2026 report quoting local emergency authorities, how many people remained missing at Gyirong Port in Tibet as of 6 p.m. on 5 September after the 26 August mudslide?",
+        "answer": "519",
+        "evidence": "519 others remained missing as of 6 p.m. Saturday",
+        "url": "https://english.news.cn/20260906/9d6b43e142f14071b4ab7ac72ec8f543/c.html",
+        "source": "fresh",
+        "checked_at": "2026-10-30",
+        "event_date": "2026-09-06",
+        "page": "43 dead, 519 missing after mudslide hits border port in China's Xizang"
+      },
+      "evidence_links": [
+        "https://english.news.cn/20260906/9d6b43e142f14071b4ab7ac72ec8f543/c.html",
+        "https://en.wikipedia.org/wiki/2026_Nepal%E2%80%93Tibet_floods"
+      ],
+      "proposed_patch_http_check": {
+        "http_status": 200,
+        "evidence_match": true
+      }
+    },
+    {
+      "id": "fresh-7",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_Turkey",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://www.straitstimes.com/world/turkish-court-jails-comedian-deniz-goktas-for-insulting-erdogan-religious-values?ref=latest-headlines"
+      ]
+    },
+    {
+      "id": "fresh-8",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_Russia",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://www.reuters.com/world/russias-fsb-charges-telegram-founder-durov-with-facilitating-terrorism-ifax-says-2026-07-29/"
+      ]
+    },
+    {
+      "id": "fresh-9",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_sports",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": []
+    },
+    {
+      "id": "fresh-10",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_China",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "note": "Optional clarity: add 2026 and Xiangyang, Hubei to the question.",
+      "underlying_reference_urls": [
+        "https://www.aljazeera.com/news/2026/2/19/twelve-killed-in-china-fireworks-shop-blast-during-lunar-new-year"
+      ]
+    },
+    {
+      "id": "fresh-11",
+      "verdict": "issue",
+      "checked_at": "2026-10-30",
+      "verification_level": "primary_or_specific_source",
+      "url": "https://en.wikipedia.org/wiki/2026_in_art",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "kind": "source_factual_error",
+      "note": "Wikipedia says May 23; the exhibition organiser gives 9 May–23 November 2026. Ask about its completed opening, not an inaccurate interval.",
+      "proposed_fields": {
+        "question": "What was the title of the Arthur Jafa and Richard Prince exhibition that opened at Fondazione Prada in Venice on 9 May 2026?",
+        "answer": "Helter Skelter",
+        "evidence": "“Helter Skelter: Arthur Jafa and Richard Prince” is an exhibition",
+        "url": "https://www.fondazioneprada.org/project/helter-skelter-arthur-jafa-richard-prince/?lang=en",
+        "source": "fresh",
+        "checked_at": "2026-10-30",
+        "event_date": "2026-05-09",
+        "page": "Helter Skelter: Arthur Jafa and Richard Prince"
+      },
+      "evidence_links": [
+        "https://www.fondazioneprada.org/project/helter-skelter-arthur-jafa-richard-prince/?lang=en"
+      ],
+      "underlying_reference_urls": [
+        "https://www.fondazioneprada.org/project/helter-skelter-arthur-jafa-richard-prince/?lang=en"
+      ],
+      "proposed_patch_http_check": {
+        "http_status": 403,
+        "evidence_match": null,
+        "reason": "access failure is not evidence mismatch"
+      }
+    },
+    {
+      "id": "fresh-12",
+      "verdict": "issue",
+      "checked_at": "2026-10-30",
+      "verification_level": "primary_or_specific_source",
+      "url": "https://en.wikipedia.org/wiki/2026_in_the_United_Kingdom",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "kind": "wrong_population_and_precision",
+      "note": "The original conflates all SEND support in the UK with EHC plans for children and young people aged 0–25 in England. DfE gives 718,838 active plans, not exactly 700,000 children receiving any support.",
+      "proposed_fields": {
+        "question": "According to the Department for Education’s 2026 release, how many education, health and care plans were active in England on 15 January 2026?",
+        "answer": "718,838",
+        "evidence": "Number of EHC plans as at January 2026\n\n718,838",
+        "url": "https://explore-education-statistics.service.gov.uk/find-statistics/education-health-and-care-plans/2026",
+        "source": "fresh",
+        "checked_at": "2026-10-30",
+        "event_date": "2026-06-25",
+        "page": "Education, health and care plans: Reporting year 2026"
+      },
+      "evidence_links": [
+        "https://explore-education-statistics.service.gov.uk/find-statistics/education-health-and-care-plans/2026"
+      ],
+      "underlying_reference_urls": [
+        "https://www.bbc.co.uk/news/articles/cj4g18gy14no"
+      ],
+      "proposed_patch_http_check": {
+        "http_status": 200,
+        "evidence_match": true
+      }
+    },
+    {
+      "id": "fresh-13",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_Germany",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://www.bbc.com/news/articles/cx2vdydz31no"
+      ]
+    },
+    {
+      "id": "fresh-14",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_Spain",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://www.bbc.com/news/articles/c0qvdy0jv05o"
+      ]
+    },
+    {
+      "id": "fresh-15",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_Ukraine",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://apnews.com/article/ukraine-zelenskyy-syrskyi-army-chief-504513cfcc5cbc55175dc605cc711793"
+      ]
+    },
+    {
+      "id": "fresh-16",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "primary_or_specific_source",
+      "url": "https://en.wikipedia.org/wiki/2026_in_ice_hockey",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "corroboration": [
+        {
+          "url": "https://www.thepwhl.com/en/teams/montreal-victoire/2026-champions",
+          "finding": "Official PWHL confirms first Montreal Walter Cup won on 20 May 2026, finals 3–1."
+        }
+      ],
+      "underlying_reference_urls": []
+    },
+    {
+      "id": "fresh-17",
+      "verdict": "issue",
+      "checked_at": "2026-10-30",
+      "verification_level": "primary_or_specific_source",
+      "url": "https://en.wikipedia.org/wiki/2026_in_spaceflight",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "kind": "source_factual_error",
+      "note": "The satellite is correct; inherited evidence wrongly names PSLV. ISRO identifies GSLV-F17 and dates launch 4 September IST (3 September UTC).",
+      "proposed_fields": {
+        "question": "Which satellite did ISRO’s GSLV-F17 successfully place in orbit on 4 September 2026, Indian Standard Time?",
+        "answer": "EOS-05",
+        "evidence": "GSLV-F17 has successfully accomplished its mission, placing EOS-05 into the intended orbit.",
+        "url": "https://new1.isro.gov.in/Mission_GSLVF17.html",
+        "source": "fresh",
+        "checked_at": "2026-10-30",
+        "event_date": "2026-09-04",
+        "page": "GSLV-F17/EOS-05 MISSION"
+      },
+      "evidence_links": [
+        "https://new1.isro.gov.in/Mission_GSLVF17.html",
+        "https://new1.isro.gov.in/Timeline.html"
+      ],
+      "underlying_reference_urls": [
+        "https://www.thestatesman.com/technology/science/isros-eos-05-explained-what-indias-first-geosynchronous-imaging-satellite-can-do-1503634621.html",
+        "https://timesofindia.indiatimes.com/science/why-eos-05-matters-isro-breaks-gisat-jinx-returns-to-flight-gets-1st-success-of-2026/articleshow/133754361.cms",
+        "https://search.worldcat.org/issn/0971-8257"
+      ],
+      "proposed_patch_http_check": {
+        "http_status": 200,
+        "evidence_match": true
+      }
+    },
+    {
+      "id": "fresh-18",
+      "verdict": "issue",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_Germany",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "kind": "missing_year",
+      "note": "The question supplies no year, although the answer is only a day and month.",
+      "proposed_fields": {
+        "question": "On what date in 2026 did a Munich court imprison an Iraqi couple who had belonged to Islamic State for enslaving and raping Yazidi girls?",
+        "answer": "13 July",
+        "evidence": "13 July – A Munich court imprisons an Iraqi couple",
+        "url": "https://en.wikipedia.org/wiki/2026_in_Germany",
+        "source": "fresh",
+        "checked_at": "2026-10-30",
+        "event_date": "2026-07-13"
+      },
+      "evidence_links": [
+        "https://en.wikipedia.org/wiki/2026_in_Germany"
+      ],
+      "underlying_reference_urls": [
+        "https://www.arabnews.com/node/2650779/world"
+      ],
+      "proposed_patch_http_check": {
+        "http_status": 200,
+        "evidence_match": true
+      }
+    },
+    {
+      "id": "fresh-19",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_animation",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://deadline.com/2026/06/disney-branded-television-name-change-disney-kids-and-family-1236955356/"
+      ]
+    },
+    {
+      "id": "fresh-20",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "note": "Event happened, but the single-elimination format was announced before 2025; this may be too easy for a freshness benchmark. Freshness needs model measurement.",
+      "underlying_reference_urls": [
+        "https://digitalhub.fifa.com/m/636f5c9c6f29771f/original/FWC2026_regulations_EN.pdf",
+        "https://web.archive.org/web/20250623212158/https://digitalhub.fifa.com/m/636f5c9c6f29771f/original/FWC2026_regulations_EN.pdf"
+      ]
+    },
+    {
+      "id": "fresh-21",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_art",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://www.nytimes.com/2026/06/18/arts/design/knicks-gavin-snider-devon-rodriguez.html"
+      ]
+    },
+    {
+      "id": "fresh-22",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_animation",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": []
+    },
+    {
+      "id": "fresh-23",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_Ukraine",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://kyivindependent.com/former-energy-minister-detained-at-border-in-ukraines-biggest-corruption-scandal-nabu-reported/"
+      ]
+    },
+    {
+      "id": "fresh-24",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_the_United_Kingdom",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://www.bbc.co.uk/news/articles/c8jn1v37znvo"
+      ]
+    },
+    {
+      "id": "fresh-25",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://www.zeit.de/politik/ausland/2026-02/afghanistan-pakistan-konflikt-angriffe-grenzregion-taliban-gxe",
+        "https://web.archive.org/web/20260227112215/https://www.zeit.de/politik/ausland/2026-02/afghanistan-pakistan-konflikt-angriffe-grenzregion-taliban-gxe"
+      ]
+    },
+    {
+      "id": "fresh-26",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_Japan",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://english.kyodonews.net/articles/-/82970"
+      ]
+    },
+    {
+      "id": "fresh-27",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_classical_music",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://www.nytimes.com/2026/03/26/arts/music/salzburg-festival-fires-artistic-director-markus-hinterhauser.html"
+      ]
+    },
+    {
+      "id": "fresh-28",
+      "verdict": "issue",
+      "checked_at": "2026-10-30",
+      "verification_level": "primary_or_specific_source",
+      "url": "https://en.wikipedia.org/wiki/2026",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "kind": "ambiguous_casualty_population",
+      "note": "Nine includes the shooter and two victims at a separate residence; the stem only names the school and does not say whether to count the shooter. RCMP reports six school victims, two residence victims, and the shooter.",
+      "proposed_fields": {
+        "question": "According to the RCMP’s 11 February 2026 update, how many people in total, including the shooter, died in the 10 February shootings at Tumbler Ridge Secondary School and a local residence?",
+        "answer": "nine",
+        "evidence": "nine people, including the shooter are deceased as a result of this incident.",
+        "url": "https://rcmp.ca/en/bc/tumbler-ridge/news/2026/02/4350208",
+        "source": "fresh",
+        "checked_at": "2026-10-30",
+        "event_date": "2026-02-11",
+        "page": "Update: Tumbler Ridge fatal shootings"
+      },
+      "evidence_links": [
+        "https://rcmp.ca/en/bc/tumbler-ridge/news/2026/02/4350208"
+      ],
+      "underlying_reference_urls": [
+        "https://www.nytimes.com/2026/02/11/world/canada/canada-shooting-tumbler-ridge-british-columbia.html",
+        "https://search.worldcat.org/issn/0362-4331",
+        "https://www.bbc.com/news/live/cr5lnzqdr5pt",
+        "https://web.archive.org/web/20260211025800/https://www.bbc.com/news/live/cr5lnzqdr5pt"
+      ],
+      "proposed_patch_http_check": {
+        "http_status": 200,
+        "evidence_match": true
+      }
+    },
+    {
+      "id": "fresh-29",
+      "verdict": "issue",
+      "checked_at": "2026-10-30",
+      "verification_level": "primary_or_specific_source",
+      "url": "https://en.wikipedia.org/wiki/2026_in_Spain",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "kind": "outdated_answer",
+      "note": "Wikipedia’s chronology still says 43, but Spain’s official government report of 11 February commemorates 46 victims of the Adamuz accident. Fix the reporting cutoff.",
+      "proposed_fields": {
+        "question": "According to the Spanish government’s report of 11 February 2026, how many victims of the 18 January Adamuz train accident did Prime Minister Pedro Sánchez commemorate?",
+        "answer": "46",
+        "evidence": "remembering the 46 victims of the Adamuz accident",
+        "url": "https://www.lamoncloa.gob.es/lang/en/presidente/news/Paginas/2026/20260211-appearance.aspx",
+        "source": "fresh",
+        "checked_at": "2026-10-30",
+        "event_date": "2026-02-11",
+        "page": "Pedro Sánchez, on the Adamuz accident: The track complied with all control and maintenance protocols"
+      },
+      "evidence_links": [
+        "https://www.lamoncloa.gob.es/lang/en/presidente/news/Paginas/2026/20260211-appearance.aspx"
+      ],
+      "underlying_reference_urls": [
+        "https://apnews.com/article/spain-train-crash-adamuz-barcelona-71f6ad926cd48044df6854fdd52ba722"
+      ],
+      "proposed_patch_http_check": {
+        "http_status": 200,
+        "evidence_match": true
+      }
+    },
+    {
+      "id": "fresh-30",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_Turkey",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://www.france24.com/en/live-news/20260220-turkey-jails-journalist-with-germany-s-dw-for-insulting-president"
+      ]
+    },
+    {
+      "id": "fresh-31",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_politics",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://www.reuters.com/world/asia-pacific/kazakhstan-hold-snap-parliamentary-election-august-23-2026-07-01/",
+        "https://www.aa.com.tr/en/eurasia/kazakhstan-s-ruling-party-secures-landslide-victory-in-parliamentary-election/4035527",
+        "https://www.aljazeera.com/news/2026/8/24/kazakhstans-newly-formed-pro-government-party-wins-parliamentary-election"
+      ]
+    },
+    {
+      "id": "fresh-32",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_art",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://www.abc.net.au/news/2026-05-08/archibald-prize-winner-2026-richard-lewer-iluwanti-ken/106616630"
+      ]
+    },
+    {
+      "id": "fresh-33",
+      "verdict": "issue",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_Canada",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "kind": "missing_jurisdiction",
+      "note": "Conservative Party, Liberal Party and MP do not identify a country; specify Canada and riding.",
+      "proposed_fields": {
+        "question": "Which Canadian MP for Sarnia—Lambton—Bkejwanong crossed from the Conservative Party to the Liberal Party on 8 April 2026?",
+        "answer": "Marilyn Gladu",
+        "evidence": "Sarnia—Lambton—Bkejwanong MP Marilyn Gladu defects from the Conservative Party to the Liberal Party.",
+        "url": "https://en.wikipedia.org/wiki/2026_in_Canada",
+        "source": "fresh",
+        "checked_at": "2026-10-30",
+        "event_date": "2026-04-08"
+      },
+      "evidence_links": [
+        "https://en.wikipedia.org/wiki/2026_in_Canada"
+      ],
+      "underlying_reference_urls": [
+        "https://www.cbc.ca/news/politics/conservative-mp-marilyn-gladu-crosses-floor-to-liberals-9.7156167"
+      ],
+      "proposed_patch_http_check": {
+        "http_status": 200,
+        "evidence_match": true
+      }
+    },
+    {
+      "id": "fresh-34",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_China",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://www.channelnewsasia.com/east-asia/china-earthquake-qinghai-haixi-6187031"
+      ]
+    },
+    {
+      "id": "fresh-35",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_sports",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://sport.hrt.hr/vise-sportova/jos-jedan-sjajan-pothvat-nevjerojatne-dine-levacic-12593337"
+      ]
+    },
+    {
+      "id": "fresh-36",
+      "verdict": "issue",
+      "checked_at": "2026-10-30",
+      "verification_level": "primary_or_specific_source",
+      "url": "https://en.wikipedia.org/wiki/2026",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": false,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "kind": "outdated_answer_and_evidence",
+      "note": "The old quote is absent. Current Wikipedia gives 142 deaths and magnitude 7.8; 129 was an earlier tally. Proposed replacement asks the USGS event magnitude to avoid a floating death total.",
+      "proposed_fields": {
+        "question": "According to the USGS event record, what was the magnitude of the earthquake 66 km north-northwest of Ende, Indonesia, at 21:58 UTC on 14 August 2026 (15 August locally)?",
+        "answer": "7.8",
+        "evidence": "M 7.8 - 66 km NNW of Ende, Indonesia",
+        "url": "https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/us6000tkt2.geojson",
+        "source": "fresh",
+        "checked_at": "2026-10-30",
+        "event_date": "2026-08-15",
+        "page": "USGS event us6000tkt2"
+      },
+      "evidence_links": [
+        "https://earthquake.usgs.gov/earthquakes/feed/v1.0/detail/us6000tkt2.geojson",
+        "https://en.wikipedia.org/wiki/2026_Flores_earthquake"
+      ],
+      "proposed_patch_http_check": {
+        "http_status": 200,
+        "evidence_match": true
+      }
+    },
+    {
+      "id": "fresh-37",
+      "verdict": "issue",
+      "checked_at": "2026-10-30",
+      "verification_level": "primary_or_specific_source",
+      "url": "https://en.wikipedia.org/wiki/2026_in_the_United_Kingdom",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "kind": "question_answer_mismatch",
+      "note": "15 June is the strike start, not its announcement date. Wikipedia places announcement on 27 May; BMA records the completed four-day strike.",
+      "proposed_fields": {
+        "question": "On what date did the four-day resident doctors’ strike in England begin in June 2026, according to the BMA’s industrial action record?",
+        "answer": "15 June 2026",
+        "evidence": "Start date (7am)\nEnd date (6.59am)\nTotal\n15 June 2026\n19 June 2026\n4 Days",
+        "url": "https://www.bma.org.uk/our-campaigns/resident-doctor-campaigns/pay-in-england/resident-doctors-guide-to-industrial-action-in-england/time-out-of-training-toot-during-resident-doctors-strikes-in-england",
+        "source": "fresh",
+        "checked_at": "2026-10-30",
+        "event_date": "2026-06-15",
+        "page": "Resident doctors time out of training (TOOT) strike guidance"
+      },
+      "evidence_links": [
+        "https://www.bma.org.uk/our-campaigns/resident-doctor-campaigns/pay-in-england/resident-doctors-guide-to-industrial-action-in-england/time-out-of-training-toot-during-resident-doctors-strikes-in-england"
+      ],
+      "underlying_reference_urls": [
+        "https://www.bbc.co.uk/news/articles/c8xw2vvlxeko"
+      ],
+      "proposed_patch_http_check": {
+        "http_status": 200,
+        "evidence_match": true,
+        "method": "Table header plus first data row; normalized whitespace verified 2026-10-30."
+      }
+    },
+    {
+      "id": "fresh-38",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_India",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "note": "Answer role is supported; elected could be rephrased as selected/named to avoid implying a direct popular election of Chief Minister.",
+      "underlying_reference_urls": [
+        "https://www.ndtv.com/india-news/vd-satheesan-to-be-kerala-chief-minister-congress-ends-suspense-11493431"
+      ]
+    },
+    {
+      "id": "fresh-39",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_Spain",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://www.bbc.com/news/articles/c1m78xl0gmpo"
+      ]
+    },
+    {
+      "id": "fresh-40",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_Russia",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://www.bbc.com/news/articles/c3686nzexp3o"
+      ]
+    },
+    {
+      "id": "fresh-41",
+      "verdict": "issue",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_Japan",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "kind": "underspecified_event_and_population",
+      "note": "Japan had multiple demonstrations; the figure concerns the rally outside the National Diet, not a nationwide April count.",
+      "proposed_fields": {
+        "question": "How many people participated in the anti-war and anti-constitutional amendment protest outside the National Diet Building in Tokyo on 8 April 2026?",
+        "answer": "Thirty thousand people",
+        "evidence": "Thirty thousand people participate in an anti-war and anti-constitutional amendment protest",
+        "url": "https://en.wikipedia.org/wiki/2026_in_Japan",
+        "source": "fresh",
+        "checked_at": "2026-10-30",
+        "event_date": "2026-04-08"
+      },
+      "evidence_links": [
+        "https://en.wikipedia.org/wiki/2026_in_Japan"
+      ],
+      "underlying_reference_urls": [
+        "https://mainichi.jp/articles/20260408/k00/00m/040/544000c",
+        "https://www.kanaloco.jp/news/social/article-1262991.html"
+      ],
+      "proposed_patch_http_check": {
+        "http_status": 200,
+        "evidence_match": true
+      }
+    },
+    {
+      "id": "fresh-42",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_India",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://www.thehindu.com/news/national/uttar-pradesh/noida-international-airport-pm-modi-inauguration/article70795653.ece"
+      ]
+    },
+    {
+      "id": "fresh-43",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_the_United_States",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://www.theguardian.com/us-news/2026/jan/01/zohran-mamdani-sworn-in-mayor-new-york-city"
+      ]
+    },
+    {
+      "id": "fresh-44",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "primary_or_specific_source",
+      "url": "https://en.wikipedia.org/wiki/2026_in_science",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "corroboration": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42461987/",
+          "finding": "Original research abstract confirms helium escaping from atmosphere of LHS 1140b."
+        }
+      ],
+      "underlying_reference_urls": [
+        "https://arxiv.org/abs/2607.14326",
+        "https://ui.adsabs.harvard.edu/abs/2026Sci...393..998C",
+        "https://doi.org/10.1126%2Fscience.aea9708",
+        "https://pubmed.ncbi.nlm.nih.gov/42461987",
+        "https://www.theguardian.com/science/2026/jul/16/atmosphere-lhs-1140b-exoplanet-could-water-scientists"
+      ]
+    },
+    {
+      "id": "fresh-45",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_Turkey",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "note": "Wikipedia supports the fact and date; linked Reuters URL contains 2026-08-12 but could not be opened. Do not infer a false date solely from URL.",
+      "underlying_reference_urls": [
+        "https://www.reuters.com/world/f-16-aircraft-crashes-training-flight-turkey-defence-ministry-says-2026-08-12/"
+      ]
+    },
+    {
+      "id": "fresh-46",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_Russia",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://www.reuters.com/world/three-killed-15-injured-moscow-explosion-tass-says-2026-08-01/"
+      ]
+    },
+    {
+      "id": "fresh-47",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_politics",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://www.abc.net.au/news/2026-07-20/india-cockroach-party-march-supporters-caned/106936124",
+        "https://www.lokmat.com/national/union-education-minister-dharmendra-pradhans-resignation-a-big-success-for-the-students-movement-a-a301/"
+      ]
+    },
+    {
+      "id": "fresh-48",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_Ukraine",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://kyivindependent.com/defense-minister-fedorov-set-to-leave-post-senior-official-confirms/"
+      ]
+    },
+    {
+      "id": "fresh-49",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_India",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://www.ndtv.com/india-news/separatist-asiya-andrabi-gets-life-term-under-anti-terror-law-uapa-11259531"
+      ]
+    },
+    {
+      "id": "fresh-50",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_Turkey",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://www.aljazeera.com/sports/2026/1/30/football-club-in-turkiye-fined-for-pro-kurdish-propaganda"
+      ]
+    },
+    {
+      "id": "fresh-51",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_France",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://www.theguardian.com/world/2026/aug/13/france-ambassador-car-central-african-republic-investigation-bruno-foucher",
+        "https://search.worldcat.org/issn/0261-3077"
+      ]
+    },
+    {
+      "id": "fresh-52",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_China",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://apnews.com/article/china-earthquake-guangxi-liuzhou-ab23014c9b6c014d2f756bfd7aa94068"
+      ]
+    },
+    {
+      "id": "fresh-53",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "primary_or_specific_source",
+      "url": "https://en.wikipedia.org/wiki/2026_in_classical_music",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "corroboration": [
+        {
+          "url": "https://rpo.org/news/rochester-philharmonic-orchestra-names-tonya-mcbride-robles-new-president-and-ceo/",
+          "finding": "Official RPO appointment announcement opened successfully; later find timed out."
+        }
+      ],
+      "underlying_reference_urls": [
+        "https://rpo.org/news/rochester-philharmonic-orchestra-names-tonya-mcbride-robles-new-president-and-ceo/"
+      ]
+    },
+    {
+      "id": "fresh-54",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://www.geo.tv/latest/649015-shc-nominates-justice-agha-faisal-for-judicial-commission-to-probe-gul-plaza-fire"
+      ]
+    },
+    {
+      "id": "fresh-55",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_Mexico",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "underlying_reference_urls": [
+        "https://www.bbc.com/news/articles/c1ev8el75gyo"
+      ]
+    },
+    {
+      "id": "fresh-56",
+      "verdict": "issue",
+      "checked_at": "2026-10-30",
+      "verification_level": "primary_or_specific_source",
+      "url": "https://en.wikipedia.org/wiki/2026_in_the_United_Kingdom",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "kind": "underspecified_statistic",
+      "note": "3% is annual headline CPI. ONS also reports annual CPIH 3.2% and monthly CPI -0.5%; the stem should identify the index and period.",
+      "proposed_fields": {
+        "question": "According to the ONS release of 18 February 2026, what was the UK Consumer Prices Index (CPI) inflation rate for the 12 months to January 2026?",
+        "answer": "3.0%",
+        "evidence": "The Consumer Prices Index (CPI) rose by 3.0% in the 12 months to January 2026",
+        "url": "https://www.ons.gov.uk/economy/inflationandpriceindices/bulletins/consumerpriceinflation/january2026",
+        "source": "fresh",
+        "checked_at": "2026-10-30",
+        "event_date": "2026-02-18",
+        "page": "Consumer price inflation, UK: January 2026"
+      },
+      "evidence_links": [
+        "https://www.ons.gov.uk/economy/inflationandpriceindices/bulletins/consumerpriceinflation/january2026"
+      ],
+      "underlying_reference_urls": [
+        "https://www.bbc.co.uk/news/articles/c5yg04jg1n5o"
+      ],
+      "proposed_patch_http_check": {
+        "http_status": 200,
+        "evidence_match": true
+      }
+    },
+    {
+      "id": "fresh-57",
+      "verdict": "issue",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_South_Korea",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "kind": "missing_country_and_court",
+      "note": "The stem identifies neither country nor court. The Wikipedia quote matches, but its underlying citation points only to a newspaper homepage, so independent confirmation of sentencing details remains weaker.",
+      "proposed_fields": {
+        "question": "Which former South Korean president had his seven-year prison sentence upheld by the Supreme Court on 7 July 2026?",
+        "answer": "Yoon Suk Yeol",
+        "evidence": "The Supreme Court upholds the 7-year prison sentence and 5-year suspended sentence for former President Yoon Suk Yeol",
+        "url": "https://en.wikipedia.org/wiki/2026_in_South_Korea",
+        "source": "fresh",
+        "checked_at": "2026-10-30",
+        "event_date": "2026-07-07"
+      },
+      "evidence_links": [
+        "https://en.wikipedia.org/wiki/2026_in_South_Korea"
+      ],
+      "underlying_reference_urls": [
+        "https://www.hankookilbo.com/"
+      ],
+      "proposed_patch_http_check": {
+        "http_status": 200,
+        "evidence_match": true,
+        "method": "Contiguous sentence excerpt verified 2026-10-30."
+      }
+    },
+    {
+      "id": "fresh-58",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_China",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "note": "Optional precision: ask which company was reported on 2 January 2026 to lead battery-electric vehicle sales for 2025; the reporting date is not necessarily the overtake date.",
+      "underlying_reference_urls": [
+        "https://www.nytimes.com/2026/01/02/business/tesla-electric-vehicles-fourth-quarter-sales.html"
+      ]
+    },
+    {
+      "id": "fresh-59",
+      "verdict": "issue",
+      "checked_at": "2026-10-30",
+      "verification_level": "primary_or_specific_source",
+      "url": "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "kind": "incomplete_answer",
+      "note": "The poster was co-created by three artists. Carson Ting alone is not the complete answer to who created it. Narrow the question to the Canadian contributor.",
+      "proposed_fields": {
+        "question": "Which Canadian artist co-created the official 2026 FIFA World Cup tournament poster unveiled on 3 March 2026?",
+        "answer": "Carson Ting",
+        "evidence": "Canadian artist Carson Ting",
+        "url": "https://quality.fifa.com/organisation/media-releases/tournament-poster-unveiled-100-days-to-go-fifa-world-cup-2026",
+        "source": "fresh",
+        "checked_at": "2026-10-30",
+        "event_date": "2026-03-03",
+        "page": "Tournament Poster unveiled in celebration of 100 Days to Go until FIFA World Cup 2026"
+      },
+      "evidence_links": [
+        "https://quality.fifa.com/organisation/media-releases/tournament-poster-unveiled-100-days-to-go-fifa-world-cup-2026"
+      ],
+      "underlying_reference_urls": [
+        "https://inside.fifa.com/organisation/news/unique-local-spirit-official-world-cup-26-host-city-posters",
+        "https://web.archive.org/web/20260625015950/https://inside.fifa.com/organisation/news/unique-local-spirit-official-world-cup-26-host-city-posters",
+        "https://www.footyheadlines.com/2025/04/the-2026-wc-posters.html",
+        "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/official-posters",
+        "https://web.archive.org/web/20260304005544/https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/official-posters"
+      ],
+      "proposed_patch_http_check": {
+        "http_status": 200,
+        "evidence_match": true
+      }
+    },
+    {
+      "id": "fresh-60",
+      "verdict": "issue",
+      "checked_at": "2026-10-30",
+      "verification_level": "provided_wikipedia_page",
+      "url": "https://en.wikipedia.org/wiki/2026_in_Turkey",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "kind": "underspecified_event_and_lower_bound",
+      "note": "The stem asks about all arrests in Ankara in June, but evidence concerns particular raids on 23 June and says at least 209.",
+      "proposed_fields": {
+        "question": "At least how many people were arrested in security-force raids across Ankara on 23 June 2026 ahead of the NATO summit?",
+        "answer": "209",
+        "evidence": "At least 209 people are arrested in raids by security forces across Ankara",
+        "url": "https://en.wikipedia.org/wiki/2026_in_Turkey",
+        "source": "fresh",
+        "checked_at": "2026-10-30",
+        "event_date": "2026-06-23"
+      },
+      "evidence_links": [
+        "https://en.wikipedia.org/wiki/2026_in_Turkey"
+      ],
+      "underlying_reference_urls": [
+        "https://apnews.com/article/turkey-nato-summit-suspects-detained-864260d7cbe9ca73cd05115cd638ee93"
+      ],
+      "proposed_patch_http_check": {
+        "http_status": 200,
+        "evidence_match": true
+      }
+    },
+    {
+      "id": "fresh-61",
+      "verdict": "verified",
+      "checked_at": "2026-10-30",
+      "verification_level": "primary_or_specific_source",
+      "url": "https://en.wikipedia.org/wiki/2026_in_South_Korea",
+      "answer_literal_in_evidence": true,
+      "evidence_found_in_current_source": true,
+      "event_within_window": true,
+      "source_read_status": 200,
+      "basis": "Read downloaded source text; removed reference superscripts and normalized whitespace while preserving inline text. URL alone was not used as evidence.",
+      "corroboration": [
+        {
+          "url": "https://www.theguardian.com/world/2026/mar/21/south-korea-fire-daejeon-car-parts-factory",
+          "finding": "Report states 14 died and all missing accounted for."
+        }
+      ],
+      "underlying_reference_urls": [
+        "https://www.theguardian.com/world/2026/mar/21/south-korea-fire-daejeon-car-parts-factory",
+        "https://search.worldcat.org/issn/0261-3077"
+      ]
+    }
+  ]
+}
