@@ -3,6 +3,8 @@ import time
 from types import SimpleNamespace
 
 import pytest
+import requests
+from urllib3.exceptions import ConnectTimeoutError, MaxRetryError, NewConnectionError, ReadTimeoutError
 
 from freshqa.client import CostUnknownError, OpenRouterError
 from freshqa.agent import run_agent
@@ -175,3 +177,47 @@ def test_directory_environment_path_is_rejected(monkeypatch, tmp_path):
     monkeypatch.setenv("FRESHQA_GATE_PATH", str(tmp_path))
     with pytest.raises(ValueError, match="FRESHQA_GATE_PATH"):
         RequestGate.from_env()
+
+
+@pytest.mark.parametrize("error_class,reason", [
+    (requests.ConnectTimeout, ConnectTimeoutError("secret-connect-message")),
+    (requests.ReadTimeout, ReadTimeoutError(None, "https://secret-url.invalid", "secret-read-message")),
+    (requests.ConnectionError, NewConnectionError(None, "secret-connection-message")),
+])
+def test_transport_diagnostic_reports_only_types_and_restores_patches(
+        monkeypatch, tmp_path, capsys, error_class, reason):
+    import reports.run_paced as paced
+
+    monkeypatch.setenv("FRESHQA_GATE_PATH", str(tmp_path / "gate"))
+    monkeypatch.setenv("FRESHQA_GATE_INTERVAL_S", ".01")
+    failure = error_class("secret-outer-message")
+    wrapped = MaxRetryError(None, "https://secret-url.invalid", reason=reason)
+    calls = []
+    arguments = {"headers": {"Authorization": "Bearer secret-header"},
+                 "json": {"message": "secret-payload"}, "timeout": (10, 90),
+                 "allow_redirects": False}
+
+    def post(*args, **kwargs):
+        calls.append((args, kwargs))
+        try:
+            raise wrapped
+        except MaxRetryError:
+            raise failure
+
+    def cli(argv):
+        return requests.post("https://secret-url.invalid", **arguments)
+
+    original_complete = paced.OpenRouterClient.complete
+    monkeypatch.setattr(requests, "post", post)
+    monkeypatch.setattr(paced, "cli_main", cli)
+    with pytest.raises(error_class) as caught:
+        paced.main(["synthetic"])
+    assert caught.value is failure
+    assert calls == [(("https://secret-url.invalid",), arguments)]
+    captured = capsys.readouterr()
+    assert captured.out == ""
+    assert captured.err == (f"POST transport failure: type={error_class.__name__} "
+                            f"reason_type={type(reason).__name__}\n")
+    assert "secret" not in captured.err
+    assert requests.post is post
+    assert paced.OpenRouterClient.complete is original_complete

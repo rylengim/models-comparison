@@ -10,6 +10,8 @@ import sys
 import time
 from pathlib import Path
 
+import requests
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from freshqa.client import CostUnknownError, OpenRouterClient, OpenRouterError
@@ -91,15 +93,33 @@ class RequestGate:
 def main(argv=None):
     gate = RequestGate.from_env()
     original = OpenRouterClient.complete
+    original_post = requests.post
 
     def paced(self, **kwargs):
         return gate.call(original, self, **kwargs)
 
+    def diagnosed_post(*args, **kwargs):
+        try:
+            return original_post(*args, **kwargs)
+        except requests.RequestException as error:
+            context = error.__cause__ or error.__context__
+            reason = getattr(context, "reason", context)
+            reason_type = type(reason).__name__ if isinstance(reason, BaseException) else "unknown"
+            # Exception text, args and request details can contain credentials.
+            try:
+                print(f"POST transport failure: type={type(error).__name__} reason_type={reason_type}",
+                      file=sys.stderr, flush=True)
+            except OSError:
+                pass  # Diagnostic output must not replace the transport error.
+            raise
+
     OpenRouterClient.complete = paced
+    requests.post = diagnosed_post
     try:
         return cli_main(argv)
     finally:
         OpenRouterClient.complete = original
+        requests.post = original_post
 
 if __name__ == "__main__":
     raise SystemExit(main())
