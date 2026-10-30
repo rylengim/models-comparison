@@ -1,0 +1,52 @@
+Final result reproduction; 2026-10-30
+Clone: /home/rylengim/projects/AI_Agents_HW1/tmp/clean-clone-final-20261030
+Target commit: 0f837a8663bae4ef8342cdc631e04b4856f26142
+Keys removed from process environment; PYTHON_DOTENV_DISABLED=1. Existing verified venv retained.
+status before fetch: exit=0
+origin: exit=0
+/home/rylengim/projects/AI_Agents_HW1
+fetch local origin: exit=0
+From /home/rylengim/projects/AI_Agents_HW1
+ * branch            0f837a8663bae4ef8342cdc631e04b4856f26142 -> FETCH_HEAD
+fast-forward exact target: exit=0
+Fast-forward ba0a55e -> 0f837a8; committed results and traces received.
+commit after fast-forward: exit=0
+0f837a8663bae4ef8342cdc631e04b4856f26142
+No .env file read/copied; no reset, commit or push; existing experiment processes untouched.
+Core freshqa/, tests/, requirements.txt, check_fresh.py and all three dataset JSONL files unchanged since the verified ba0a55e commit; 170 tests not repeated.
+manifest and trace inventory: exit=0, seconds=0.06
+Trace counts: {"cheap_no_tools": 145, "cheap_search": 145, "cheap_search_read": 145, "medium_search_read": 145, "strong_no_tools": 145}
+Trace total: 725; no inflight marker.
+Core SHA-256: 0277cb954194ca5763bf26a5b515f52654d2a34766e4f50074da2d5041fca149
+Manifest dataset SHA-256: 46d33a363dd819c002ab470ec4808dfa23ea630ec24329d30865e1b489cd04fb
+data/fresh.jsonl SHA-256: a7a967385b1f847351c4a635070abb3112af4cd3b04fdd179db60b3ec1d4aae9
+data/additions.jsonl SHA-256: 6c460f341c487ba54525651bbfb0e14770bbdd43062bde6266577c17b2312363
+data/fresh_2026.jsonl SHA-256: 7eca42c6419167a468e1b23653ff2b65dbea2db857454f6ed027c5efe11b2ce9
+CLI report from 725 committed traces, no API keys: exit=0, seconds=0.96
+Отчёт: reports/report.md
+report reproduction: byte-identical reports/report.json; sha256=5024afc5580b742c70f86c03f1695ec8ef8d13e8040b4af99601d765cbcfe227
+report reproduction: byte-identical reports/report.csv; sha256=eb016e616167b7afd7177764a3c4895334f0548c46c31cc07548df8747f7d928
+report reproduction: byte-identical reports/report.md; sha256=389329879b3046eb5af89a07f45b1ec3ddaa8d658014e53b9e286623a76362a6
+report reproduction: byte-identical reports/freshness.json; sha256=7e00adb91eb24e33d8b58a9a130255f802323187415f9d1e351b5eebfa304484
+report reproduction: byte-identical reports/money_chart.png; sha256=32103d4ff1ad9daa739c0a0947b46baa002131ddb7d1834ce3b1c6a01a680625
+report reproduction: byte-identical README.md; sha256=b56bf19afeafd320f3e47d09d65fbcaeff5afcc2887bc550547556d547d6b5dc
+offline standard resume and Sonnet resume with HTTP guard: exit=0, seconds=1.55
+Готово; отчёт: reports/report.md
+benchmark --resume exit: 0 HTTP attempts: 0
+Записей: 145; проблем формата и дословного вхождения: 0.
+Это не проверка существования цитат в интернете и не замер свежести Sonnet.
+Готово; отчёт: reports/report.md
+Sonnet без инструментов: 1/145, 0.7%
+Критерий свежести пройден
+Угаданные id: fresh-20
+check_fresh --sonnet --resume exit: 0 HTTP attempts: 0
+Dummy API key existed only in this process environment; total HTTP attempts: 0.
+after offline resumes: byte-identical reports/report.json; sha256=5024afc5580b742c70f86c03f1695ec8ef8d13e8040b4af99601d765cbcfe227
+after offline resumes: byte-identical reports/report.csv; sha256=eb016e616167b7afd7177764a3c4895334f0548c46c31cc07548df8747f7d928
+after offline resumes: byte-identical reports/report.md; sha256=389329879b3046eb5af89a07f45b1ec3ddaa8d658014e53b9e286623a76362a6
+after offline resumes: byte-identical reports/freshness.json; sha256=7e00adb91eb24e33d8b58a9a130255f802323187415f9d1e351b5eebfa304484
+after offline resumes: byte-identical reports/money_chart.png; sha256=32103d4ff1ad9daa739c0a0947b46baa002131ddb7d1834ce3b1c6a01a680625
+after offline resumes: byte-identical README.md; sha256=b56bf19afeafd320f3e47d09d65fbcaeff5afcc2887bc550547556d547d6b5dc
+git status after reproduction: exit=0, seconds=0.02
+PASS: 725 traces, deterministic report outputs and unchanged README; both resume paths exit 0 with zero HTTP attempts; core/data unchanged; clone working tree clean.
+No dependency reinstall, repeated tests, model API calls, commit or push. Only this new log was written in the main checkout.
