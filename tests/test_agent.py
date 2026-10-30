@@ -69,6 +69,14 @@ def test_baseline_makes_exactly_one_request_with_question_only():
     assert result["events"][0]["prompt_tokens"] == 30
 
 
+def test_final_field_excludes_prose_but_trace_preserves_raw_response():
+    raw = "I do not have information about that announcement.\n\nFINAL: unknown"
+    client = ScriptedClient([answer(raw)])
+    result = run_agent("Q", model="m", client=client, registry=Registry(), tool_names=[])
+    assert result["final"] == "unknown"
+    assert result["events"][0]["message"]["content"] == raw
+
+
 def test_multiple_tools_form_valid_conversation_and_trace():
     client = ScriptedClient([
         tool_request(call(call_id="a"), call("open_page", '{"url":"https://example.org"}', "b")),

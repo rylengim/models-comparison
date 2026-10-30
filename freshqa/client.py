@@ -82,7 +82,8 @@ class OpenRouterClient:
         # Account even a malformed but paid response before validating content.
         self.spent_usd += float(cost)
         try:
-            message = data["choices"][0]["message"]
+            choice = data["choices"][0]
+            message = choice["message"]
             prompt_tokens = usage["prompt_tokens"]
             completion_tokens = usage["completion_tokens"]
             if not isinstance(message, dict) or message.get("role") != "assistant":
@@ -93,4 +94,5 @@ class OpenRouterClient:
         except (KeyError, IndexError, TypeError, ValueError):
             raise OpenRouterError("Malformed OpenRouter response; its reported cost has been recorded.") from None
         return {"message": message, "cost_usd": float(cost), "prompt_tokens": prompt_tokens,
-                "completion_tokens": completion_tokens, "request_id": data.get("id", "")}
+                "completion_tokens": completion_tokens, "request_id": data.get("id", ""),
+                "finish_reason": choice.get("finish_reason")}

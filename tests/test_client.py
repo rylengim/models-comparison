@@ -1,7 +1,9 @@
 import pytest
 import requests
 
+from freshqa.agent import run_agent
 from freshqa.client import BudgetExceeded, CostUnknownError, OpenRouterClient, OpenRouterError
+from freshqa.reporting import freshness
 
 
 class Response:
@@ -16,7 +18,8 @@ class Response:
 def payload(cost=0.012):
     return {
         "id": "gen-123",
-        "choices": [{"message": {"role": "assistant", "content": "FINAL: Paris"}}],
+        "choices": [{"message": {"role": "assistant", "content": "FINAL: Paris"},
+                     "finish_reason": "stop"}],
         "usage": {"cost": cost, "prompt_tokens": 15, "completion_tokens": 4},
     }
 
@@ -37,6 +40,7 @@ def test_actual_billed_cost_and_token_usage_are_recorded(monkeypatch):
         "prompt_tokens": 15,
         "completion_tokens": 4,
         "request_id": "gen-123",
+        "finish_reason": "stop",
     }
     assert client.spent_usd == pytest.approx(0.112)
     assert len(seen) == 1
@@ -49,6 +53,27 @@ def test_actual_billed_cost_and_token_usage_are_recorded(monkeypatch):
 def test_real_zero_cost_is_valid(monkeypatch):
     monkeypatch.setattr(requests, "post", lambda *a, **k: Response(payload(0)))
     assert OpenRouterClient("secret").complete(model="free/model", messages=[])["cost_usd"] == 0
+
+
+def test_truncated_openrouter_response_preserves_cost_without_passing_freshness(monkeypatch):
+    data = payload()
+    data["choices"][0].update(finish_reason="length")
+    data["choices"][0]["message"]["content"] = "FINAL: incomplete"
+    data["usage"]["completion_tokens"] = 512
+    monkeypatch.setattr(requests, "post", lambda *a, **k: Response(data))
+    client = OpenRouterClient("secret")
+
+    result = run_agent("Who won?", model="anthropic/claude-sonnet-4.6", client=client,
+                       registry=None, tool_names=[])
+
+    assert result["status"] == "output_truncated"
+    assert result["cost_usd"] == result["known_cost_usd"] == pytest.approx(.012)
+    assert client.spent_usd == pytest.approx(.012)
+    assert result["events"][0]["finish_reason"] == "length"
+    result.update(id="synthetic", correct=False)
+    report = freshness([result], total=1, model="anthropic/claude-sonnet-4.6")
+    assert report["complete"] is False
+    assert report["passed"] is None
 
 
 def test_spending_limit_prevents_network_request(monkeypatch):

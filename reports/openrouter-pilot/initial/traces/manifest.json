@@ -1,0 +1,66 @@
+{
+  "signature": {
+    "dataset_sha256": "0d6623b8b19c68da0afa73dfeb06cdf33444bf3816c8d51effede44f6849f2c9",
+    "n": 3,
+    "configs": {
+      "strong_no_tools": {
+        "model": "anthropic/claude-sonnet-4.6",
+        "tools": []
+      },
+      "cheap_no_tools": {
+        "model": "openai/gpt-4o-mini",
+        "tools": []
+      },
+      "cheap_search": {
+        "model": "openai/gpt-4o-mini",
+        "tools": [
+          "web_search",
+          "calculator",
+          "python_exec"
+        ]
+      },
+      "cheap_search_read": {
+        "model": "openai/gpt-4o-mini",
+        "tools": [
+          "web_search",
+          "page_find",
+          "calculator",
+          "python_exec"
+        ]
+      },
+      "medium_search_read": {
+        "model": "anthropic/claude-haiku-4.5",
+        "tools": [
+          "web_search",
+          "page_find",
+          "calculator",
+          "python_exec"
+        ]
+      },
+      "cheap_extra_search": {
+        "model": "openai/gpt-4o-mini",
+        "tools": [
+          "web_search",
+          "page_find",
+          "calculator",
+          "python_exec",
+          "web_search_extra"
+        ]
+      },
+      "cascade": {
+        "model": "openai/gpt-4o-mini",
+        "fallback_model": "anthropic/claude-haiku-4.5",
+        "tools": [
+          "web_search",
+          "page_find",
+          "calculator",
+          "python_exec",
+          "web_search_extra"
+        ]
+      }
+    },
+    "max_steps": 4,
+    "code_sha256": "ad63fb9d3d6f354f27bcb0fd0f6218eddecb6f5fa475143f7445ad4658016a2e"
+  },
+  "created_at": "2026-10-30T14:20:42.313740+00:00"
+}

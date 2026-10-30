@@ -1,0 +1,55 @@
+{
+  "experiment_kind": "diagnostic_sample",
+  "provider": "groq",
+  "question_ids": [
+    "fresh-0"
+  ],
+  "profiles": {
+    "cheap_no_tools": [
+      "openai/gpt-oss-20b",
+      []
+    ],
+    "cheap_search_read": [
+      "openai/gpt-oss-20b",
+      [
+        "web_search",
+        "page_find",
+        "calculator",
+        "python_exec"
+      ]
+    ],
+    "medium_search_read": [
+      "openai/gpt-oss-120b",
+      [
+        "web_search",
+        "page_find",
+        "calculator",
+        "python_exec"
+      ]
+    ]
+  },
+  "max_steps": 4,
+  "request_settings": {
+    "max_completion_tokens": 1024,
+    "stream": false,
+    "temperature": 0,
+    "reasoning_effort": "low",
+    "include_reasoning": false,
+    "parallel_tool_calls": false
+  },
+  "pricing": {
+    "openai/gpt-oss-20b": {
+      "input_per_million_usd": 0.075,
+      "output_per_million_usd": 0.3
+    },
+    "openai/gpt-oss-120b": {
+      "input_per_million_usd": 0.15,
+      "output_per_million_usd": 0.6
+    }
+  },
+  "pricing_source": "https://console.groq.com/docs/models",
+  "pricing_verified_at": "2026-10-29",
+  "cost_basis": "list_price_estimate",
+  "actual_billed_cost_known": false,
+  "started_at": "2026-10-29T19:27:07.679511+00:00"
+}

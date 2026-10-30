@@ -85,6 +85,8 @@ def benchmark(rows, *, trace_dir, config_names, client, max_steps=6, resume=Fals
     from .agent import run_agent
     from .tools import ToolRegistry
 
+    if getattr(client, "cost_basis", "provider_reported") != "provider_reported":
+        raise ValueError("Основной benchmark требует подтверждённой стоимости. Для Groq используйте groq_check.")
     configs = configurations()
     invalid = set(config_names) - configs.keys()
     if invalid:

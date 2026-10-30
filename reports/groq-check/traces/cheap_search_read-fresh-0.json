@@ -1,0 +1,79 @@
+{
+  "final": "15 March 2026",
+  "steps": 2,
+  "elapsed_s": 3.369531652999285,
+  "cost_usd": null,
+  "known_cost_usd": null,
+  "cost_basis": "list_price_estimate",
+  "provider": "groq",
+  "status": "ok",
+  "events": [
+    {
+      "type": "llm",
+      "step": 1,
+      "tools_enabled": true,
+      "cost_usd": null,
+      "prompt_tokens": 712,
+      "completion_tokens": 44,
+      "request_id": "chatcmpl-dd08d77a-85cd-4957-94b8-5fe6f34943b1",
+      "estimated_cost_usd": 6.659999999999999e-05,
+      "cost_basis": "list_price_estimate",
+      "provider": "groq",
+      "finish_reason": "tool_calls",
+      "message": {
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "id": "fc_6861bf52-d2b8-4337-97c0-d00cdc1341bb",
+            "type": "function",
+            "function": {
+              "name": "web_search",
+              "arguments": "{\"language\":\"en\",\"query\":\"Ukraine boycott closing ceremony 2026 Winter Paralympics date\"}"
+            }
+          }
+        ]
+      },
+      "elapsed_s": 0.9586089399999764
+    },
+    {
+      "type": "tool",
+      "step": 1,
+      "name": "web_search",
+      "arguments": {
+        "language": "en",
+        "query": "Ukraine boycott closing ceremony 2026 Winter Paralympics date"
+      },
+      "tool_call_id": "fc_6861bf52-d2b8-4337-97c0-d00cdc1341bb",
+      "output": "{\"source\": \"Wikipedia\", \"results\": [{\"title\": \"2026 Winter Paralympics\", \"url\": \"https://en.wikipedia.org/wiki/2026_Winter_Paralympics\", \"snippet\": \"The 2026 Winter Paralympics (Italian: Giochi paralimpici invernali di Milano Cortina 2026 ), also known as the Milano Cortina 2026 Winter Paralympic Games\"}, {\"title\": \"2026 Winter Paralympics closing ceremony\", \"url\": \"https://en.wikipedia.org/wiki/2026_Winter_Paralympics_closing_ceremony\", \"snippet\": \"The closing ceremony of the 2026 Winter Paralympics took place on 15 March 2026 . Entitled \\\"Italian Souvenir\\\", the ceremony was held in the Stadio olimpico\"}, {\"title\": \"2026 Winter Paralympics opening ceremony\", \"url\": \"https://en.wikipedia.org/wiki/2026_Winter_Paralympics_opening_ceremony\", \"snippet\": \"The opening ceremony of the 2026 Winter Paralympics took place on 6 March 2026 . Entitled \\\"Life in Motion\\\", the ceremony was held in the Verona Arena.\"}, {\"title\": \"2022 Winter Paralympics\", \"url\": \"https://en.wikipedia.org/wiki/2022_Winter_Paralympics\", \"snippet\": \"2022 Winter Paralympics (Chinese: 2022年冬季残疾人奥林匹克运动会; pinyin: 2022 Nián Dōngjì Cánjí Rén Àolínpǐkè Yùndònghuì), also known as XIII Paralympic Winter Games\"}, {\"title\": \"2026 in Ukraine\", \"url\": \"https://en.wikipedia.org/wiki/2026_in_Ukraine\", \"snippet\": \"against Hungarian Prime Minister Viktor Orbán. Ukraine boycotts the opening ceremony of the 2026 Winter Paralympics in Italy in protest over Russian athletes\"}]}",
+      "elapsed_s": 1.6224453609993361
+    },
+    {
+      "type": "llm",
+      "step": 2,
+      "tools_enabled": true,
+      "cost_usd": null,
+      "prompt_tokens": 1173,
+      "completion_tokens": 34,
+      "request_id": "chatcmpl-1359e7ac-e3b0-46de-8fd1-6943e04f5b97",
+      "estimated_cost_usd": 9.8175e-05,
+      "cost_basis": "list_price_estimate",
+      "provider": "groq",
+      "finish_reason": "stop",
+      "message": {
+        "role": "assistant",
+        "content": "FINAL: 15 March 2026"
+      },
+      "elapsed_s": 0.7841193580006802
+    }
+  ],
+  "estimated_cost_usd": 0.000164775,
+  "known_estimated_cost_usd": 0.000164775,
+  "id": "fresh-0",
+  "question": "On what date did Ukraine boycott the closing ceremony of the 2026 Winter Paralympics?",
+  "expected": "15 March",
+  "correct": true,
+  "profile": "cheap_search_read",
+  "model": "openai/gpt-oss-20b",
+  "experiment_kind": "diagnostic_sample",
+  "measured": true
+}
