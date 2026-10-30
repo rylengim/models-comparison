@@ -12,6 +12,14 @@ from freshqa.agent import run_agent
 from reports.run_paced import RequestGate
 
 
+@pytest.fixture(autouse=True)
+def forbid_unmocked_transport(monkeypatch):
+    def forbidden(*args, **kwargs):
+        pytest.fail("Operational-wrapper tests must not send network requests")
+
+    monkeypatch.setattr(requests.Session, "send", forbidden)
+
+
 def _paced_worker(path, interval, ready, start, output):
     gate = RequestGate(path, interval)
     ready.put(True)
@@ -210,6 +218,7 @@ def test_transport_diagnostic_reports_only_types_and_restores_patches(
 
     original_complete = paced.OpenRouterClient.complete
     monkeypatch.setattr(requests, "post", post)
+    monkeypatch.setattr(requests.Session, "post", lambda self, *args, **kwargs: post(*args, **kwargs))
     monkeypatch.setattr(paced, "cli_main", cli)
     with pytest.raises(error_class) as caught:
         paced.main(["synthetic"])
@@ -256,6 +265,7 @@ def test_transport_trace_identifies_handshake_context_and_post_elapsed(monkeypat
             raise failure
 
     monkeypatch.setattr(requests, "post", post)
+    monkeypatch.setattr(requests.Session, "post", lambda self, *args, **kwargs: post(*args, **kwargs))
     monkeypatch.setattr(paced, "cli_main", lambda argv: requests.post("https://secret-url.invalid"))
     original_complete = paced.OpenRouterClient.complete
     with pytest.raises(requests.ReadTimeout) as caught:
@@ -271,4 +281,62 @@ def test_transport_trace_identifies_handshake_context_and_post_elapsed(monkeypat
     assert all(len(item["frames"]) <= 3 for item in stack)
     assert "secret" not in diagnostic
     assert requests.post is post
+    assert paced.OpenRouterClient.complete is original_complete
+
+
+@pytest.mark.parametrize("fail_second", [False, True])
+def test_main_reuses_one_session_without_retries_and_closes_it(monkeypatch, tmp_path, fail_second):
+    import reports.run_paced as paced
+
+    monkeypatch.setenv("FRESHQA_GATE_PATH", str(tmp_path / "gate"))
+    sessions, calls = [], []
+    failure = requests.ReadTimeout("synthetic failure")
+    arguments = {"json": {"messages": [{"role": "user", "content": "Q"}]},
+                 "headers": {"Authorization": "Bearer placeholder"},
+                 "timeout": (10, 90), "allow_redirects": False}
+
+    class Session:
+        def __init__(self):
+            self.adapters = {}
+            self.closed = False
+            sessions.append(self)
+
+        def mount(self, prefix, adapter):
+            self.adapters[prefix] = adapter
+
+        def post(self, *args, **kwargs):
+            calls.append((self, args, kwargs))
+            if fail_second and len(calls) == 2:
+                raise failure
+            return len(calls)
+
+        def close(self):
+            self.closed = True
+
+    def old_post(*args, **kwargs):
+        pytest.fail("Wrapper must use its persistent session")
+
+    def cli(argv):
+        assert requests.post("https://example.invalid/one", **arguments) == 1
+        assert requests.post("https://example.invalid/two", **arguments) == 2
+        return 0
+
+    monkeypatch.setattr(requests, "Session", Session)
+    monkeypatch.setattr(requests, "post", old_post)
+    monkeypatch.setattr(paced, "cli_main", cli)
+    original_complete = paced.OpenRouterClient.complete
+    if fail_second:
+        with pytest.raises(requests.ReadTimeout) as caught:
+            paced.main([])
+        assert caught.value is failure
+    else:
+        assert paced.main([]) == 0
+    assert len(sessions) == 1
+    session = sessions[0]
+    assert calls == [(session, ("https://example.invalid/one",), arguments),
+                     (session, ("https://example.invalid/two",), arguments)]
+    assert set(session.adapters) == {"http://", "https://"}
+    assert all(adapter.max_retries.total == 0 for adapter in session.adapters.values())
+    assert session.closed
+    assert requests.post is old_post
     assert paced.OpenRouterClient.complete is original_complete

@@ -12,6 +12,7 @@ import time
 from pathlib import Path
 
 import requests
+from requests.adapters import HTTPAdapter
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -113,6 +114,9 @@ def main(argv=None):
     gate = RequestGate.from_env()
     original = OpenRouterClient.complete
     original_post = requests.post
+    session = requests.Session()
+    for prefix in ("http://", "https://"):
+        session.mount(prefix, HTTPAdapter(max_retries=0))
 
     def paced(self, **kwargs):
         return gate.call(original, self, **kwargs)
@@ -120,7 +124,7 @@ def main(argv=None):
     def diagnosed_post(*args, **kwargs):
         started = time.monotonic()
         try:
-            return original_post(*args, **kwargs)
+            return session.post(*args, **kwargs)
         except requests.RequestException as error:
             elapsed = time.monotonic() - started
             context = error.__cause__ or error.__context__
@@ -143,6 +147,7 @@ def main(argv=None):
     finally:
         OpenRouterClient.complete = original
         requests.post = original_post
+        session.close()
 
 if __name__ == "__main__":
     raise SystemExit(main())
