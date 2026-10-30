@@ -1,29 +1,105 @@
-"""Operational pacing for the recorded run; never retries a completion.
+"""Shared operational pacing; never retries or clears a billing block.
 
 Run from the repository root: python reports/run_paced.py benchmark --resume ...
 The package and request payloads are unchanged. Wall time includes pacing waits.
 """
+import fcntl
+import math
+import os
 import sys
 import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from freshqa.client import OpenRouterClient
-from freshqa.__main__ import main
-
-original = OpenRouterClient.complete
-previous_start = 0.0
+from freshqa.client import CostUnknownError, OpenRouterClient, OpenRouterError
+from freshqa.__main__ import main as cli_main
 
 
-def paced(self, **kwargs):
-    global previous_start
-    time.sleep(max(0.0, 3.5 - (time.monotonic() - previous_start)))
-    previous_start = time.monotonic()
-    return original(self, **kwargs)
+class RequestGate:
+    """Serialize start permissions across local processes sharing one file.
+
+    A separate BLOCKED marker lets an in-flight request stop waiting workers
+    immediately, without acquiring their flock. Already admitted requests may
+    finish. State uses this host's monotonic clock; stale/invalid state fails
+    closed and must be reconciled manually, just like the persistent marker.
+    """
+
+    def __init__(self, path, interval_s=2.5):
+        if not str(path).strip():
+            raise ValueError("FRESHQA_GATE_PATH must be a nonempty file path")
+        try:
+            self.path = Path(path).expanduser().resolve()
+        except (ValueError, OSError):
+            raise ValueError("FRESHQA_GATE_PATH must be a valid file path") from None
+        if self.path.is_dir():
+            raise ValueError("FRESHQA_GATE_PATH must name a file, not a directory")
+        if isinstance(interval_s, bool) or not isinstance(interval_s, (int, float)) or not math.isfinite(interval_s) or interval_s <= 0:
+            raise ValueError("FRESHQA_GATE_INTERVAL_S must be a positive finite number")
+        self.interval_s = float(interval_s)
+        self.blocked_path = self.path.with_name(self.path.name + ".BLOCKED")
+
+    @classmethod
+    def from_env(cls):
+        default = Path(__file__).resolve().parents[1] / "tmp" / "openrouter-request-gate.timestamp"
+        try:
+            interval = float(os.getenv("FRESHQA_GATE_INTERVAL_S", "2.5"))
+        except ValueError:
+            raise ValueError("FRESHQA_GATE_INTERVAL_S must be a positive finite number") from None
+        return cls(os.getenv("FRESHQA_GATE_PATH", str(default)), interval)
+
+    def _check_blocked(self):
+        if self.blocked_path.exists():
+            raise OpenRouterError("Shared request gate BLOCKED after an unknown charge; no request sent. Reconcile billing before continuing.")
+
+    def wait(self):
+        self._check_blocked()
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        with self.path.open("a+", encoding="ascii") as state:
+            fcntl.flock(state, fcntl.LOCK_EX)
+            self._check_blocked()
+            state.seek(0)
+            raw = state.read()
+            now = time.monotonic()
+            try:
+                previous = float(raw) if raw.strip() else 0.0
+                if not math.isfinite(previous) or previous < 0 or previous > now:
+                    raise ValueError
+            except ValueError:
+                raise OpenRouterError("Invalid request gate state; no request sent. Reconcile the shared timestamp file.") from None
+            time.sleep(max(0.0, self.interval_s - (now - previous)))
+            self._check_blocked()
+            state.seek(0)
+            state.truncate()
+            state.write(f"{time.monotonic():.9f}\n")
+            state.flush()
+            os.fsync(state.fileno())
+
+    def call(self, completion, *args, **kwargs):
+        self.wait()
+        self._check_blocked()
+        try:
+            return completion(*args, **kwargs)
+        except CostUnknownError:
+            # Do not wait for flock: another worker may hold it while sleeping.
+            with self.blocked_path.open("a", encoding="ascii") as marker:
+                marker.flush()
+                os.fsync(marker.fileno())
+            raise
 
 
-OpenRouterClient.complete = paced
+def main(argv=None):
+    gate = RequestGate.from_env()
+    original = OpenRouterClient.complete
+
+    def paced(self, **kwargs):
+        return gate.call(original, self, **kwargs)
+
+    OpenRouterClient.complete = paced
+    try:
+        return cli_main(argv)
+    finally:
+        OpenRouterClient.complete = original
 
 if __name__ == "__main__":
     raise SystemExit(main())
