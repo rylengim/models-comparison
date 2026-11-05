@@ -47,6 +47,9 @@ class OpenRouterClient:
         self.accounting_uncertain = True
         raise CostUnknownError(message) from None
 
+    def _post(self, url, **kwargs):
+        return requests.post(url, **kwargs)
+
     def complete(self, *, model: str, messages: list[dict], tools: list[dict] | None = None) -> dict:
         if self.accounting_uncertain:
             raise CostUnknownError("Previous request cost is unknown; reconcile billing before continuing.")
@@ -58,7 +61,7 @@ class OpenRouterClient:
             body["tools"] = tools
             body["tool_choice"] = "auto"
         try:
-            response = requests.post(
+            response = self._post(
                 "https://openrouter.ai/api/v1/chat/completions",
                 headers={"Authorization": f"Bearer {self._api_key}", "Content-Type": "application/json"},
                 json=body, timeout=(10, 90), allow_redirects=False,
