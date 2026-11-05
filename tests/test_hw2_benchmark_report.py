@@ -64,6 +64,29 @@ def test_reject_duplicate_and_synthetic_measurements():
     assert v["cost_total"] is None
 
 
+def test_fact_cost_compares_same_answerable_ids_and_excludes_negative_spend(tmp_path):
+    hard = {**YES, "id": "yes2", "question": "Where next?"}
+    rows = [YES, hard, NO]
+    traces = []
+    for name in LABELS:
+        traces += [
+            record(YES, "UK", config=name, cost_usd=.03),
+            record(hard, "different" if name == "cheap_live_search" else "UK", config=name, cost_usd=.01),
+            record(NO, "unknown", config=name, cost_usd=.90),
+        ]
+    report = render_report(rows, traces, tmp_path)
+    baseline = report["configs"]["cheap_live_search"]
+    assert baseline["positive_cost_total"] == pytest.approx(.04)
+    assert baseline["positive_cost_per_correct"] == pytest.approx(.04)
+    assert baseline["cost_per_correct"] == pytest.approx(.94 / 2)
+    assert report["configs"]["cheap_rag"]["positive_cost_per_correct"] == pytest.approx(.02)
+    assert "Число верных фактов — 2 против 1 из 2" in (tmp_path / "report.md").read_text()
+    render_report(rows, traces[:-1], tmp_path)
+    assert "Число верных фактов —" not in (tmp_path / "report.md").read_text()
+    traces[0]["cost_usd"] = None
+    assert summarize(rows, traces)["configs"]["strong_no_tools"]["positive_cost_total"] is None
+
+
 def test_failures_use_actual_returned_chunks_on_complete_comparison():
     missing_quote = {**YES, "id": "b", "question": "Separate question?"}
     successful = {**YES, "id": "c", "question": "Other question?"}

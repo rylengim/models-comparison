@@ -1,0 +1,51 @@
+{
+  "id": "fresh-120",
+  "question": "What operation was involved in the United States seizing tankers in January 2026?",
+  "expected": "Operation Southern Spear",
+  "separate_from_benchmark": true,
+  "samples": [
+    {
+      "config": "cheap_rag",
+      "model": "openai/gpt-4o-mini",
+      "benchmark_status": "invalid_output",
+      "new_status": "invalid_output",
+      "answer": "unknown",
+      "raw_content": "{\"answer\": \"Operation Southern Spear\", \"quote\": \"the United States seizes two shadow fleet tankers... during Operation Southern Spear.\", \"source_id\": \"4b0da308d2ed82ac5742:structure:5137\"}",
+      "retrieved_ids": [
+        "4b0da308d2ed82ac5742:structure:5137",
+        "6029cff42612abb3e302:structure:15049",
+        "8b06b3359434c3a3a3e8:structure:96731"
+      ],
+      "usage": {
+        "cost_usd": 9.465e-05,
+        "prompt_tokens": 419,
+        "completion_tokens": 53,
+        "request_id": "gen-1793899423-qWVR6MlrDwueQZVSISTo"
+      }
+    },
+    {
+      "config": "medium_rag",
+      "model": "anthropic/claude-haiku-4.5",
+      "benchmark_status": "invalid_output",
+      "new_status": "invalid_output",
+      "answer": "unknown",
+      "raw_content": "```json\n{\n  \"answer\": \"Operation Southern Spear\",\n  \"quote\": \"The United States seizes two shadow fleet tankers, including one under a Russian flag, in the United States oil blockade during Operation Southern Spear.\",\n  \"source_id\": \"4b0da308d2ed82ac5742:structure:5137\"\n}\n```",
+      "retrieved_ids": [
+        "4b0da308d2ed82ac5742:structure:5137",
+        "6029cff42612abb3e302:structure:15049",
+        "8b06b3359434c3a3a3e8:structure:96731"
+      ],
+      "usage": {
+        "cost_usd": 0.000877,
+        "prompt_tokens": 442,
+        "completion_tokens": 87,
+        "request_id": "gen-1793899425-HbhTvV18XXcQ1Sq940go"
+      },
+      "offline_without_markdown_fence": {
+        "status": "answered",
+        "answer": "Operation Southern Spear",
+        "correct": true
+      }
+    }
+  ]
+}

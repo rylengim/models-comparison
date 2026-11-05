@@ -105,15 +105,22 @@ def summarize(rows, records):
             raise ValueError(f"Разные модели в конфигурации {name}")
         counts = Counter(item["outcome"] for item in items)
         n = len(items)
-        positives = sum(item["answerable"] for item in items)
+        positive_items = [item for item in items if item["answerable"]]
+        positives = len(positive_items)
         empty_positive = sum(i["outcome"] == "no_hits" and i["answerable"] for i in items)
         empty_negative = counts["no_hits"] - empty_positive
         right = counts["correct_answer"] + counts["correct_refusal"] + empty_negative
         priced = [i for i in items if i["cost_usd"] is not None]
         total_cost = math.fsum(i["cost_usd"] for i in priced) if n and len(priced) == n else None
+        positive_cost = None
+        if positive_items and all(i["cost_usd"] is not None for i in positive_items):
+            positive_cost = math.fsum(i["cost_usd"] for i in positive_items)
+        correct_answers = counts["correct_answer"]
         summary[name] = {
             "model": next(iter(models), None), "n": n, "target": len(rows), "positive_n": positives,
             "negative_n": n - positives, "complete": n == len(rows) and not counts["execution_error"],
+            "positive_cost_total": positive_cost,
+            "positive_cost_per_correct": positive_cost / correct_answers if positive_cost is not None and correct_answers else None,
             "correct": right, "accuracy": right / n if n else None, "correct_answer": counts["correct_answer"],
             "correct_refusal": counts["correct_refusal"], "false_refusal": counts["false_refusal"],
             "no_hits_positive": empty_positive, "no_hits_negative": empty_negative,
@@ -232,6 +239,37 @@ def _usd(value):
     return f"{value:.6f}" if value is not None else "—"
 
 
+def _positive_comparison(report):
+    configs = report["configs"]
+    target = report["positive_target"]
+    lines = ["", "## Цена верного факта на вопросах ДЗ‑1", "",
+             f"Размер общей выборки вопросов с известным ответом — {target}. Для каждого режима делим "
+             "сумму списаний API на этих вопросах, включая расходы на ошибки и отказы, на число верных фактов. "
+             "Локальные вычисления и хранение данных в сумму списаний API не входят.", "",
+             "| Конфигурация | Измерено на общей выборке | Верных фактов | Расходы API, USD | USD/верный факт |",
+             "|---|---:|---:|---:|---:|"]
+    for name, v in configs.items():
+        lines.append(f"| {LABELS[name]} | {v['positive_n']}/{target} | {_ratio(v['correct_answer'], v['positive_n'])} | "
+                     f"{_usd(v['positive_cost_total'])} | {_usd(v['positive_cost_per_correct'])} |")
+    if not all(v["complete"] for v in configs.values()):
+        return lines
+    baseline = configs["cheap_live_search"]
+    rag = configs["cheap_rag"]
+    baseline_cost = baseline["positive_cost_per_correct"]
+    rag_cost = rag["positive_cost_per_correct"]
+    if baseline_cost is None or rag_cost is None:
+        lines += ["", "Для сравнения цены факта требуются подтверждённые расходы и хотя бы один верный факт в обоих режимах."]
+    else:
+        if math.isclose(rag_cost, baseline_cost, rel_tol=1e-12):
+            change = "такие же"
+        else:
+            change = "ниже" if rag_cost < baseline_cost else "выше"
+        lines += ["", f"При обязательном RAG расходы API на верный факт у той же дешёвой модели {change}, "
+                  f"чем при живом поиске ДЗ‑1 (USD {_usd(rag_cost)} против {_usd(baseline_cost)}). "
+                  f"Число верных фактов — {rag['correct_answer']} против {baseline['correct_answer']} из {target}."]
+    return lines
+
+
 def render_report(rows, records, output_dir, *, chunks=()):
     records = list(records)
     report = summarize(rows, records)
@@ -244,7 +282,7 @@ def render_report(rows, records, output_dir, *, chunks=()):
     lines = ["# Ответы агента и расходы", "",
              f"Вопросов с ответом — {report['positive_target']}, вопросов для проверки отказа — "
              f"{report['negative_target']}.", "",
-             "| Конфигурация | Покрытие | Измерено | Верных | Точность | USD/вопрос | USD/верный |",
+              "| Конфигурация | Покрытие | Измерено | Верных | Точность | USD/вопрос | USD/верный результат |",
              "|---|---|---:|---:|---:|---:|---:|"]
     for name, v in report["configs"].items():
         state = "полное" if v["complete"] else ("частичное" if v["n"] else "ожидает запуска")
@@ -282,6 +320,7 @@ def render_report(rows, records, output_dir, *, chunks=()):
     lines += ["", "Архивные расходы учитываются один раз при сравнении конфигураций. "
               "Столбцы происхождения суммируют только известные списания. "
               "При неизвестной цене хотя бы одного вызова средние цены всей строки оставлены пустыми."]
+    lines += _positive_comparison(report)
     analysis = report["failures"]
     if analysis["best_config"]:
         lines += ["", "## Ошибки на вопросах с ответом", "",
@@ -290,7 +329,7 @@ def render_report(rows, records, output_dir, *, chunks=()):
         titles = {"evidence_missing": "Цитата отсутствовала в контексте", "answer_failed": "Цитата была в контексте",
                   "without_tools": "Режим без инструментов", "context_unavailable": "Контекст недоступен"}
         for key, ex in analysis["examples"].items():
-            lines += ["", f"### {titles[key]} ({analysis['counts'][key]} случаев)", "",
+            lines += ["", f"### {titles[key]} (число ошибок — {analysis['counts'][key]})", "",
                       f"Пример {ex['id']}. {ex['question']}", "",
                       f"Ожидалось **{ex['expected']}**, получено **{ex['actual']}**. Эталонная цитата — "
                       f"«{ex['evidence']}». [Источник]({ex['source']})."]
