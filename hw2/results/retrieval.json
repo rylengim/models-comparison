@@ -1,0 +1,4915 @@
+{
+  "model": "Xenova/all-MiniLM-L6-v2",
+  "model_revision": "751bff37182d3f1213fa05d7196b954e230abad9",
+  "dimension": 384,
+  "backend": "Milvus Standalone",
+  "index": "FLAT",
+  "metric": "COSINE",
+  "query_count": 104,
+  "input_sha256": {
+    "corpus.jsonl": "130d45a26bf3f6c073147f84b0bc343c0e144254e45f559572a9365d4ee2688b",
+    "questions.jsonl": "8f11b521aa2751730672bb234bf929614e8a1adabc760774a3a4b1ec6b171c4c",
+    "chunks_char.jsonl": "117a001ee6c82d55c5e2ace765d84daca28218f0bf614f04a26348f73bc9b93f",
+    "chunks_structure.jsonl": "1761d391d09cc9728ae08a535ed801fe10816811ed9e49814c75a48ccfa46571"
+  },
+  "methods": {
+    "char": {
+      "question_count": 104,
+      "chunk_count": 1901,
+      "gold_coverage": 94,
+      "depth": 100,
+      "rrf_constant": 60,
+      "metrics": {
+        "vector": {
+          "hits": {
+            "1": 46,
+            "3": 62,
+            "5": 73,
+            "10": 80
+          },
+          "recall": {
+            "1": 0.4423076923076923,
+            "3": 0.5961538461538461,
+            "5": 0.7019230769230769,
+            "10": 0.7692307692307693
+          }
+        },
+        "bm25": {
+          "hits": {
+            "1": 79,
+            "3": 92,
+            "5": 93,
+            "10": 93
+          },
+          "recall": {
+            "1": 0.7596153846153846,
+            "3": 0.8846153846153846,
+            "5": 0.8942307692307693,
+            "10": 0.8942307692307693
+          }
+        },
+        "rrf": {
+          "hits": {
+            "1": 64,
+            "3": 84,
+            "5": 88,
+            "10": 91
+          },
+          "recall": {
+            "1": 0.6153846153846154,
+            "3": 0.8076923076923077,
+            "5": 0.8461538461538461,
+            "10": 0.875
+          }
+        }
+      },
+      "questions": [
+        {
+          "id": "fresh-0",
+          "gold_ids": [
+            "0257cf8e03c4379c8de3:char:3000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 2,
+              "first_gold_id": "0257cf8e03c4379c8de3:char:3000",
+              "top_id": "0257cf8e03c4379c8de3:char:2500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:char:3000",
+              "top_id": "0257cf8e03c4379c8de3:char:3000"
+            },
+            "rrf": {
+              "rank": 2,
+              "first_gold_id": "0257cf8e03c4379c8de3:char:3000",
+              "top_id": "0257cf8e03c4379c8de3:char:2500"
+            }
+          }
+        },
+        {
+          "id": "fresh-2",
+          "gold_ids": [
+            "edc5c6106547de4393b4:char:5000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:char:5000",
+              "top_id": "edc5c6106547de4393b4:char:5000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:char:5000",
+              "top_id": "edc5c6106547de4393b4:char:5000"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:char:5000",
+              "top_id": "edc5c6106547de4393b4:char:5000"
+            }
+          }
+        },
+        {
+          "id": "fresh-3",
+          "gold_ids": [
+            "0257cf8e03c4379c8de3:char:3000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 9,
+              "first_gold_id": "0257cf8e03c4379c8de3:char:3000",
+              "top_id": "0257cf8e03c4379c8de3:char:4000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:char:3000",
+              "top_id": "0257cf8e03c4379c8de3:char:3000"
+            },
+            "rrf": {
+              "rank": 2,
+              "first_gold_id": "0257cf8e03c4379c8de3:char:3000",
+              "top_id": "0257cf8e03c4379c8de3:char:2500"
+            }
+          }
+        },
+        {
+          "id": "fresh-4",
+          "gold_ids": [
+            "0b36482c4e06ce7ad788:char:2000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 2,
+              "first_gold_id": "0b36482c4e06ce7ad788:char:2000",
+              "top_id": "0b36482c4e06ce7ad788:char:2500"
+            },
+            "bm25": {
+              "rank": 2,
+              "first_gold_id": "0b36482c4e06ce7ad788:char:2000",
+              "top_id": "0b36482c4e06ce7ad788:char:2500"
+            },
+            "rrf": {
+              "rank": 2,
+              "first_gold_id": "0b36482c4e06ce7ad788:char:2000",
+              "top_id": "0b36482c4e06ce7ad788:char:2500"
+            }
+          }
+        },
+        {
+          "id": "fresh-5",
+          "gold_ids": [
+            "1eaad13bb8e4b8144c1a:char:4000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 25,
+              "first_gold_id": "1eaad13bb8e4b8144c1a:char:4000",
+              "top_id": "1eaad13bb8e4b8144c1a:char:7500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "1eaad13bb8e4b8144c1a:char:4000",
+              "top_id": "1eaad13bb8e4b8144c1a:char:4000"
+            },
+            "rrf": {
+              "rank": 4,
+              "first_gold_id": "1eaad13bb8e4b8144c1a:char:4000",
+              "top_id": "1eaad13bb8e4b8144c1a:char:7500"
+            }
+          }
+        },
+        {
+          "id": "fresh-7",
+          "gold_ids": [
+            "5c4f2af7123b097e4ffd:char:5000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 5,
+              "first_gold_id": "5c4f2af7123b097e4ffd:char:5000",
+              "top_id": "5c4f2af7123b097e4ffd:char:7000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "5c4f2af7123b097e4ffd:char:5000",
+              "top_id": "5c4f2af7123b097e4ffd:char:5000"
+            },
+            "rrf": {
+              "rank": 2,
+              "first_gold_id": "5c4f2af7123b097e4ffd:char:5000",
+              "top_id": "5c4f2af7123b097e4ffd:char:7000"
+            }
+          }
+        },
+        {
+          "id": "fresh-8",
+          "gold_ids": [
+            "a3f52a1d672ba9d2ec75:char:14500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "a3f52a1d672ba9d2ec75:char:14500",
+              "top_id": "a3f52a1d672ba9d2ec75:char:14500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a3f52a1d672ba9d2ec75:char:14500",
+              "top_id": "a3f52a1d672ba9d2ec75:char:14500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "a3f52a1d672ba9d2ec75:char:14500",
+              "top_id": "a3f52a1d672ba9d2ec75:char:14500"
+            }
+          }
+        },
+        {
+          "id": "fresh-9",
+          "gold_ids": [
+            "1ae93c8d8975221a2e5a:char:8000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 2,
+              "first_gold_id": "1ae93c8d8975221a2e5a:char:8000",
+              "top_id": "1ae93c8d8975221a2e5a:char:31500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "1ae93c8d8975221a2e5a:char:8000",
+              "top_id": "1ae93c8d8975221a2e5a:char:8000"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "1ae93c8d8975221a2e5a:char:8000",
+              "top_id": "1ae93c8d8975221a2e5a:char:8000"
+            }
+          }
+        },
+        {
+          "id": "fresh-10",
+          "gold_ids": [
+            "ae7041b6b235e18ca263:char:2500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:char:2500",
+              "top_id": "ae7041b6b235e18ca263:char:2500"
+            },
+            "bm25": {
+              "rank": 2,
+              "first_gold_id": "ae7041b6b235e18ca263:char:2500",
+              "top_id": "ae7041b6b235e18ca263:char:2000"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:char:2500",
+              "top_id": "ae7041b6b235e18ca263:char:2500"
+            }
+          }
+        },
+        {
+          "id": "fresh-13",
+          "gold_ids": [
+            "1eaad13bb8e4b8144c1a:char:5500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "1eaad13bb8e4b8144c1a:char:5500",
+              "top_id": "1eaad13bb8e4b8144c1a:char:5500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "1eaad13bb8e4b8144c1a:char:5500",
+              "top_id": "1eaad13bb8e4b8144c1a:char:5500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "1eaad13bb8e4b8144c1a:char:5500",
+              "top_id": "1eaad13bb8e4b8144c1a:char:5500"
+            }
+          }
+        },
+        {
+          "id": "fresh-14",
+          "gold_ids": [
+            "a585ebf9950ac07d09bf:char:4500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "a585ebf9950ac07d09bf:char:4500",
+              "top_id": "a585ebf9950ac07d09bf:char:4500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a585ebf9950ac07d09bf:char:4500",
+              "top_id": "a585ebf9950ac07d09bf:char:4500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "a585ebf9950ac07d09bf:char:4500",
+              "top_id": "a585ebf9950ac07d09bf:char:4500"
+            }
+          }
+        },
+        {
+          "id": "fresh-15",
+          "gold_ids": [
+            "0257cf8e03c4379c8de3:char:5500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:char:5500",
+              "top_id": "0257cf8e03c4379c8de3:char:5500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:char:5500",
+              "top_id": "0257cf8e03c4379c8de3:char:5500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:char:5500",
+              "top_id": "0257cf8e03c4379c8de3:char:5500"
+            }
+          }
+        },
+        {
+          "id": "fresh-16",
+          "gold_ids": [
+            "04a97ceebf6d7e6eecad:char:12500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "04a97ceebf6d7e6eecad:char:12500",
+              "top_id": "04a97ceebf6d7e6eecad:char:12500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "04a97ceebf6d7e6eecad:char:12500",
+              "top_id": "04a97ceebf6d7e6eecad:char:12500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "04a97ceebf6d7e6eecad:char:12500",
+              "top_id": "04a97ceebf6d7e6eecad:char:12500"
+            }
+          }
+        },
+        {
+          "id": "fresh-18",
+          "gold_ids": [
+            "1eaad13bb8e4b8144c1a:char:6000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 4,
+              "first_gold_id": "1eaad13bb8e4b8144c1a:char:6000",
+              "top_id": "5c4f2af7123b097e4ffd:char:6000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "1eaad13bb8e4b8144c1a:char:6000",
+              "top_id": "1eaad13bb8e4b8144c1a:char:6000"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "1eaad13bb8e4b8144c1a:char:6000",
+              "top_id": "1eaad13bb8e4b8144c1a:char:6000"
+            }
+          }
+        },
+        {
+          "id": "fresh-19",
+          "gold_ids": [
+            "1baf644abb5e90b40c4f:char:13000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 2,
+              "first_gold_id": "1baf644abb5e90b40c4f:char:13000",
+              "top_id": "1baf644abb5e90b40c4f:char:18000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "1baf644abb5e90b40c4f:char:13000",
+              "top_id": "1baf644abb5e90b40c4f:char:13000"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "1baf644abb5e90b40c4f:char:13000",
+              "top_id": "1baf644abb5e90b40c4f:char:13000"
+            }
+          }
+        },
+        {
+          "id": "fresh-20",
+          "gold_ids": [
+            "77975c99b0ef215616d3:char:25500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "77975c99b0ef215616d3:char:25500",
+              "top_id": "77975c99b0ef215616d3:char:25500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "77975c99b0ef215616d3:char:25500",
+              "top_id": "77975c99b0ef215616d3:char:25500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "77975c99b0ef215616d3:char:25500",
+              "top_id": "77975c99b0ef215616d3:char:25500"
+            }
+          }
+        },
+        {
+          "id": "fresh-21",
+          "gold_ids": [],
+          "results": {
+            "vector": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "41f84b9493627a547c34:char:1000"
+            },
+            "bm25": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "41f84b9493627a547c34:char:1500"
+            },
+            "rrf": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "41f84b9493627a547c34:char:1000"
+            }
+          }
+        },
+        {
+          "id": "fresh-22",
+          "gold_ids": [
+            "1baf644abb5e90b40c4f:char:5500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 4,
+              "first_gold_id": "1baf644abb5e90b40c4f:char:5500",
+              "top_id": "1baf644abb5e90b40c4f:char:0"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "1baf644abb5e90b40c4f:char:5500",
+              "top_id": "1baf644abb5e90b40c4f:char:5500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "1baf644abb5e90b40c4f:char:5500",
+              "top_id": "1baf644abb5e90b40c4f:char:5500"
+            }
+          }
+        },
+        {
+          "id": "fresh-23",
+          "gold_ids": [
+            "0257cf8e03c4379c8de3:char:1500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:char:1500",
+              "top_id": "0257cf8e03c4379c8de3:char:1500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:char:1500",
+              "top_id": "0257cf8e03c4379c8de3:char:1500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:char:1500",
+              "top_id": "0257cf8e03c4379c8de3:char:1500"
+            }
+          }
+        },
+        {
+          "id": "fresh-24",
+          "gold_ids": [
+            "6029cff42612abb3e302:char:121500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 11,
+              "first_gold_id": "6029cff42612abb3e302:char:121500",
+              "top_id": "6029cff42612abb3e302:char:117000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "6029cff42612abb3e302:char:121500",
+              "top_id": "6029cff42612abb3e302:char:121500"
+            },
+            "rrf": {
+              "rank": 3,
+              "first_gold_id": "6029cff42612abb3e302:char:121500",
+              "top_id": "6029cff42612abb3e302:char:117000"
+            }
+          }
+        },
+        {
+          "id": "fresh-25",
+          "gold_ids": [
+            "4b0da308d2ed82ac5742:char:11500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 2,
+              "first_gold_id": "4b0da308d2ed82ac5742:char:11500",
+              "top_id": "4b0da308d2ed82ac5742:char:500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:char:11500",
+              "top_id": "4b0da308d2ed82ac5742:char:11500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:char:11500",
+              "top_id": "4b0da308d2ed82ac5742:char:11500"
+            }
+          }
+        },
+        {
+          "id": "fresh-26",
+          "gold_ids": [
+            "25d7ca73c8f05db7494e:char:14500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 3,
+              "first_gold_id": "25d7ca73c8f05db7494e:char:14500",
+              "top_id": "25d7ca73c8f05db7494e:char:0"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "25d7ca73c8f05db7494e:char:14500",
+              "top_id": "25d7ca73c8f05db7494e:char:14500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "25d7ca73c8f05db7494e:char:14500",
+              "top_id": "25d7ca73c8f05db7494e:char:14500"
+            }
+          }
+        },
+        {
+          "id": "fresh-27",
+          "gold_ids": [],
+          "results": {
+            "vector": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "571fc574631d0b611fd0:char:0"
+            },
+            "bm25": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "571fc574631d0b611fd0:char:8500"
+            },
+            "rrf": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "571fc574631d0b611fd0:char:8500"
+            }
+          }
+        },
+        {
+          "id": "fresh-30",
+          "gold_ids": [
+            "5c4f2af7123b097e4ffd:char:1500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "5c4f2af7123b097e4ffd:char:1500",
+              "top_id": "5c4f2af7123b097e4ffd:char:1500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "5c4f2af7123b097e4ffd:char:1500",
+              "top_id": "5c4f2af7123b097e4ffd:char:1500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "5c4f2af7123b097e4ffd:char:1500",
+              "top_id": "5c4f2af7123b097e4ffd:char:1500"
+            }
+          }
+        },
+        {
+          "id": "fresh-31",
+          "gold_ids": [
+            "edc5c6106547de4393b4:char:11000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:char:11000",
+              "top_id": "edc5c6106547de4393b4:char:11000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:char:11000",
+              "top_id": "edc5c6106547de4393b4:char:11000"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:char:11000",
+              "top_id": "edc5c6106547de4393b4:char:11000"
+            }
+          }
+        },
+        {
+          "id": "fresh-32",
+          "gold_ids": [
+            "41f84b9493627a547c34:char:1000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "41f84b9493627a547c34:char:1000",
+              "top_id": "41f84b9493627a547c34:char:1000"
+            },
+            "bm25": {
+              "rank": 2,
+              "first_gold_id": "41f84b9493627a547c34:char:1000",
+              "top_id": "0b36482c4e06ce7ad788:char:17000"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "41f84b9493627a547c34:char:1000",
+              "top_id": "41f84b9493627a547c34:char:1000"
+            }
+          }
+        },
+        {
+          "id": "fresh-33",
+          "gold_ids": [
+            "0fd300255a168e9d9d07:char:12500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "0fd300255a168e9d9d07:char:12500",
+              "top_id": "0fd300255a168e9d9d07:char:12500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "0fd300255a168e9d9d07:char:12500",
+              "top_id": "0fd300255a168e9d9d07:char:12500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "0fd300255a168e9d9d07:char:12500",
+              "top_id": "0fd300255a168e9d9d07:char:12500"
+            }
+          }
+        },
+        {
+          "id": "fresh-34",
+          "gold_ids": [
+            "ae7041b6b235e18ca263:char:7000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 6,
+              "first_gold_id": "ae7041b6b235e18ca263:char:7000",
+              "top_id": "25d7ca73c8f05db7494e:char:11500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:char:7000",
+              "top_id": "ae7041b6b235e18ca263:char:7000"
+            },
+            "rrf": {
+              "rank": 2,
+              "first_gold_id": "ae7041b6b235e18ca263:char:7000",
+              "top_id": "25d7ca73c8f05db7494e:char:11500"
+            }
+          }
+        },
+        {
+          "id": "fresh-35",
+          "gold_ids": [
+            "1ae93c8d8975221a2e5a:char:31000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "1ae93c8d8975221a2e5a:char:31000",
+              "top_id": "1ae93c8d8975221a2e5a:char:31000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "1ae93c8d8975221a2e5a:char:31000",
+              "top_id": "1ae93c8d8975221a2e5a:char:31000"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "1ae93c8d8975221a2e5a:char:31000",
+              "top_id": "1ae93c8d8975221a2e5a:char:31000"
+            }
+          }
+        },
+        {
+          "id": "fresh-38",
+          "gold_ids": [
+            "a135226cc8c31c92c0c4:char:11000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 12,
+              "first_gold_id": "a135226cc8c31c92c0c4:char:11000",
+              "top_id": "a135226cc8c31c92c0c4:char:30500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:char:11000",
+              "top_id": "a135226cc8c31c92c0c4:char:11000"
+            },
+            "rrf": {
+              "rank": 2,
+              "first_gold_id": "a135226cc8c31c92c0c4:char:11000",
+              "top_id": "a135226cc8c31c92c0c4:char:10000"
+            }
+          }
+        },
+        {
+          "id": "fresh-39",
+          "gold_ids": [],
+          "results": {
+            "vector": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "a585ebf9950ac07d09bf:char:7000"
+            },
+            "bm25": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "830f67beeae00e8c6e58:char:1000"
+            },
+            "rrf": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "a585ebf9950ac07d09bf:char:7000"
+            }
+          }
+        },
+        {
+          "id": "fresh-40",
+          "gold_ids": [
+            "a3f52a1d672ba9d2ec75:char:2000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 56,
+              "first_gold_id": "a3f52a1d672ba9d2ec75:char:2000",
+              "top_id": "a3f52a1d672ba9d2ec75:char:10000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a3f52a1d672ba9d2ec75:char:2000",
+              "top_id": "a3f52a1d672ba9d2ec75:char:2000"
+            },
+            "rrf": {
+              "rank": 8,
+              "first_gold_id": "a3f52a1d672ba9d2ec75:char:2000",
+              "top_id": "a3f52a1d672ba9d2ec75:char:3500"
+            }
+          }
+        },
+        {
+          "id": "fresh-41",
+          "gold_ids": [
+            "25d7ca73c8f05db7494e:char:8000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 2,
+              "first_gold_id": "25d7ca73c8f05db7494e:char:8000",
+              "top_id": "25d7ca73c8f05db7494e:char:7000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "25d7ca73c8f05db7494e:char:8000",
+              "top_id": "25d7ca73c8f05db7494e:char:8000"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "25d7ca73c8f05db7494e:char:8000",
+              "top_id": "25d7ca73c8f05db7494e:char:8000"
+            }
+          }
+        },
+        {
+          "id": "fresh-42",
+          "gold_ids": [
+            "a135226cc8c31c92c0c4:char:7000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:char:7000",
+              "top_id": "a135226cc8c31c92c0c4:char:7000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:char:7000",
+              "top_id": "a135226cc8c31c92c0c4:char:7000"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:char:7000",
+              "top_id": "a135226cc8c31c92c0c4:char:7000"
+            }
+          }
+        },
+        {
+          "id": "fresh-43",
+          "gold_ids": [
+            "8b06b3359434c3a3a3e8:char:3000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "8b06b3359434c3a3a3e8:char:3000",
+              "top_id": "8b06b3359434c3a3a3e8:char:3000"
+            },
+            "bm25": {
+              "rank": 2,
+              "first_gold_id": "8b06b3359434c3a3a3e8:char:3000",
+              "top_id": "edc5c6106547de4393b4:char:0"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "8b06b3359434c3a3a3e8:char:3000",
+              "top_id": "8b06b3359434c3a3a3e8:char:3000"
+            }
+          }
+        },
+        {
+          "id": "fresh-44",
+          "gold_ids": [
+            "068a826fca78f9d22a28:char:24500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 4,
+              "first_gold_id": "068a826fca78f9d22a28:char:24500",
+              "top_id": "068a826fca78f9d22a28:char:38000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "068a826fca78f9d22a28:char:24500",
+              "top_id": "068a826fca78f9d22a28:char:24500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "068a826fca78f9d22a28:char:24500",
+              "top_id": "068a826fca78f9d22a28:char:24500"
+            }
+          }
+        },
+        {
+          "id": "fresh-45",
+          "gold_ids": [
+            "5c4f2af7123b097e4ffd:char:5500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 3,
+              "first_gold_id": "5c4f2af7123b097e4ffd:char:5500",
+              "top_id": "5c4f2af7123b097e4ffd:char:4500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "5c4f2af7123b097e4ffd:char:5500",
+              "top_id": "5c4f2af7123b097e4ffd:char:5500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "5c4f2af7123b097e4ffd:char:5500",
+              "top_id": "5c4f2af7123b097e4ffd:char:5500"
+            }
+          }
+        },
+        {
+          "id": "fresh-46",
+          "gold_ids": [
+            "a3f52a1d672ba9d2ec75:char:14500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "a3f52a1d672ba9d2ec75:char:14500",
+              "top_id": "a3f52a1d672ba9d2ec75:char:14500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a3f52a1d672ba9d2ec75:char:14500",
+              "top_id": "a3f52a1d672ba9d2ec75:char:14500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "a3f52a1d672ba9d2ec75:char:14500",
+              "top_id": "a3f52a1d672ba9d2ec75:char:14500"
+            }
+          }
+        },
+        {
+          "id": "fresh-47",
+          "gold_ids": [
+            "edc5c6106547de4393b4:char:10000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 14,
+              "first_gold_id": "edc5c6106547de4393b4:char:10000",
+              "top_id": "edc5c6106547de4393b4:char:1000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:char:10000",
+              "top_id": "edc5c6106547de4393b4:char:10000"
+            },
+            "rrf": {
+              "rank": 4,
+              "first_gold_id": "edc5c6106547de4393b4:char:10000",
+              "top_id": "a135226cc8c31c92c0c4:char:19500"
+            }
+          }
+        },
+        {
+          "id": "fresh-48",
+          "gold_ids": [
+            "0257cf8e03c4379c8de3:char:5500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 4,
+              "first_gold_id": "0257cf8e03c4379c8de3:char:5500",
+              "top_id": "0257cf8e03c4379c8de3:char:0"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:char:5500",
+              "top_id": "0257cf8e03c4379c8de3:char:5500"
+            },
+            "rrf": {
+              "rank": 2,
+              "first_gold_id": "0257cf8e03c4379c8de3:char:5500",
+              "top_id": "0257cf8e03c4379c8de3:char:0"
+            }
+          }
+        },
+        {
+          "id": "fresh-49",
+          "gold_ids": [
+            "a135226cc8c31c92c0c4:char:6000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:char:6000",
+              "top_id": "a135226cc8c31c92c0c4:char:6000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:char:6000",
+              "top_id": "a135226cc8c31c92c0c4:char:6000"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:char:6000",
+              "top_id": "a135226cc8c31c92c0c4:char:6000"
+            }
+          }
+        },
+        {
+          "id": "fresh-50",
+          "gold_ids": [],
+          "results": {
+            "vector": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "5c4f2af7123b097e4ffd:char:500"
+            },
+            "bm25": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "5c4f2af7123b097e4ffd:char:500"
+            },
+            "rrf": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "5c4f2af7123b097e4ffd:char:500"
+            }
+          }
+        },
+        {
+          "id": "fresh-51",
+          "gold_ids": [],
+          "results": {
+            "vector": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "92468956f4da2a549d29:char:11000"
+            },
+            "bm25": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "92468956f4da2a549d29:char:9500"
+            },
+            "rrf": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "92468956f4da2a549d29:char:3000"
+            }
+          }
+        },
+        {
+          "id": "fresh-52",
+          "gold_ids": [
+            "ae7041b6b235e18ca263:char:5500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 2,
+              "first_gold_id": "ae7041b6b235e18ca263:char:5500",
+              "top_id": "ae7041b6b235e18ca263:char:8000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:char:5500",
+              "top_id": "ae7041b6b235e18ca263:char:5500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:char:5500",
+              "top_id": "ae7041b6b235e18ca263:char:5500"
+            }
+          }
+        },
+        {
+          "id": "fresh-53",
+          "gold_ids": [],
+          "results": {
+            "vector": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "571fc574631d0b611fd0:char:14000"
+            },
+            "bm25": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "571fc574631d0b611fd0:char:14000"
+            },
+            "rrf": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "571fc574631d0b611fd0:char:14000"
+            }
+          }
+        },
+        {
+          "id": "fresh-54",
+          "gold_ids": [
+            "4b0da308d2ed82ac5742:char:6000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 16,
+              "first_gold_id": "4b0da308d2ed82ac5742:char:6000",
+              "top_id": "ae7041b6b235e18ca263:char:11000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:char:6000",
+              "top_id": "4b0da308d2ed82ac5742:char:6000"
+            },
+            "rrf": {
+              "rank": 2,
+              "first_gold_id": "4b0da308d2ed82ac5742:char:6000",
+              "top_id": "a3f52a1d672ba9d2ec75:char:17500"
+            }
+          }
+        },
+        {
+          "id": "fresh-55",
+          "gold_ids": [
+            "e947870ef1f31130b207:char:0"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "e947870ef1f31130b207:char:0",
+              "top_id": "e947870ef1f31130b207:char:0"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "e947870ef1f31130b207:char:0",
+              "top_id": "e947870ef1f31130b207:char:0"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "e947870ef1f31130b207:char:0",
+              "top_id": "e947870ef1f31130b207:char:0"
+            }
+          }
+        },
+        {
+          "id": "fresh-57",
+          "gold_ids": [
+            "53d538159a41c69a4abd:char:4500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 2,
+              "first_gold_id": "53d538159a41c69a4abd:char:4500",
+              "top_id": "53d538159a41c69a4abd:char:1000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "53d538159a41c69a4abd:char:4500",
+              "top_id": "53d538159a41c69a4abd:char:4500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "53d538159a41c69a4abd:char:4500",
+              "top_id": "53d538159a41c69a4abd:char:4500"
+            }
+          }
+        },
+        {
+          "id": "fresh-58",
+          "gold_ids": [
+            "ae7041b6b235e18ca263:char:0"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:char:0",
+              "top_id": "ae7041b6b235e18ca263:char:0"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:char:0",
+              "top_id": "ae7041b6b235e18ca263:char:0"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:char:0",
+              "top_id": "ae7041b6b235e18ca263:char:0"
+            }
+          }
+        },
+        {
+          "id": "fresh-60",
+          "gold_ids": [
+            "5c4f2af7123b097e4ffd:char:4500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 2,
+              "first_gold_id": "5c4f2af7123b097e4ffd:char:4500",
+              "top_id": "5c4f2af7123b097e4ffd:char:5000"
+            },
+            "bm25": {
+              "rank": 2,
+              "first_gold_id": "5c4f2af7123b097e4ffd:char:4500",
+              "top_id": "5c4f2af7123b097e4ffd:char:5000"
+            },
+            "rrf": {
+              "rank": 2,
+              "first_gold_id": "5c4f2af7123b097e4ffd:char:4500",
+              "top_id": "5c4f2af7123b097e4ffd:char:5000"
+            }
+          }
+        },
+        {
+          "id": "fresh-61",
+          "gold_ids": [
+            "53d538159a41c69a4abd:char:2000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "53d538159a41c69a4abd:char:2000",
+              "top_id": "53d538159a41c69a4abd:char:2000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "53d538159a41c69a4abd:char:2000",
+              "top_id": "53d538159a41c69a4abd:char:2000"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "53d538159a41c69a4abd:char:2000",
+              "top_id": "53d538159a41c69a4abd:char:2000"
+            }
+          }
+        },
+        {
+          "id": "fresh-63",
+          "gold_ids": [
+            "228f381fb3622230987d:char:1500"
+          ],
+          "results": {
+            "vector": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "228f381fb3622230987d:char:0"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "228f381fb3622230987d:char:1500",
+              "top_id": "228f381fb3622230987d:char:1500"
+            },
+            "rrf": {
+              "rank": 24,
+              "first_gold_id": "228f381fb3622230987d:char:1500",
+              "top_id": "228f381fb3622230987d:char:0"
+            }
+          }
+        },
+        {
+          "id": "fresh-64",
+          "gold_ids": [
+            "0257cf8e03c4379c8de3:char:3500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:char:3500",
+              "top_id": "0257cf8e03c4379c8de3:char:3500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:char:3500",
+              "top_id": "0257cf8e03c4379c8de3:char:3500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:char:3500",
+              "top_id": "0257cf8e03c4379c8de3:char:3500"
+            }
+          }
+        },
+        {
+          "id": "fresh-65",
+          "gold_ids": [
+            "45089670483b3cafbc37:char:1000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 3,
+              "first_gold_id": "45089670483b3cafbc37:char:1000",
+              "top_id": "a585ebf9950ac07d09bf:char:6500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "45089670483b3cafbc37:char:1000",
+              "top_id": "45089670483b3cafbc37:char:1000"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "45089670483b3cafbc37:char:1000",
+              "top_id": "45089670483b3cafbc37:char:1000"
+            }
+          }
+        },
+        {
+          "id": "fresh-66",
+          "gold_ids": [
+            "a135226cc8c31c92c0c4:char:7500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:char:7500",
+              "top_id": "a135226cc8c31c92c0c4:char:7500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:char:7500",
+              "top_id": "a135226cc8c31c92c0c4:char:7500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:char:7500",
+              "top_id": "a135226cc8c31c92c0c4:char:7500"
+            }
+          }
+        },
+        {
+          "id": "fresh-67",
+          "gold_ids": [
+            "571fc574631d0b611fd0:char:1500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "571fc574631d0b611fd0:char:1500",
+              "top_id": "571fc574631d0b611fd0:char:1500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "571fc574631d0b611fd0:char:1500",
+              "top_id": "571fc574631d0b611fd0:char:1500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "571fc574631d0b611fd0:char:1500",
+              "top_id": "571fc574631d0b611fd0:char:1500"
+            }
+          }
+        },
+        {
+          "id": "fresh-68",
+          "gold_ids": [
+            "a135226cc8c31c92c0c4:char:3500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:char:3500",
+              "top_id": "a135226cc8c31c92c0c4:char:3500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:char:3500",
+              "top_id": "a135226cc8c31c92c0c4:char:3500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:char:3500",
+              "top_id": "a135226cc8c31c92c0c4:char:3500"
+            }
+          }
+        },
+        {
+          "id": "fresh-70",
+          "gold_ids": [
+            "830f67beeae00e8c6e58:char:4500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "830f67beeae00e8c6e58:char:4500",
+              "top_id": "830f67beeae00e8c6e58:char:4500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "830f67beeae00e8c6e58:char:4500",
+              "top_id": "830f67beeae00e8c6e58:char:4500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "830f67beeae00e8c6e58:char:4500",
+              "top_id": "830f67beeae00e8c6e58:char:4500"
+            }
+          }
+        },
+        {
+          "id": "fresh-71",
+          "gold_ids": [
+            "0257cf8e03c4379c8de3:char:500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:char:500",
+              "top_id": "0257cf8e03c4379c8de3:char:500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:char:500",
+              "top_id": "0257cf8e03c4379c8de3:char:500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:char:500",
+              "top_id": "0257cf8e03c4379c8de3:char:500"
+            }
+          }
+        },
+        {
+          "id": "fresh-72",
+          "gold_ids": [
+            "a135226cc8c31c92c0c4:char:16500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 9,
+              "first_gold_id": "a135226cc8c31c92c0c4:char:16500",
+              "top_id": "a135226cc8c31c92c0c4:char:19000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:char:16500",
+              "top_id": "a135226cc8c31c92c0c4:char:16500"
+            },
+            "rrf": {
+              "rank": 4,
+              "first_gold_id": "a135226cc8c31c92c0c4:char:16500",
+              "top_id": "a135226cc8c31c92c0c4:char:11500"
+            }
+          }
+        },
+        {
+          "id": "fresh-73",
+          "gold_ids": [],
+          "results": {
+            "vector": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "53d538159a41c69a4abd:char:4000"
+            },
+            "bm25": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "53d538159a41c69a4abd:char:6500"
+            },
+            "rrf": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "53d538159a41c69a4abd:char:4000"
+            }
+          }
+        },
+        {
+          "id": "fresh-74",
+          "gold_ids": [
+            "edc5c6106547de4393b4:char:10000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 2,
+              "first_gold_id": "edc5c6106547de4393b4:char:10000",
+              "top_id": "edc5c6106547de4393b4:char:6500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:char:10000",
+              "top_id": "edc5c6106547de4393b4:char:10000"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:char:10000",
+              "top_id": "edc5c6106547de4393b4:char:10000"
+            }
+          }
+        },
+        {
+          "id": "fresh-75",
+          "gold_ids": [
+            "a3f52a1d672ba9d2ec75:char:500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "a3f52a1d672ba9d2ec75:char:500",
+              "top_id": "a3f52a1d672ba9d2ec75:char:500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a3f52a1d672ba9d2ec75:char:500",
+              "top_id": "a3f52a1d672ba9d2ec75:char:500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "a3f52a1d672ba9d2ec75:char:500",
+              "top_id": "a3f52a1d672ba9d2ec75:char:500"
+            }
+          }
+        },
+        {
+          "id": "fresh-76",
+          "gold_ids": [
+            "53d538159a41c69a4abd:char:1000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "53d538159a41c69a4abd:char:1000",
+              "top_id": "53d538159a41c69a4abd:char:1000"
+            },
+            "bm25": {
+              "rank": 2,
+              "first_gold_id": "53d538159a41c69a4abd:char:1000",
+              "top_id": "edc5c6106547de4393b4:char:3500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "53d538159a41c69a4abd:char:1000",
+              "top_id": "53d538159a41c69a4abd:char:1000"
+            }
+          }
+        },
+        {
+          "id": "fresh-77",
+          "gold_ids": [
+            "edc5c6106547de4393b4:char:9500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 4,
+              "first_gold_id": "edc5c6106547de4393b4:char:9500",
+              "top_id": "edc5c6106547de4393b4:char:13000"
+            },
+            "bm25": {
+              "rank": 2,
+              "first_gold_id": "edc5c6106547de4393b4:char:9500",
+              "top_id": "edc5c6106547de4393b4:char:13000"
+            },
+            "rrf": {
+              "rank": 2,
+              "first_gold_id": "edc5c6106547de4393b4:char:9500",
+              "top_id": "edc5c6106547de4393b4:char:13000"
+            }
+          }
+        },
+        {
+          "id": "fresh-79",
+          "gold_ids": [
+            "04a97ceebf6d7e6eecad:char:14000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "04a97ceebf6d7e6eecad:char:14000",
+              "top_id": "04a97ceebf6d7e6eecad:char:14000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "04a97ceebf6d7e6eecad:char:14000",
+              "top_id": "04a97ceebf6d7e6eecad:char:14000"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "04a97ceebf6d7e6eecad:char:14000",
+              "top_id": "04a97ceebf6d7e6eecad:char:14000"
+            }
+          }
+        },
+        {
+          "id": "fresh-80",
+          "gold_ids": [
+            "a135226cc8c31c92c0c4:char:1500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:char:1500",
+              "top_id": "a135226cc8c31c92c0c4:char:1500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:char:1500",
+              "top_id": "a135226cc8c31c92c0c4:char:1500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:char:1500",
+              "top_id": "a135226cc8c31c92c0c4:char:1500"
+            }
+          }
+        },
+        {
+          "id": "fresh-81",
+          "gold_ids": [
+            "6029cff42612abb3e302:char:127500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "6029cff42612abb3e302:char:127500",
+              "top_id": "6029cff42612abb3e302:char:127500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "6029cff42612abb3e302:char:127500",
+              "top_id": "6029cff42612abb3e302:char:127500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "6029cff42612abb3e302:char:127500",
+              "top_id": "6029cff42612abb3e302:char:127500"
+            }
+          }
+        },
+        {
+          "id": "fresh-82",
+          "gold_ids": [
+            "ae7041b6b235e18ca263:char:8500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 3,
+              "first_gold_id": "ae7041b6b235e18ca263:char:8500",
+              "top_id": "ae7041b6b235e18ca263:char:3500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:char:8500",
+              "top_id": "ae7041b6b235e18ca263:char:8500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:char:8500",
+              "top_id": "ae7041b6b235e18ca263:char:8500"
+            }
+          }
+        },
+        {
+          "id": "fresh-83",
+          "gold_ids": [
+            "92468956f4da2a549d29:char:4500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 5,
+              "first_gold_id": "92468956f4da2a549d29:char:4500",
+              "top_id": "92468956f4da2a549d29:char:8500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "92468956f4da2a549d29:char:4500",
+              "top_id": "92468956f4da2a549d29:char:4500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "92468956f4da2a549d29:char:4500",
+              "top_id": "92468956f4da2a549d29:char:4500"
+            }
+          }
+        },
+        {
+          "id": "fresh-84",
+          "gold_ids": [],
+          "results": {
+            "vector": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "8b06b3359434c3a3a3e8:char:86500"
+            },
+            "bm25": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "8b06b3359434c3a3a3e8:char:86500"
+            },
+            "rrf": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "8b06b3359434c3a3a3e8:char:86500"
+            }
+          }
+        },
+        {
+          "id": "fresh-85",
+          "gold_ids": [
+            "6029cff42612abb3e302:char:98500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 4,
+              "first_gold_id": "6029cff42612abb3e302:char:98500",
+              "top_id": "6029cff42612abb3e302:char:129500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "6029cff42612abb3e302:char:98500",
+              "top_id": "6029cff42612abb3e302:char:98500"
+            },
+            "rrf": {
+              "rank": 2,
+              "first_gold_id": "6029cff42612abb3e302:char:98500",
+              "top_id": "6029cff42612abb3e302:char:129500"
+            }
+          }
+        },
+        {
+          "id": "fresh-86",
+          "gold_ids": [
+            "6029cff42612abb3e302:char:28500",
+            "6029cff42612abb3e302:char:29000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 16,
+              "first_gold_id": "6029cff42612abb3e302:char:29000",
+              "top_id": "6029cff42612abb3e302:char:47000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "6029cff42612abb3e302:char:28500",
+              "top_id": "6029cff42612abb3e302:char:28500"
+            },
+            "rrf": {
+              "rank": 2,
+              "first_gold_id": "6029cff42612abb3e302:char:29000",
+              "top_id": "6029cff42612abb3e302:char:56500"
+            }
+          }
+        },
+        {
+          "id": "fresh-87",
+          "gold_ids": [
+            "4b0da308d2ed82ac5742:char:11000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 27,
+              "first_gold_id": "4b0da308d2ed82ac5742:char:11000",
+              "top_id": "edc5c6106547de4393b4:char:9000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:char:11000",
+              "top_id": "4b0da308d2ed82ac5742:char:11000"
+            },
+            "rrf": {
+              "rank": 3,
+              "first_gold_id": "4b0da308d2ed82ac5742:char:11000",
+              "top_id": "edc5c6106547de4393b4:char:6500"
+            }
+          }
+        },
+        {
+          "id": "fresh-88",
+          "gold_ids": [
+            "25d7ca73c8f05db7494e:char:6000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "25d7ca73c8f05db7494e:char:6000",
+              "top_id": "25d7ca73c8f05db7494e:char:6000"
+            },
+            "bm25": {
+              "rank": 2,
+              "first_gold_id": "25d7ca73c8f05db7494e:char:6000",
+              "top_id": "4b0da308d2ed82ac5742:char:29000"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "25d7ca73c8f05db7494e:char:6000",
+              "top_id": "25d7ca73c8f05db7494e:char:6000"
+            }
+          }
+        },
+        {
+          "id": "fresh-89",
+          "gold_ids": [
+            "0fd300255a168e9d9d07:char:11000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "0fd300255a168e9d9d07:char:11000",
+              "top_id": "0fd300255a168e9d9d07:char:11000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "0fd300255a168e9d9d07:char:11000",
+              "top_id": "0fd300255a168e9d9d07:char:11000"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "0fd300255a168e9d9d07:char:11000",
+              "top_id": "0fd300255a168e9d9d07:char:11000"
+            }
+          }
+        },
+        {
+          "id": "fresh-90",
+          "gold_ids": [
+            "6029cff42612abb3e302:char:109500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 10,
+              "first_gold_id": "6029cff42612abb3e302:char:109500",
+              "top_id": "6029cff42612abb3e302:char:79000"
+            },
+            "bm25": {
+              "rank": 2,
+              "first_gold_id": "6029cff42612abb3e302:char:109500",
+              "top_id": "6029cff42612abb3e302:char:110000"
+            },
+            "rrf": {
+              "rank": 5,
+              "first_gold_id": "6029cff42612abb3e302:char:109500",
+              "top_id": "6029cff42612abb3e302:char:79000"
+            }
+          }
+        },
+        {
+          "id": "fresh-91",
+          "gold_ids": [
+            "a135226cc8c31c92c0c4:char:15500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:char:15500",
+              "top_id": "a135226cc8c31c92c0c4:char:15500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:char:15500",
+              "top_id": "a135226cc8c31c92c0c4:char:15500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:char:15500",
+              "top_id": "a135226cc8c31c92c0c4:char:15500"
+            }
+          }
+        },
+        {
+          "id": "fresh-92",
+          "gold_ids": [
+            "e947870ef1f31130b207:char:11500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "e947870ef1f31130b207:char:11500",
+              "top_id": "e947870ef1f31130b207:char:11500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "e947870ef1f31130b207:char:11500",
+              "top_id": "e947870ef1f31130b207:char:11500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "e947870ef1f31130b207:char:11500",
+              "top_id": "e947870ef1f31130b207:char:11500"
+            }
+          }
+        },
+        {
+          "id": "fresh-93",
+          "gold_ids": [
+            "a585ebf9950ac07d09bf:char:4500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 34,
+              "first_gold_id": "a585ebf9950ac07d09bf:char:4500",
+              "top_id": "77975c99b0ef215616d3:char:0"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a585ebf9950ac07d09bf:char:4500",
+              "top_id": "a585ebf9950ac07d09bf:char:4500"
+            },
+            "rrf": {
+              "rank": 8,
+              "first_gold_id": "a585ebf9950ac07d09bf:char:4500",
+              "top_id": "1ae93c8d8975221a2e5a:char:3000"
+            }
+          }
+        },
+        {
+          "id": "fresh-94",
+          "gold_ids": [
+            "92468956f4da2a549d29:char:5500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "92468956f4da2a549d29:char:5500",
+              "top_id": "92468956f4da2a549d29:char:5500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "92468956f4da2a549d29:char:5500",
+              "top_id": "92468956f4da2a549d29:char:5500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "92468956f4da2a549d29:char:5500",
+              "top_id": "92468956f4da2a549d29:char:5500"
+            }
+          }
+        },
+        {
+          "id": "fresh-95",
+          "gold_ids": [
+            "a135226cc8c31c92c0c4:char:4000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 52,
+              "first_gold_id": "a135226cc8c31c92c0c4:char:4000",
+              "top_id": "1ae93c8d8975221a2e5a:char:15000"
+            },
+            "bm25": {
+              "rank": 4,
+              "first_gold_id": "a135226cc8c31c92c0c4:char:4000",
+              "top_id": "1ae93c8d8975221a2e5a:char:15000"
+            },
+            "rrf": {
+              "rank": 16,
+              "first_gold_id": "a135226cc8c31c92c0c4:char:4000",
+              "top_id": "1ae93c8d8975221a2e5a:char:15000"
+            }
+          }
+        },
+        {
+          "id": "fresh-96",
+          "gold_ids": [
+            "1ae93c8d8975221a2e5a:char:9000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "1ae93c8d8975221a2e5a:char:9000",
+              "top_id": "1ae93c8d8975221a2e5a:char:9000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "1ae93c8d8975221a2e5a:char:9000",
+              "top_id": "1ae93c8d8975221a2e5a:char:9000"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "1ae93c8d8975221a2e5a:char:9000",
+              "top_id": "1ae93c8d8975221a2e5a:char:9000"
+            }
+          }
+        },
+        {
+          "id": "fresh-97",
+          "gold_ids": [
+            "1ae93c8d8975221a2e5a:char:12000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "1ae93c8d8975221a2e5a:char:12000",
+              "top_id": "1ae93c8d8975221a2e5a:char:12000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "1ae93c8d8975221a2e5a:char:12000",
+              "top_id": "1ae93c8d8975221a2e5a:char:12000"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "1ae93c8d8975221a2e5a:char:12000",
+              "top_id": "1ae93c8d8975221a2e5a:char:12000"
+            }
+          }
+        },
+        {
+          "id": "fresh-98",
+          "gold_ids": [],
+          "results": {
+            "vector": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "8b06b3359434c3a3a3e8:char:0"
+            },
+            "bm25": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "8b06b3359434c3a3a3e8:char:63000"
+            },
+            "rrf": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "92468956f4da2a549d29:char:7000"
+            }
+          }
+        },
+        {
+          "id": "fresh-99",
+          "gold_ids": [
+            "4b0da308d2ed82ac5742:char:23500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 4,
+              "first_gold_id": "4b0da308d2ed82ac5742:char:23500",
+              "top_id": "8b06b3359434c3a3a3e8:char:88000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:char:23500",
+              "top_id": "4b0da308d2ed82ac5742:char:23500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:char:23500",
+              "top_id": "4b0da308d2ed82ac5742:char:23500"
+            }
+          }
+        },
+        {
+          "id": "fresh-100",
+          "gold_ids": [],
+          "results": {
+            "vector": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "838db35d7fd62ffcedaa:char:5500"
+            },
+            "bm25": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "4b0da308d2ed82ac5742:char:16000"
+            },
+            "rrf": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "4b0da308d2ed82ac5742:char:16000"
+            }
+          }
+        },
+        {
+          "id": "fresh-101",
+          "gold_ids": [
+            "4b0da308d2ed82ac5742:char:18000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:char:18000",
+              "top_id": "4b0da308d2ed82ac5742:char:18000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:char:18000",
+              "top_id": "4b0da308d2ed82ac5742:char:18000"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:char:18000",
+              "top_id": "4b0da308d2ed82ac5742:char:18000"
+            }
+          }
+        },
+        {
+          "id": "fresh-105",
+          "gold_ids": [
+            "ae7041b6b235e18ca263:char:3500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:char:3500",
+              "top_id": "ae7041b6b235e18ca263:char:3500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:char:3500",
+              "top_id": "ae7041b6b235e18ca263:char:3500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:char:3500",
+              "top_id": "ae7041b6b235e18ca263:char:3500"
+            }
+          }
+        },
+        {
+          "id": "fresh-106",
+          "gold_ids": [
+            "80f612ed68a026491024:char:0"
+          ],
+          "results": {
+            "vector": {
+              "rank": 2,
+              "first_gold_id": "80f612ed68a026491024:char:0",
+              "top_id": "80f612ed68a026491024:char:2000"
+            },
+            "bm25": {
+              "rank": 2,
+              "first_gold_id": "80f612ed68a026491024:char:0",
+              "top_id": "80f612ed68a026491024:char:2000"
+            },
+            "rrf": {
+              "rank": 2,
+              "first_gold_id": "80f612ed68a026491024:char:0",
+              "top_id": "80f612ed68a026491024:char:2000"
+            }
+          }
+        },
+        {
+          "id": "fresh-107",
+          "gold_ids": [
+            "4b0da308d2ed82ac5742:char:5500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 5,
+              "first_gold_id": "4b0da308d2ed82ac5742:char:5500",
+              "top_id": "edc5c6106547de4393b4:char:6000"
+            },
+            "bm25": {
+              "rank": 15,
+              "first_gold_id": "4b0da308d2ed82ac5742:char:5500",
+              "top_id": "edc5c6106547de4393b4:char:14000"
+            },
+            "rrf": {
+              "rank": 6,
+              "first_gold_id": "4b0da308d2ed82ac5742:char:5500",
+              "top_id": "edc5c6106547de4393b4:char:6000"
+            }
+          }
+        },
+        {
+          "id": "fresh-108",
+          "gold_ids": [
+            "0b36482c4e06ce7ad788:char:19000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "0b36482c4e06ce7ad788:char:19000",
+              "top_id": "0b36482c4e06ce7ad788:char:19000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "0b36482c4e06ce7ad788:char:19000",
+              "top_id": "0b36482c4e06ce7ad788:char:19000"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "0b36482c4e06ce7ad788:char:19000",
+              "top_id": "0b36482c4e06ce7ad788:char:19000"
+            }
+          }
+        },
+        {
+          "id": "fresh-109",
+          "gold_ids": [
+            "6029cff42612abb3e302:char:71000"
+          ],
+          "results": {
+            "vector": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "6029cff42612abb3e302:char:71500"
+            },
+            "bm25": {
+              "rank": 2,
+              "first_gold_id": "6029cff42612abb3e302:char:71000",
+              "top_id": "6029cff42612abb3e302:char:71500"
+            },
+            "rrf": {
+              "rank": 32,
+              "first_gold_id": "6029cff42612abb3e302:char:71000",
+              "top_id": "6029cff42612abb3e302:char:71500"
+            }
+          }
+        },
+        {
+          "id": "fresh-112",
+          "gold_ids": [
+            "838db35d7fd62ffcedaa:char:500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 3,
+              "first_gold_id": "838db35d7fd62ffcedaa:char:500",
+              "top_id": "838db35d7fd62ffcedaa:char:13500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "838db35d7fd62ffcedaa:char:500",
+              "top_id": "838db35d7fd62ffcedaa:char:500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "838db35d7fd62ffcedaa:char:500",
+              "top_id": "838db35d7fd62ffcedaa:char:500"
+            }
+          }
+        },
+        {
+          "id": "fresh-113",
+          "gold_ids": [
+            "0fd300255a168e9d9d07:char:3500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "0fd300255a168e9d9d07:char:3500",
+              "top_id": "0fd300255a168e9d9d07:char:3500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "0fd300255a168e9d9d07:char:3500",
+              "top_id": "0fd300255a168e9d9d07:char:3500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "0fd300255a168e9d9d07:char:3500",
+              "top_id": "0fd300255a168e9d9d07:char:3500"
+            }
+          }
+        },
+        {
+          "id": "fresh-114",
+          "gold_ids": [
+            "0fd300255a168e9d9d07:char:3000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "0fd300255a168e9d9d07:char:3000",
+              "top_id": "0fd300255a168e9d9d07:char:3000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "0fd300255a168e9d9d07:char:3000",
+              "top_id": "0fd300255a168e9d9d07:char:3000"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "0fd300255a168e9d9d07:char:3000",
+              "top_id": "0fd300255a168e9d9d07:char:3000"
+            }
+          }
+        },
+        {
+          "id": "fresh-115",
+          "gold_ids": [
+            "d162c1f339bc543958ae:char:4500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 10,
+              "first_gold_id": "d162c1f339bc543958ae:char:4500",
+              "top_id": "d162c1f339bc543958ae:char:1500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "d162c1f339bc543958ae:char:4500",
+              "top_id": "d162c1f339bc543958ae:char:4500"
+            },
+            "rrf": {
+              "rank": 3,
+              "first_gold_id": "d162c1f339bc543958ae:char:4500",
+              "top_id": "d162c1f339bc543958ae:char:4000"
+            }
+          }
+        },
+        {
+          "id": "fresh-117",
+          "gold_ids": [
+            "830f67beeae00e8c6e58:char:6000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 6,
+              "first_gold_id": "830f67beeae00e8c6e58:char:6000",
+              "top_id": "830f67beeae00e8c6e58:char:9500"
+            },
+            "bm25": {
+              "rank": 2,
+              "first_gold_id": "830f67beeae00e8c6e58:char:6000",
+              "top_id": "830f67beeae00e8c6e58:char:15000"
+            },
+            "rrf": {
+              "rank": 2,
+              "first_gold_id": "830f67beeae00e8c6e58:char:6000",
+              "top_id": "830f67beeae00e8c6e58:char:15000"
+            }
+          }
+        },
+        {
+          "id": "fresh-118",
+          "gold_ids": [
+            "228f381fb3622230987d:char:3500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 8,
+              "first_gold_id": "228f381fb3622230987d:char:3500",
+              "top_id": "228f381fb3622230987d:char:1500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "228f381fb3622230987d:char:3500",
+              "top_id": "228f381fb3622230987d:char:3500"
+            },
+            "rrf": {
+              "rank": 3,
+              "first_gold_id": "228f381fb3622230987d:char:3500",
+              "top_id": "228f381fb3622230987d:char:1500"
+            }
+          }
+        },
+        {
+          "id": "fresh-120",
+          "gold_ids": [
+            "4b0da308d2ed82ac5742:char:5000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 14,
+              "first_gold_id": "4b0da308d2ed82ac5742:char:5000",
+              "top_id": "25d7ca73c8f05db7494e:char:6000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:char:5000",
+              "top_id": "4b0da308d2ed82ac5742:char:5000"
+            },
+            "rrf": {
+              "rank": 2,
+              "first_gold_id": "4b0da308d2ed82ac5742:char:5000",
+              "top_id": "8b06b3359434c3a3a3e8:char:0"
+            }
+          }
+        },
+        {
+          "id": "fresh-121",
+          "gold_ids": [
+            "25d7ca73c8f05db7494e:char:11500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "25d7ca73c8f05db7494e:char:11500",
+              "top_id": "25d7ca73c8f05db7494e:char:11500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "25d7ca73c8f05db7494e:char:11500",
+              "top_id": "25d7ca73c8f05db7494e:char:11500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "25d7ca73c8f05db7494e:char:11500",
+              "top_id": "25d7ca73c8f05db7494e:char:11500"
+            }
+          }
+        },
+        {
+          "id": "fresh-122",
+          "gold_ids": [
+            "edc5c6106547de4393b4:char:3500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:char:3500",
+              "top_id": "edc5c6106547de4393b4:char:3500"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:char:3500",
+              "top_id": "edc5c6106547de4393b4:char:3500"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:char:3500",
+              "top_id": "edc5c6106547de4393b4:char:3500"
+            }
+          }
+        },
+        {
+          "id": "fresh-123",
+          "gold_ids": [
+            "92468956f4da2a549d29:char:8000"
+          ],
+          "results": {
+            "vector": {
+              "rank": 5,
+              "first_gold_id": "92468956f4da2a549d29:char:8000",
+              "top_id": "92468956f4da2a549d29:char:4000"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "92468956f4da2a549d29:char:8000",
+              "top_id": "92468956f4da2a549d29:char:8000"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "92468956f4da2a549d29:char:8000",
+              "top_id": "92468956f4da2a549d29:char:8000"
+            }
+          }
+        },
+        {
+          "id": "fresh-124",
+          "gold_ids": [
+            "1eaad13bb8e4b8144c1a:char:3500"
+          ],
+          "results": {
+            "vector": {
+              "rank": 27,
+              "first_gold_id": "1eaad13bb8e4b8144c1a:char:3500",
+              "top_id": "1eaad13bb8e4b8144c1a:char:0"
+            },
+            "bm25": {
+              "rank": 2,
+              "first_gold_id": "1eaad13bb8e4b8144c1a:char:3500",
+              "top_id": "1eaad13bb8e4b8144c1a:char:3000"
+            },
+            "rrf": {
+              "rank": 2,
+              "first_gold_id": "1eaad13bb8e4b8144c1a:char:3500",
+              "top_id": "1eaad13bb8e4b8144c1a:char:3000"
+            }
+          }
+        }
+      ]
+    },
+    "structure": {
+      "question_count": 104,
+      "chunk_count": 8223,
+      "gold_coverage": 104,
+      "depth": 100,
+      "rrf_constant": 60,
+      "metrics": {
+        "vector": {
+          "hits": {
+            "1": 85,
+            "3": 95,
+            "5": 98,
+            "10": 103
+          },
+          "recall": {
+            "1": 0.8173076923076923,
+            "3": 0.9134615384615384,
+            "5": 0.9423076923076923,
+            "10": 0.9903846153846154
+          }
+        },
+        "bm25": {
+          "hits": {
+            "1": 95,
+            "3": 101,
+            "5": 103,
+            "10": 103
+          },
+          "recall": {
+            "1": 0.9134615384615384,
+            "3": 0.9711538461538461,
+            "5": 0.9903846153846154,
+            "10": 0.9903846153846154
+          }
+        },
+        "rrf": {
+          "hits": {
+            "1": 95,
+            "3": 103,
+            "5": 103,
+            "10": 103
+          },
+          "recall": {
+            "1": 0.9134615384615384,
+            "3": 0.9903846153846154,
+            "5": 0.9903846153846154,
+            "10": 0.9903846153846154
+          }
+        }
+      },
+      "questions": [
+        {
+          "id": "fresh-0",
+          "gold_ids": [
+            "0257cf8e03c4379c8de3:structure:3115"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:structure:3115",
+              "top_id": "0257cf8e03c4379c8de3:structure:3115"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:structure:3115",
+              "top_id": "0257cf8e03c4379c8de3:structure:3115"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:structure:3115",
+              "top_id": "0257cf8e03c4379c8de3:structure:3115"
+            }
+          }
+        },
+        {
+          "id": "fresh-2",
+          "gold_ids": [
+            "edc5c6106547de4393b4:structure:5213"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:structure:5213",
+              "top_id": "edc5c6106547de4393b4:structure:5213"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:structure:5213",
+              "top_id": "edc5c6106547de4393b4:structure:5213"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:structure:5213",
+              "top_id": "edc5c6106547de4393b4:structure:5213"
+            }
+          }
+        },
+        {
+          "id": "fresh-3",
+          "gold_ids": [
+            "0257cf8e03c4379c8de3:structure:3010"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:structure:3010",
+              "top_id": "0257cf8e03c4379c8de3:structure:3010"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:structure:3010",
+              "top_id": "0257cf8e03c4379c8de3:structure:3010"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:structure:3010",
+              "top_id": "0257cf8e03c4379c8de3:structure:3010"
+            }
+          }
+        },
+        {
+          "id": "fresh-4",
+          "gold_ids": [
+            "0b36482c4e06ce7ad788:structure:2472"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "0b36482c4e06ce7ad788:structure:2472",
+              "top_id": "0b36482c4e06ce7ad788:structure:2472"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "0b36482c4e06ce7ad788:structure:2472",
+              "top_id": "0b36482c4e06ce7ad788:structure:2472"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "0b36482c4e06ce7ad788:structure:2472",
+              "top_id": "0b36482c4e06ce7ad788:structure:2472"
+            }
+          }
+        },
+        {
+          "id": "fresh-5",
+          "gold_ids": [
+            "1eaad13bb8e4b8144c1a:structure:4091"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "1eaad13bb8e4b8144c1a:structure:4091",
+              "top_id": "1eaad13bb8e4b8144c1a:structure:4091"
+            },
+            "bm25": {
+              "rank": 2,
+              "first_gold_id": "1eaad13bb8e4b8144c1a:structure:4091",
+              "top_id": "1ae93c8d8975221a2e5a:structure:4056"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "1eaad13bb8e4b8144c1a:structure:4091",
+              "top_id": "1eaad13bb8e4b8144c1a:structure:4091"
+            }
+          }
+        },
+        {
+          "id": "fresh-7",
+          "gold_ids": [
+            "5c4f2af7123b097e4ffd:structure:5119"
+          ],
+          "results": {
+            "vector": {
+              "rank": 2,
+              "first_gold_id": "5c4f2af7123b097e4ffd:structure:5119",
+              "top_id": "5c4f2af7123b097e4ffd:structure:7277"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "5c4f2af7123b097e4ffd:structure:5119",
+              "top_id": "5c4f2af7123b097e4ffd:structure:5119"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "5c4f2af7123b097e4ffd:structure:5119",
+              "top_id": "5c4f2af7123b097e4ffd:structure:5119"
+            }
+          }
+        },
+        {
+          "id": "fresh-8",
+          "gold_ids": [
+            "a3f52a1d672ba9d2ec75:structure:14834"
+          ],
+          "results": {
+            "vector": {
+              "rank": 2,
+              "first_gold_id": "a3f52a1d672ba9d2ec75:structure:14834",
+              "top_id": "a3f52a1d672ba9d2ec75:structure:1520"
+            },
+            "bm25": {
+              "rank": 2,
+              "first_gold_id": "a3f52a1d672ba9d2ec75:structure:14834",
+              "top_id": "a3f52a1d672ba9d2ec75:structure:13779"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "a3f52a1d672ba9d2ec75:structure:14834",
+              "top_id": "a3f52a1d672ba9d2ec75:structure:14834"
+            }
+          }
+        },
+        {
+          "id": "fresh-9",
+          "gold_ids": [
+            "1ae93c8d8975221a2e5a:structure:8258"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "1ae93c8d8975221a2e5a:structure:8258",
+              "top_id": "1ae93c8d8975221a2e5a:structure:8258"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "1ae93c8d8975221a2e5a:structure:8258",
+              "top_id": "1ae93c8d8975221a2e5a:structure:8258"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "1ae93c8d8975221a2e5a:structure:8258",
+              "top_id": "1ae93c8d8975221a2e5a:structure:8258"
+            }
+          }
+        },
+        {
+          "id": "fresh-10",
+          "gold_ids": [
+            "ae7041b6b235e18ca263:structure:2562"
+          ],
+          "results": {
+            "vector": {
+              "rank": 2,
+              "first_gold_id": "ae7041b6b235e18ca263:structure:2562",
+              "top_id": "ae7041b6b235e18ca263:structure:2358"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:structure:2562",
+              "top_id": "ae7041b6b235e18ca263:structure:2562"
+            },
+            "rrf": {
+              "rank": 2,
+              "first_gold_id": "ae7041b6b235e18ca263:structure:2562",
+              "top_id": "ae7041b6b235e18ca263:structure:2358"
+            }
+          }
+        },
+        {
+          "id": "fresh-13",
+          "gold_ids": [
+            "1eaad13bb8e4b8144c1a:structure:5633"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "1eaad13bb8e4b8144c1a:structure:5633",
+              "top_id": "1eaad13bb8e4b8144c1a:structure:5633"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "1eaad13bb8e4b8144c1a:structure:5633",
+              "top_id": "1eaad13bb8e4b8144c1a:structure:5633"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "1eaad13bb8e4b8144c1a:structure:5633",
+              "top_id": "1eaad13bb8e4b8144c1a:structure:5633"
+            }
+          }
+        },
+        {
+          "id": "fresh-14",
+          "gold_ids": [
+            "a585ebf9950ac07d09bf:structure:4800"
+          ],
+          "results": {
+            "vector": {
+              "rank": 4,
+              "first_gold_id": "a585ebf9950ac07d09bf:structure:4800",
+              "top_id": "a585ebf9950ac07d09bf:structure:0"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a585ebf9950ac07d09bf:structure:4800",
+              "top_id": "a585ebf9950ac07d09bf:structure:4800"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "a585ebf9950ac07d09bf:structure:4800",
+              "top_id": "a585ebf9950ac07d09bf:structure:4800"
+            }
+          }
+        },
+        {
+          "id": "fresh-15",
+          "gold_ids": [
+            "0257cf8e03c4379c8de3:structure:5901"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:structure:5901",
+              "top_id": "0257cf8e03c4379c8de3:structure:5901"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:structure:5901",
+              "top_id": "0257cf8e03c4379c8de3:structure:5901"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:structure:5901",
+              "top_id": "0257cf8e03c4379c8de3:structure:5901"
+            }
+          }
+        },
+        {
+          "id": "fresh-16",
+          "gold_ids": [
+            "04a97ceebf6d7e6eecad:structure:12828"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "04a97ceebf6d7e6eecad:structure:12828",
+              "top_id": "04a97ceebf6d7e6eecad:structure:12828"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "04a97ceebf6d7e6eecad:structure:12828",
+              "top_id": "04a97ceebf6d7e6eecad:structure:12828"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "04a97ceebf6d7e6eecad:structure:12828",
+              "top_id": "04a97ceebf6d7e6eecad:structure:12828"
+            }
+          }
+        },
+        {
+          "id": "fresh-18",
+          "gold_ids": [
+            "1eaad13bb8e4b8144c1a:structure:6255"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "1eaad13bb8e4b8144c1a:structure:6255",
+              "top_id": "1eaad13bb8e4b8144c1a:structure:6255"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "1eaad13bb8e4b8144c1a:structure:6255",
+              "top_id": "1eaad13bb8e4b8144c1a:structure:6255"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "1eaad13bb8e4b8144c1a:structure:6255",
+              "top_id": "1eaad13bb8e4b8144c1a:structure:6255"
+            }
+          }
+        },
+        {
+          "id": "fresh-19",
+          "gold_ids": [
+            "1baf644abb5e90b40c4f:structure:13089"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "1baf644abb5e90b40c4f:structure:13089",
+              "top_id": "1baf644abb5e90b40c4f:structure:13089"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "1baf644abb5e90b40c4f:structure:13089",
+              "top_id": "1baf644abb5e90b40c4f:structure:13089"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "1baf644abb5e90b40c4f:structure:13089",
+              "top_id": "1baf644abb5e90b40c4f:structure:13089"
+            }
+          }
+        },
+        {
+          "id": "fresh-20",
+          "gold_ids": [
+            "77975c99b0ef215616d3:structure:25608"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "77975c99b0ef215616d3:structure:25608",
+              "top_id": "77975c99b0ef215616d3:structure:25608"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "77975c99b0ef215616d3:structure:25608",
+              "top_id": "77975c99b0ef215616d3:structure:25608"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "77975c99b0ef215616d3:structure:25608",
+              "top_id": "77975c99b0ef215616d3:structure:25608"
+            }
+          }
+        },
+        {
+          "id": "fresh-21",
+          "gold_ids": [
+            "41f84b9493627a547c34:structure:1408"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "41f84b9493627a547c34:structure:1408",
+              "top_id": "41f84b9493627a547c34:structure:1408"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "41f84b9493627a547c34:structure:1408",
+              "top_id": "41f84b9493627a547c34:structure:1408"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "41f84b9493627a547c34:structure:1408",
+              "top_id": "41f84b9493627a547c34:structure:1408"
+            }
+          }
+        },
+        {
+          "id": "fresh-22",
+          "gold_ids": [
+            "1baf644abb5e90b40c4f:structure:5537"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "1baf644abb5e90b40c4f:structure:5537",
+              "top_id": "1baf644abb5e90b40c4f:structure:5537"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "1baf644abb5e90b40c4f:structure:5537",
+              "top_id": "1baf644abb5e90b40c4f:structure:5537"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "1baf644abb5e90b40c4f:structure:5537",
+              "top_id": "1baf644abb5e90b40c4f:structure:5537"
+            }
+          }
+        },
+        {
+          "id": "fresh-23",
+          "gold_ids": [
+            "0257cf8e03c4379c8de3:structure:1643"
+          ],
+          "results": {
+            "vector": {
+              "rank": 10,
+              "first_gold_id": "0257cf8e03c4379c8de3:structure:1643",
+              "top_id": "1eaad13bb8e4b8144c1a:structure:2306"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:structure:1643",
+              "top_id": "0257cf8e03c4379c8de3:structure:1643"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:structure:1643",
+              "top_id": "0257cf8e03c4379c8de3:structure:1643"
+            }
+          }
+        },
+        {
+          "id": "fresh-24",
+          "gold_ids": [
+            "6029cff42612abb3e302:structure:121903"
+          ],
+          "results": {
+            "vector": {
+              "rank": 8,
+              "first_gold_id": "6029cff42612abb3e302:structure:121903",
+              "top_id": "6029cff42612abb3e302:structure:169287"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "6029cff42612abb3e302:structure:121903",
+              "top_id": "6029cff42612abb3e302:structure:121903"
+            },
+            "rrf": {
+              "rank": 2,
+              "first_gold_id": "6029cff42612abb3e302:structure:121903",
+              "top_id": "6029cff42612abb3e302:structure:123260"
+            }
+          }
+        },
+        {
+          "id": "fresh-25",
+          "gold_ids": [
+            "4b0da308d2ed82ac5742:structure:11964"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:structure:11964",
+              "top_id": "4b0da308d2ed82ac5742:structure:11964"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:structure:11964",
+              "top_id": "4b0da308d2ed82ac5742:structure:11964"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:structure:11964",
+              "top_id": "4b0da308d2ed82ac5742:structure:11964"
+            }
+          }
+        },
+        {
+          "id": "fresh-26",
+          "gold_ids": [
+            "25d7ca73c8f05db7494e:structure:14654"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "25d7ca73c8f05db7494e:structure:14654",
+              "top_id": "25d7ca73c8f05db7494e:structure:14654"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "25d7ca73c8f05db7494e:structure:14654",
+              "top_id": "25d7ca73c8f05db7494e:structure:14654"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "25d7ca73c8f05db7494e:structure:14654",
+              "top_id": "25d7ca73c8f05db7494e:structure:14654"
+            }
+          }
+        },
+        {
+          "id": "fresh-27",
+          "gold_ids": [
+            "571fc574631d0b611fd0:structure:8496"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "571fc574631d0b611fd0:structure:8496",
+              "top_id": "571fc574631d0b611fd0:structure:8496"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "571fc574631d0b611fd0:structure:8496",
+              "top_id": "571fc574631d0b611fd0:structure:8496"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "571fc574631d0b611fd0:structure:8496",
+              "top_id": "571fc574631d0b611fd0:structure:8496"
+            }
+          }
+        },
+        {
+          "id": "fresh-30",
+          "gold_ids": [
+            "5c4f2af7123b097e4ffd:structure:1586"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "5c4f2af7123b097e4ffd:structure:1586",
+              "top_id": "5c4f2af7123b097e4ffd:structure:1586"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "5c4f2af7123b097e4ffd:structure:1586",
+              "top_id": "5c4f2af7123b097e4ffd:structure:1586"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "5c4f2af7123b097e4ffd:structure:1586",
+              "top_id": "5c4f2af7123b097e4ffd:structure:1586"
+            }
+          }
+        },
+        {
+          "id": "fresh-31",
+          "gold_ids": [
+            "edc5c6106547de4393b4:structure:11403"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:structure:11403",
+              "top_id": "edc5c6106547de4393b4:structure:11403"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:structure:11403",
+              "top_id": "edc5c6106547de4393b4:structure:11403"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:structure:11403",
+              "top_id": "edc5c6106547de4393b4:structure:11403"
+            }
+          }
+        },
+        {
+          "id": "fresh-32",
+          "gold_ids": [
+            "41f84b9493627a547c34:structure:1291"
+          ],
+          "results": {
+            "vector": {
+              "rank": 3,
+              "first_gold_id": "41f84b9493627a547c34:structure:1291",
+              "top_id": "41f84b9493627a547c34:structure:5855"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "41f84b9493627a547c34:structure:1291",
+              "top_id": "41f84b9493627a547c34:structure:1291"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "41f84b9493627a547c34:structure:1291",
+              "top_id": "41f84b9493627a547c34:structure:1291"
+            }
+          }
+        },
+        {
+          "id": "fresh-33",
+          "gold_ids": [
+            "0fd300255a168e9d9d07:structure:12684"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "0fd300255a168e9d9d07:structure:12684",
+              "top_id": "0fd300255a168e9d9d07:structure:12684"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "0fd300255a168e9d9d07:structure:12684",
+              "top_id": "0fd300255a168e9d9d07:structure:12684"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "0fd300255a168e9d9d07:structure:12684",
+              "top_id": "0fd300255a168e9d9d07:structure:12684"
+            }
+          }
+        },
+        {
+          "id": "fresh-34",
+          "gold_ids": [
+            "ae7041b6b235e18ca263:structure:7171"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:structure:7171",
+              "top_id": "ae7041b6b235e18ca263:structure:7171"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:structure:7171",
+              "top_id": "ae7041b6b235e18ca263:structure:7171"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:structure:7171",
+              "top_id": "ae7041b6b235e18ca263:structure:7171"
+            }
+          }
+        },
+        {
+          "id": "fresh-35",
+          "gold_ids": [
+            "1ae93c8d8975221a2e5a:structure:31265"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "1ae93c8d8975221a2e5a:structure:31265",
+              "top_id": "1ae93c8d8975221a2e5a:structure:31265"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "1ae93c8d8975221a2e5a:structure:31265",
+              "top_id": "1ae93c8d8975221a2e5a:structure:31265"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "1ae93c8d8975221a2e5a:structure:31265",
+              "top_id": "1ae93c8d8975221a2e5a:structure:31265"
+            }
+          }
+        },
+        {
+          "id": "fresh-38",
+          "gold_ids": [
+            "a135226cc8c31c92c0c4:structure:11200"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:structure:11200",
+              "top_id": "a135226cc8c31c92c0c4:structure:11200"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:structure:11200",
+              "top_id": "a135226cc8c31c92c0c4:structure:11200"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:structure:11200",
+              "top_id": "a135226cc8c31c92c0c4:structure:11200"
+            }
+          }
+        },
+        {
+          "id": "fresh-39",
+          "gold_ids": [
+            "a585ebf9950ac07d09bf:structure:963"
+          ],
+          "results": {
+            "vector": {
+              "rank": 4,
+              "first_gold_id": "a585ebf9950ac07d09bf:structure:963",
+              "top_id": "a585ebf9950ac07d09bf:structure:0"
+            },
+            "bm25": {
+              "rank": 4,
+              "first_gold_id": "a585ebf9950ac07d09bf:structure:963",
+              "top_id": "6029cff42612abb3e302:structure:95255"
+            },
+            "rrf": {
+              "rank": 2,
+              "first_gold_id": "a585ebf9950ac07d09bf:structure:963",
+              "top_id": "a585ebf9950ac07d09bf:structure:0"
+            }
+          }
+        },
+        {
+          "id": "fresh-40",
+          "gold_ids": [
+            "a3f52a1d672ba9d2ec75:structure:2332"
+          ],
+          "results": {
+            "vector": {
+              "rank": 13,
+              "first_gold_id": "a3f52a1d672ba9d2ec75:structure:2332",
+              "top_id": "a3f52a1d672ba9d2ec75:structure:0"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a3f52a1d672ba9d2ec75:structure:2332",
+              "top_id": "a3f52a1d672ba9d2ec75:structure:2332"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "a3f52a1d672ba9d2ec75:structure:2332",
+              "top_id": "a3f52a1d672ba9d2ec75:structure:2332"
+            }
+          }
+        },
+        {
+          "id": "fresh-41",
+          "gold_ids": [
+            "25d7ca73c8f05db7494e:structure:8324"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "25d7ca73c8f05db7494e:structure:8324",
+              "top_id": "25d7ca73c8f05db7494e:structure:8324"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "25d7ca73c8f05db7494e:structure:8324",
+              "top_id": "25d7ca73c8f05db7494e:structure:8324"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "25d7ca73c8f05db7494e:structure:8324",
+              "top_id": "25d7ca73c8f05db7494e:structure:8324"
+            }
+          }
+        },
+        {
+          "id": "fresh-42",
+          "gold_ids": [
+            "a135226cc8c31c92c0c4:structure:7085"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:structure:7085",
+              "top_id": "a135226cc8c31c92c0c4:structure:7085"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:structure:7085",
+              "top_id": "a135226cc8c31c92c0c4:structure:7085"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:structure:7085",
+              "top_id": "a135226cc8c31c92c0c4:structure:7085"
+            }
+          }
+        },
+        {
+          "id": "fresh-43",
+          "gold_ids": [
+            "8b06b3359434c3a3a3e8:structure:3293"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "8b06b3359434c3a3a3e8:structure:3293",
+              "top_id": "8b06b3359434c3a3a3e8:structure:3293"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "8b06b3359434c3a3a3e8:structure:3293",
+              "top_id": "8b06b3359434c3a3a3e8:structure:3293"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "8b06b3359434c3a3a3e8:structure:3293",
+              "top_id": "8b06b3359434c3a3a3e8:structure:3293"
+            }
+          }
+        },
+        {
+          "id": "fresh-44",
+          "gold_ids": [
+            "068a826fca78f9d22a28:structure:24770"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "068a826fca78f9d22a28:structure:24770",
+              "top_id": "068a826fca78f9d22a28:structure:24770"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "068a826fca78f9d22a28:structure:24770",
+              "top_id": "068a826fca78f9d22a28:structure:24770"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "068a826fca78f9d22a28:structure:24770",
+              "top_id": "068a826fca78f9d22a28:structure:24770"
+            }
+          }
+        },
+        {
+          "id": "fresh-45",
+          "gold_ids": [
+            "5c4f2af7123b097e4ffd:structure:5858"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "5c4f2af7123b097e4ffd:structure:5858",
+              "top_id": "5c4f2af7123b097e4ffd:structure:5858"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "5c4f2af7123b097e4ffd:structure:5858",
+              "top_id": "5c4f2af7123b097e4ffd:structure:5858"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "5c4f2af7123b097e4ffd:structure:5858",
+              "top_id": "5c4f2af7123b097e4ffd:structure:5858"
+            }
+          }
+        },
+        {
+          "id": "fresh-46",
+          "gold_ids": [
+            "a3f52a1d672ba9d2ec75:structure:14942"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "a3f52a1d672ba9d2ec75:structure:14942",
+              "top_id": "a3f52a1d672ba9d2ec75:structure:14942"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a3f52a1d672ba9d2ec75:structure:14942",
+              "top_id": "a3f52a1d672ba9d2ec75:structure:14942"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "a3f52a1d672ba9d2ec75:structure:14942",
+              "top_id": "a3f52a1d672ba9d2ec75:structure:14942"
+            }
+          }
+        },
+        {
+          "id": "fresh-47",
+          "gold_ids": [
+            "edc5c6106547de4393b4:structure:10261"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:structure:10261",
+              "top_id": "edc5c6106547de4393b4:structure:10261"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:structure:10261",
+              "top_id": "edc5c6106547de4393b4:structure:10261"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:structure:10261",
+              "top_id": "edc5c6106547de4393b4:structure:10261"
+            }
+          }
+        },
+        {
+          "id": "fresh-48",
+          "gold_ids": [
+            "0257cf8e03c4379c8de3:structure:5690"
+          ],
+          "results": {
+            "vector": {
+              "rank": 4,
+              "first_gold_id": "0257cf8e03c4379c8de3:structure:5690",
+              "top_id": "0257cf8e03c4379c8de3:structure:240"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:structure:5690",
+              "top_id": "0257cf8e03c4379c8de3:structure:5690"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:structure:5690",
+              "top_id": "0257cf8e03c4379c8de3:structure:5690"
+            }
+          }
+        },
+        {
+          "id": "fresh-49",
+          "gold_ids": [
+            "a135226cc8c31c92c0c4:structure:6243"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:structure:6243",
+              "top_id": "a135226cc8c31c92c0c4:structure:6243"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:structure:6243",
+              "top_id": "a135226cc8c31c92c0c4:structure:6243"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:structure:6243",
+              "top_id": "a135226cc8c31c92c0c4:structure:6243"
+            }
+          }
+        },
+        {
+          "id": "fresh-50",
+          "gold_ids": [
+            "5c4f2af7123b097e4ffd:structure:774"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "5c4f2af7123b097e4ffd:structure:774",
+              "top_id": "5c4f2af7123b097e4ffd:structure:774"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "5c4f2af7123b097e4ffd:structure:774",
+              "top_id": "5c4f2af7123b097e4ffd:structure:774"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "5c4f2af7123b097e4ffd:structure:774",
+              "top_id": "5c4f2af7123b097e4ffd:structure:774"
+            }
+          }
+        },
+        {
+          "id": "fresh-51",
+          "gold_ids": [
+            "92468956f4da2a549d29:structure:9926"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "92468956f4da2a549d29:structure:9926",
+              "top_id": "92468956f4da2a549d29:structure:9926"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "92468956f4da2a549d29:structure:9926",
+              "top_id": "92468956f4da2a549d29:structure:9926"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "92468956f4da2a549d29:structure:9926",
+              "top_id": "92468956f4da2a549d29:structure:9926"
+            }
+          }
+        },
+        {
+          "id": "fresh-52",
+          "gold_ids": [
+            "ae7041b6b235e18ca263:structure:5726"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:structure:5726",
+              "top_id": "ae7041b6b235e18ca263:structure:5726"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:structure:5726",
+              "top_id": "ae7041b6b235e18ca263:structure:5726"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:structure:5726",
+              "top_id": "ae7041b6b235e18ca263:structure:5726"
+            }
+          }
+        },
+        {
+          "id": "fresh-53",
+          "gold_ids": [
+            "571fc574631d0b611fd0:structure:14471"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "571fc574631d0b611fd0:structure:14471",
+              "top_id": "571fc574631d0b611fd0:structure:14471"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "571fc574631d0b611fd0:structure:14471",
+              "top_id": "571fc574631d0b611fd0:structure:14471"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "571fc574631d0b611fd0:structure:14471",
+              "top_id": "571fc574631d0b611fd0:structure:14471"
+            }
+          }
+        },
+        {
+          "id": "fresh-54",
+          "gold_ids": [
+            "4b0da308d2ed82ac5742:structure:6349"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:structure:6349",
+              "top_id": "4b0da308d2ed82ac5742:structure:6349"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:structure:6349",
+              "top_id": "4b0da308d2ed82ac5742:structure:6349"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:structure:6349",
+              "top_id": "4b0da308d2ed82ac5742:structure:6349"
+            }
+          }
+        },
+        {
+          "id": "fresh-55",
+          "gold_ids": [
+            "e947870ef1f31130b207:structure:241"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "e947870ef1f31130b207:structure:241",
+              "top_id": "e947870ef1f31130b207:structure:241"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "e947870ef1f31130b207:structure:241",
+              "top_id": "e947870ef1f31130b207:structure:241"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "e947870ef1f31130b207:structure:241",
+              "top_id": "e947870ef1f31130b207:structure:241"
+            }
+          }
+        },
+        {
+          "id": "fresh-57",
+          "gold_ids": [
+            "53d538159a41c69a4abd:structure:4892"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "53d538159a41c69a4abd:structure:4892",
+              "top_id": "53d538159a41c69a4abd:structure:4892"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "53d538159a41c69a4abd:structure:4892",
+              "top_id": "53d538159a41c69a4abd:structure:4892"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "53d538159a41c69a4abd:structure:4892",
+              "top_id": "53d538159a41c69a4abd:structure:4892"
+            }
+          }
+        },
+        {
+          "id": "fresh-58",
+          "gold_ids": [
+            "ae7041b6b235e18ca263:structure:340"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:structure:340",
+              "top_id": "ae7041b6b235e18ca263:structure:340"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:structure:340",
+              "top_id": "ae7041b6b235e18ca263:structure:340"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:structure:340",
+              "top_id": "ae7041b6b235e18ca263:structure:340"
+            }
+          }
+        },
+        {
+          "id": "fresh-60",
+          "gold_ids": [
+            "5c4f2af7123b097e4ffd:structure:4981"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "5c4f2af7123b097e4ffd:structure:4981",
+              "top_id": "5c4f2af7123b097e4ffd:structure:4981"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "5c4f2af7123b097e4ffd:structure:4981",
+              "top_id": "5c4f2af7123b097e4ffd:structure:4981"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "5c4f2af7123b097e4ffd:structure:4981",
+              "top_id": "5c4f2af7123b097e4ffd:structure:4981"
+            }
+          }
+        },
+        {
+          "id": "fresh-61",
+          "gold_ids": [
+            "53d538159a41c69a4abd:structure:2426"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "53d538159a41c69a4abd:structure:2426",
+              "top_id": "53d538159a41c69a4abd:structure:2426"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "53d538159a41c69a4abd:structure:2426",
+              "top_id": "53d538159a41c69a4abd:structure:2426"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "53d538159a41c69a4abd:structure:2426",
+              "top_id": "53d538159a41c69a4abd:structure:2426"
+            }
+          }
+        },
+        {
+          "id": "fresh-63",
+          "gold_ids": [
+            "228f381fb3622230987d:structure:1659"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "228f381fb3622230987d:structure:1659",
+              "top_id": "228f381fb3622230987d:structure:1659"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "228f381fb3622230987d:structure:1659",
+              "top_id": "228f381fb3622230987d:structure:1659"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "228f381fb3622230987d:structure:1659",
+              "top_id": "228f381fb3622230987d:structure:1659"
+            }
+          }
+        },
+        {
+          "id": "fresh-64",
+          "gold_ids": [
+            "0257cf8e03c4379c8de3:structure:3702"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:structure:3702",
+              "top_id": "0257cf8e03c4379c8de3:structure:3702"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:structure:3702",
+              "top_id": "0257cf8e03c4379c8de3:structure:3702"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:structure:3702",
+              "top_id": "0257cf8e03c4379c8de3:structure:3702"
+            }
+          }
+        },
+        {
+          "id": "fresh-65",
+          "gold_ids": [
+            "45089670483b3cafbc37:structure:1061"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "45089670483b3cafbc37:structure:1061",
+              "top_id": "45089670483b3cafbc37:structure:1061"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "45089670483b3cafbc37:structure:1061",
+              "top_id": "45089670483b3cafbc37:structure:1061"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "45089670483b3cafbc37:structure:1061",
+              "top_id": "45089670483b3cafbc37:structure:1061"
+            }
+          }
+        },
+        {
+          "id": "fresh-66",
+          "gold_ids": [
+            "a135226cc8c31c92c0c4:structure:7513"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:structure:7513",
+              "top_id": "a135226cc8c31c92c0c4:structure:7513"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:structure:7513",
+              "top_id": "a135226cc8c31c92c0c4:structure:7513"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:structure:7513",
+              "top_id": "a135226cc8c31c92c0c4:structure:7513"
+            }
+          }
+        },
+        {
+          "id": "fresh-67",
+          "gold_ids": [
+            "571fc574631d0b611fd0:structure:1740"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "571fc574631d0b611fd0:structure:1740",
+              "top_id": "571fc574631d0b611fd0:structure:1740"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "571fc574631d0b611fd0:structure:1740",
+              "top_id": "571fc574631d0b611fd0:structure:1740"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "571fc574631d0b611fd0:structure:1740",
+              "top_id": "571fc574631d0b611fd0:structure:1740"
+            }
+          }
+        },
+        {
+          "id": "fresh-68",
+          "gold_ids": [
+            "a135226cc8c31c92c0c4:structure:3606"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:structure:3606",
+              "top_id": "a135226cc8c31c92c0c4:structure:3606"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:structure:3606",
+              "top_id": "a135226cc8c31c92c0c4:structure:3606"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:structure:3606",
+              "top_id": "a135226cc8c31c92c0c4:structure:3606"
+            }
+          }
+        },
+        {
+          "id": "fresh-70",
+          "gold_ids": [
+            "830f67beeae00e8c6e58:structure:4623"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "830f67beeae00e8c6e58:structure:4623",
+              "top_id": "830f67beeae00e8c6e58:structure:4623"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "830f67beeae00e8c6e58:structure:4623",
+              "top_id": "830f67beeae00e8c6e58:structure:4623"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "830f67beeae00e8c6e58:structure:4623",
+              "top_id": "830f67beeae00e8c6e58:structure:4623"
+            }
+          }
+        },
+        {
+          "id": "fresh-71",
+          "gold_ids": [
+            "0257cf8e03c4379c8de3:structure:644"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:structure:644",
+              "top_id": "0257cf8e03c4379c8de3:structure:644"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:structure:644",
+              "top_id": "0257cf8e03c4379c8de3:structure:644"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "0257cf8e03c4379c8de3:structure:644",
+              "top_id": "0257cf8e03c4379c8de3:structure:644"
+            }
+          }
+        },
+        {
+          "id": "fresh-72",
+          "gold_ids": [
+            "a135226cc8c31c92c0c4:structure:16506"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:structure:16506",
+              "top_id": "a135226cc8c31c92c0c4:structure:16506"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:structure:16506",
+              "top_id": "a135226cc8c31c92c0c4:structure:16506"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:structure:16506",
+              "top_id": "a135226cc8c31c92c0c4:structure:16506"
+            }
+          }
+        },
+        {
+          "id": "fresh-73",
+          "gold_ids": [
+            "53d538159a41c69a4abd:structure:6986"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "53d538159a41c69a4abd:structure:6986",
+              "top_id": "53d538159a41c69a4abd:structure:6986"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "53d538159a41c69a4abd:structure:6986",
+              "top_id": "53d538159a41c69a4abd:structure:6986"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "53d538159a41c69a4abd:structure:6986",
+              "top_id": "53d538159a41c69a4abd:structure:6986"
+            }
+          }
+        },
+        {
+          "id": "fresh-74",
+          "gold_ids": [
+            "edc5c6106547de4393b4:structure:10059"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:structure:10059",
+              "top_id": "edc5c6106547de4393b4:structure:10059"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:structure:10059",
+              "top_id": "edc5c6106547de4393b4:structure:10059"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:structure:10059",
+              "top_id": "edc5c6106547de4393b4:structure:10059"
+            }
+          }
+        },
+        {
+          "id": "fresh-75",
+          "gold_ids": [
+            "a3f52a1d672ba9d2ec75:structure:741"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "a3f52a1d672ba9d2ec75:structure:741",
+              "top_id": "a3f52a1d672ba9d2ec75:structure:741"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a3f52a1d672ba9d2ec75:structure:741",
+              "top_id": "a3f52a1d672ba9d2ec75:structure:741"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "a3f52a1d672ba9d2ec75:structure:741",
+              "top_id": "a3f52a1d672ba9d2ec75:structure:741"
+            }
+          }
+        },
+        {
+          "id": "fresh-76",
+          "gold_ids": [
+            "53d538159a41c69a4abd:structure:1422"
+          ],
+          "results": {
+            "vector": {
+              "rank": 3,
+              "first_gold_id": "53d538159a41c69a4abd:structure:1422",
+              "top_id": "53d538159a41c69a4abd:structure:2655"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "53d538159a41c69a4abd:structure:1422",
+              "top_id": "53d538159a41c69a4abd:structure:1422"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "53d538159a41c69a4abd:structure:1422",
+              "top_id": "53d538159a41c69a4abd:structure:1422"
+            }
+          }
+        },
+        {
+          "id": "fresh-77",
+          "gold_ids": [
+            "edc5c6106547de4393b4:structure:9903"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:structure:9903",
+              "top_id": "edc5c6106547de4393b4:structure:9903"
+            },
+            "bm25": {
+              "rank": 2,
+              "first_gold_id": "edc5c6106547de4393b4:structure:9903",
+              "top_id": "edc5c6106547de4393b4:structure:13214"
+            },
+            "rrf": {
+              "rank": 2,
+              "first_gold_id": "edc5c6106547de4393b4:structure:9903",
+              "top_id": "edc5c6106547de4393b4:structure:13214"
+            }
+          }
+        },
+        {
+          "id": "fresh-79",
+          "gold_ids": [
+            "04a97ceebf6d7e6eecad:structure:14386"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "04a97ceebf6d7e6eecad:structure:14386",
+              "top_id": "04a97ceebf6d7e6eecad:structure:14386"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "04a97ceebf6d7e6eecad:structure:14386",
+              "top_id": "04a97ceebf6d7e6eecad:structure:14386"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "04a97ceebf6d7e6eecad:structure:14386",
+              "top_id": "04a97ceebf6d7e6eecad:structure:14386"
+            }
+          }
+        },
+        {
+          "id": "fresh-80",
+          "gold_ids": [
+            "a135226cc8c31c92c0c4:structure:1830"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:structure:1830",
+              "top_id": "a135226cc8c31c92c0c4:structure:1830"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:structure:1830",
+              "top_id": "a135226cc8c31c92c0c4:structure:1830"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:structure:1830",
+              "top_id": "a135226cc8c31c92c0c4:structure:1830"
+            }
+          }
+        },
+        {
+          "id": "fresh-81",
+          "gold_ids": [
+            "6029cff42612abb3e302:structure:127707"
+          ],
+          "results": {
+            "vector": {
+              "rank": 6,
+              "first_gold_id": "6029cff42612abb3e302:structure:127707",
+              "top_id": "5c4f2af7123b097e4ffd:structure:0"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "6029cff42612abb3e302:structure:127707",
+              "top_id": "6029cff42612abb3e302:structure:127707"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "6029cff42612abb3e302:structure:127707",
+              "top_id": "6029cff42612abb3e302:structure:127707"
+            }
+          }
+        },
+        {
+          "id": "fresh-82",
+          "gold_ids": [
+            "ae7041b6b235e18ca263:structure:8553"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:structure:8553",
+              "top_id": "ae7041b6b235e18ca263:structure:8553"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:structure:8553",
+              "top_id": "ae7041b6b235e18ca263:structure:8553"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:structure:8553",
+              "top_id": "ae7041b6b235e18ca263:structure:8553"
+            }
+          }
+        },
+        {
+          "id": "fresh-83",
+          "gold_ids": [
+            "92468956f4da2a549d29:structure:4734"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "92468956f4da2a549d29:structure:4734",
+              "top_id": "92468956f4da2a549d29:structure:4734"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "92468956f4da2a549d29:structure:4734",
+              "top_id": "92468956f4da2a549d29:structure:4734"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "92468956f4da2a549d29:structure:4734",
+              "top_id": "92468956f4da2a549d29:structure:4734"
+            }
+          }
+        },
+        {
+          "id": "fresh-84",
+          "gold_ids": [
+            "8b06b3359434c3a3a3e8:structure:86909"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "8b06b3359434c3a3a3e8:structure:86909",
+              "top_id": "8b06b3359434c3a3a3e8:structure:86909"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "8b06b3359434c3a3a3e8:structure:86909",
+              "top_id": "8b06b3359434c3a3a3e8:structure:86909"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "8b06b3359434c3a3a3e8:structure:86909",
+              "top_id": "8b06b3359434c3a3a3e8:structure:86909"
+            }
+          }
+        },
+        {
+          "id": "fresh-85",
+          "gold_ids": [
+            "6029cff42612abb3e302:structure:98943"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "6029cff42612abb3e302:structure:98943",
+              "top_id": "6029cff42612abb3e302:structure:98943"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "6029cff42612abb3e302:structure:98943",
+              "top_id": "6029cff42612abb3e302:structure:98943"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "6029cff42612abb3e302:structure:98943",
+              "top_id": "6029cff42612abb3e302:structure:98943"
+            }
+          }
+        },
+        {
+          "id": "fresh-86",
+          "gold_ids": [
+            "6029cff42612abb3e302:structure:29020"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "6029cff42612abb3e302:structure:29020",
+              "top_id": "6029cff42612abb3e302:structure:29020"
+            },
+            "bm25": {
+              "rank": 4,
+              "first_gold_id": "6029cff42612abb3e302:structure:29020",
+              "top_id": "80f612ed68a026491024:structure:2234"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "6029cff42612abb3e302:structure:29020",
+              "top_id": "6029cff42612abb3e302:structure:29020"
+            }
+          }
+        },
+        {
+          "id": "fresh-87",
+          "gold_ids": [
+            "4b0da308d2ed82ac5742:structure:11286"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:structure:11286",
+              "top_id": "4b0da308d2ed82ac5742:structure:11286"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:structure:11286",
+              "top_id": "4b0da308d2ed82ac5742:structure:11286"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:structure:11286",
+              "top_id": "4b0da308d2ed82ac5742:structure:11286"
+            }
+          }
+        },
+        {
+          "id": "fresh-88",
+          "gold_ids": [
+            "25d7ca73c8f05db7494e:structure:6285"
+          ],
+          "results": {
+            "vector": {
+              "rank": 3,
+              "first_gold_id": "25d7ca73c8f05db7494e:structure:6285",
+              "top_id": "25d7ca73c8f05db7494e:structure:4155"
+            },
+            "bm25": {
+              "rank": null,
+              "first_gold_id": null,
+              "top_id": "4b0da308d2ed82ac5742:structure:29273"
+            },
+            "rrf": {
+              "rank": 30,
+              "first_gold_id": "25d7ca73c8f05db7494e:structure:6285",
+              "top_id": "25d7ca73c8f05db7494e:structure:0"
+            }
+          }
+        },
+        {
+          "id": "fresh-89",
+          "gold_ids": [
+            "0fd300255a168e9d9d07:structure:11402"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "0fd300255a168e9d9d07:structure:11402",
+              "top_id": "0fd300255a168e9d9d07:structure:11402"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "0fd300255a168e9d9d07:structure:11402",
+              "top_id": "0fd300255a168e9d9d07:structure:11402"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "0fd300255a168e9d9d07:structure:11402",
+              "top_id": "0fd300255a168e9d9d07:structure:11402"
+            }
+          }
+        },
+        {
+          "id": "fresh-90",
+          "gold_ids": [
+            "6029cff42612abb3e302:structure:109952"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "6029cff42612abb3e302:structure:109952",
+              "top_id": "6029cff42612abb3e302:structure:109952"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "6029cff42612abb3e302:structure:109952",
+              "top_id": "6029cff42612abb3e302:structure:109952"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "6029cff42612abb3e302:structure:109952",
+              "top_id": "6029cff42612abb3e302:structure:109952"
+            }
+          }
+        },
+        {
+          "id": "fresh-91",
+          "gold_ids": [
+            "a135226cc8c31c92c0c4:structure:15597"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:structure:15597",
+              "top_id": "a135226cc8c31c92c0c4:structure:15597"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:structure:15597",
+              "top_id": "a135226cc8c31c92c0c4:structure:15597"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:structure:15597",
+              "top_id": "a135226cc8c31c92c0c4:structure:15597"
+            }
+          }
+        },
+        {
+          "id": "fresh-92",
+          "gold_ids": [
+            "e947870ef1f31130b207:structure:11752"
+          ],
+          "results": {
+            "vector": {
+              "rank": 2,
+              "first_gold_id": "e947870ef1f31130b207:structure:11752",
+              "top_id": "e947870ef1f31130b207:structure:7462"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "e947870ef1f31130b207:structure:11752",
+              "top_id": "e947870ef1f31130b207:structure:11752"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "e947870ef1f31130b207:structure:11752",
+              "top_id": "e947870ef1f31130b207:structure:11752"
+            }
+          }
+        },
+        {
+          "id": "fresh-93",
+          "gold_ids": [
+            "a585ebf9950ac07d09bf:structure:4711"
+          ],
+          "results": {
+            "vector": {
+              "rank": 6,
+              "first_gold_id": "a585ebf9950ac07d09bf:structure:4711",
+              "top_id": "4b0da308d2ed82ac5742:structure:23491"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a585ebf9950ac07d09bf:structure:4711",
+              "top_id": "a585ebf9950ac07d09bf:structure:4711"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "a585ebf9950ac07d09bf:structure:4711",
+              "top_id": "a585ebf9950ac07d09bf:structure:4711"
+            }
+          }
+        },
+        {
+          "id": "fresh-94",
+          "gold_ids": [
+            "92468956f4da2a549d29:structure:5584"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "92468956f4da2a549d29:structure:5584",
+              "top_id": "92468956f4da2a549d29:structure:5584"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "92468956f4da2a549d29:structure:5584",
+              "top_id": "92468956f4da2a549d29:structure:5584"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "92468956f4da2a549d29:structure:5584",
+              "top_id": "92468956f4da2a549d29:structure:5584"
+            }
+          }
+        },
+        {
+          "id": "fresh-95",
+          "gold_ids": [
+            "a135226cc8c31c92c0c4:structure:4372"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:structure:4372",
+              "top_id": "a135226cc8c31c92c0c4:structure:4372"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:structure:4372",
+              "top_id": "a135226cc8c31c92c0c4:structure:4372"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "a135226cc8c31c92c0c4:structure:4372",
+              "top_id": "a135226cc8c31c92c0c4:structure:4372"
+            }
+          }
+        },
+        {
+          "id": "fresh-96",
+          "gold_ids": [
+            "1ae93c8d8975221a2e5a:structure:9114"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "1ae93c8d8975221a2e5a:structure:9114",
+              "top_id": "1ae93c8d8975221a2e5a:structure:9114"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "1ae93c8d8975221a2e5a:structure:9114",
+              "top_id": "1ae93c8d8975221a2e5a:structure:9114"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "1ae93c8d8975221a2e5a:structure:9114",
+              "top_id": "1ae93c8d8975221a2e5a:structure:9114"
+            }
+          }
+        },
+        {
+          "id": "fresh-97",
+          "gold_ids": [
+            "1ae93c8d8975221a2e5a:structure:12205"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "1ae93c8d8975221a2e5a:structure:12205",
+              "top_id": "1ae93c8d8975221a2e5a:structure:12205"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "1ae93c8d8975221a2e5a:structure:12205",
+              "top_id": "1ae93c8d8975221a2e5a:structure:12205"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "1ae93c8d8975221a2e5a:structure:12205",
+              "top_id": "1ae93c8d8975221a2e5a:structure:12205"
+            }
+          }
+        },
+        {
+          "id": "fresh-98",
+          "gold_ids": [
+            "92468956f4da2a549d29:structure:6985"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "92468956f4da2a549d29:structure:6985",
+              "top_id": "92468956f4da2a549d29:structure:6985"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "92468956f4da2a549d29:structure:6985",
+              "top_id": "92468956f4da2a549d29:structure:6985"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "92468956f4da2a549d29:structure:6985",
+              "top_id": "92468956f4da2a549d29:structure:6985"
+            }
+          }
+        },
+        {
+          "id": "fresh-99",
+          "gold_ids": [
+            "4b0da308d2ed82ac5742:structure:23606"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:structure:23606",
+              "top_id": "4b0da308d2ed82ac5742:structure:23606"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:structure:23606",
+              "top_id": "4b0da308d2ed82ac5742:structure:23606"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:structure:23606",
+              "top_id": "4b0da308d2ed82ac5742:structure:23606"
+            }
+          }
+        },
+        {
+          "id": "fresh-100",
+          "gold_ids": [
+            "4b0da308d2ed82ac5742:structure:16399"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:structure:16399",
+              "top_id": "4b0da308d2ed82ac5742:structure:16399"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:structure:16399",
+              "top_id": "4b0da308d2ed82ac5742:structure:16399"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:structure:16399",
+              "top_id": "4b0da308d2ed82ac5742:structure:16399"
+            }
+          }
+        },
+        {
+          "id": "fresh-101",
+          "gold_ids": [
+            "4b0da308d2ed82ac5742:structure:18273"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:structure:18273",
+              "top_id": "4b0da308d2ed82ac5742:structure:18273"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:structure:18273",
+              "top_id": "4b0da308d2ed82ac5742:structure:18273"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:structure:18273",
+              "top_id": "4b0da308d2ed82ac5742:structure:18273"
+            }
+          }
+        },
+        {
+          "id": "fresh-105",
+          "gold_ids": [
+            "ae7041b6b235e18ca263:structure:3842"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:structure:3842",
+              "top_id": "ae7041b6b235e18ca263:structure:3842"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:structure:3842",
+              "top_id": "ae7041b6b235e18ca263:structure:3842"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "ae7041b6b235e18ca263:structure:3842",
+              "top_id": "ae7041b6b235e18ca263:structure:3842"
+            }
+          }
+        },
+        {
+          "id": "fresh-106",
+          "gold_ids": [
+            "80f612ed68a026491024:structure:0"
+          ],
+          "results": {
+            "vector": {
+              "rank": 3,
+              "first_gold_id": "80f612ed68a026491024:structure:0",
+              "top_id": "830f67beeae00e8c6e58:structure:3411"
+            },
+            "bm25": {
+              "rank": 2,
+              "first_gold_id": "80f612ed68a026491024:structure:0",
+              "top_id": "830f67beeae00e8c6e58:structure:3411"
+            },
+            "rrf": {
+              "rank": 2,
+              "first_gold_id": "80f612ed68a026491024:structure:0",
+              "top_id": "830f67beeae00e8c6e58:structure:3411"
+            }
+          }
+        },
+        {
+          "id": "fresh-107",
+          "gold_ids": [
+            "4b0da308d2ed82ac5742:structure:5821"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:structure:5821",
+              "top_id": "4b0da308d2ed82ac5742:structure:5821"
+            },
+            "bm25": {
+              "rank": 2,
+              "first_gold_id": "4b0da308d2ed82ac5742:structure:5821",
+              "top_id": "edc5c6106547de4393b4:structure:14072"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:structure:5821",
+              "top_id": "4b0da308d2ed82ac5742:structure:5821"
+            }
+          }
+        },
+        {
+          "id": "fresh-108",
+          "gold_ids": [
+            "0b36482c4e06ce7ad788:structure:19270"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "0b36482c4e06ce7ad788:structure:19270",
+              "top_id": "0b36482c4e06ce7ad788:structure:19270"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "0b36482c4e06ce7ad788:structure:19270",
+              "top_id": "0b36482c4e06ce7ad788:structure:19270"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "0b36482c4e06ce7ad788:structure:19270",
+              "top_id": "0b36482c4e06ce7ad788:structure:19270"
+            }
+          }
+        },
+        {
+          "id": "fresh-109",
+          "gold_ids": [
+            "6029cff42612abb3e302:structure:71490"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "6029cff42612abb3e302:structure:71490",
+              "top_id": "6029cff42612abb3e302:structure:71490"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "6029cff42612abb3e302:structure:71490",
+              "top_id": "6029cff42612abb3e302:structure:71490"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "6029cff42612abb3e302:structure:71490",
+              "top_id": "6029cff42612abb3e302:structure:71490"
+            }
+          }
+        },
+        {
+          "id": "fresh-112",
+          "gold_ids": [
+            "838db35d7fd62ffcedaa:structure:664"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "838db35d7fd62ffcedaa:structure:664",
+              "top_id": "838db35d7fd62ffcedaa:structure:664"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "838db35d7fd62ffcedaa:structure:664",
+              "top_id": "838db35d7fd62ffcedaa:structure:664"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "838db35d7fd62ffcedaa:structure:664",
+              "top_id": "838db35d7fd62ffcedaa:structure:664"
+            }
+          }
+        },
+        {
+          "id": "fresh-113",
+          "gold_ids": [
+            "0fd300255a168e9d9d07:structure:3588"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "0fd300255a168e9d9d07:structure:3588",
+              "top_id": "0fd300255a168e9d9d07:structure:3588"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "0fd300255a168e9d9d07:structure:3588",
+              "top_id": "0fd300255a168e9d9d07:structure:3588"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "0fd300255a168e9d9d07:structure:3588",
+              "top_id": "0fd300255a168e9d9d07:structure:3588"
+            }
+          }
+        },
+        {
+          "id": "fresh-114",
+          "gold_ids": [
+            "0fd300255a168e9d9d07:structure:3312"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "0fd300255a168e9d9d07:structure:3312",
+              "top_id": "0fd300255a168e9d9d07:structure:3312"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "0fd300255a168e9d9d07:structure:3312",
+              "top_id": "0fd300255a168e9d9d07:structure:3312"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "0fd300255a168e9d9d07:structure:3312",
+              "top_id": "0fd300255a168e9d9d07:structure:3312"
+            }
+          }
+        },
+        {
+          "id": "fresh-115",
+          "gold_ids": [
+            "d162c1f339bc543958ae:structure:4558"
+          ],
+          "results": {
+            "vector": {
+              "rank": 7,
+              "first_gold_id": "d162c1f339bc543958ae:structure:4558",
+              "top_id": "4b0da308d2ed82ac5742:structure:13412"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "d162c1f339bc543958ae:structure:4558",
+              "top_id": "d162c1f339bc543958ae:structure:4558"
+            },
+            "rrf": {
+              "rank": 2,
+              "first_gold_id": "d162c1f339bc543958ae:structure:4558",
+              "top_id": "4b0da308d2ed82ac5742:structure:13412"
+            }
+          }
+        },
+        {
+          "id": "fresh-117",
+          "gold_ids": [
+            "830f67beeae00e8c6e58:structure:6246"
+          ],
+          "results": {
+            "vector": {
+              "rank": 2,
+              "first_gold_id": "830f67beeae00e8c6e58:structure:6246",
+              "top_id": "830f67beeae00e8c6e58:structure:15447"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "830f67beeae00e8c6e58:structure:6246",
+              "top_id": "830f67beeae00e8c6e58:structure:6246"
+            },
+            "rrf": {
+              "rank": 2,
+              "first_gold_id": "830f67beeae00e8c6e58:structure:6246",
+              "top_id": "830f67beeae00e8c6e58:structure:15447"
+            }
+          }
+        },
+        {
+          "id": "fresh-118",
+          "gold_ids": [
+            "228f381fb3622230987d:structure:3730"
+          ],
+          "results": {
+            "vector": {
+              "rank": 2,
+              "first_gold_id": "228f381fb3622230987d:structure:3730",
+              "top_id": "228f381fb3622230987d:structure:1743"
+            },
+            "bm25": {
+              "rank": 3,
+              "first_gold_id": "228f381fb3622230987d:structure:3730",
+              "top_id": "92468956f4da2a549d29:structure:10784"
+            },
+            "rrf": {
+              "rank": 2,
+              "first_gold_id": "228f381fb3622230987d:structure:3730",
+              "top_id": "228f381fb3622230987d:structure:1743"
+            }
+          }
+        },
+        {
+          "id": "fresh-120",
+          "gold_ids": [
+            "4b0da308d2ed82ac5742:structure:5137"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:structure:5137",
+              "top_id": "4b0da308d2ed82ac5742:structure:5137"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:structure:5137",
+              "top_id": "4b0da308d2ed82ac5742:structure:5137"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "4b0da308d2ed82ac5742:structure:5137",
+              "top_id": "4b0da308d2ed82ac5742:structure:5137"
+            }
+          }
+        },
+        {
+          "id": "fresh-121",
+          "gold_ids": [
+            "25d7ca73c8f05db7494e:structure:11997"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "25d7ca73c8f05db7494e:structure:11997",
+              "top_id": "25d7ca73c8f05db7494e:structure:11997"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "25d7ca73c8f05db7494e:structure:11997",
+              "top_id": "25d7ca73c8f05db7494e:structure:11997"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "25d7ca73c8f05db7494e:structure:11997",
+              "top_id": "25d7ca73c8f05db7494e:structure:11997"
+            }
+          }
+        },
+        {
+          "id": "fresh-122",
+          "gold_ids": [
+            "edc5c6106547de4393b4:structure:3753"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:structure:3753",
+              "top_id": "edc5c6106547de4393b4:structure:3753"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:structure:3753",
+              "top_id": "edc5c6106547de4393b4:structure:3753"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "edc5c6106547de4393b4:structure:3753",
+              "top_id": "edc5c6106547de4393b4:structure:3753"
+            }
+          }
+        },
+        {
+          "id": "fresh-123",
+          "gold_ids": [
+            "92468956f4da2a549d29:structure:8355"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "92468956f4da2a549d29:structure:8355",
+              "top_id": "92468956f4da2a549d29:structure:8355"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "92468956f4da2a549d29:structure:8355",
+              "top_id": "92468956f4da2a549d29:structure:8355"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "92468956f4da2a549d29:structure:8355",
+              "top_id": "92468956f4da2a549d29:structure:8355"
+            }
+          }
+        },
+        {
+          "id": "fresh-124",
+          "gold_ids": [
+            "1eaad13bb8e4b8144c1a:structure:3539"
+          ],
+          "results": {
+            "vector": {
+              "rank": 1,
+              "first_gold_id": "1eaad13bb8e4b8144c1a:structure:3539",
+              "top_id": "1eaad13bb8e4b8144c1a:structure:3539"
+            },
+            "bm25": {
+              "rank": 1,
+              "first_gold_id": "1eaad13bb8e4b8144c1a:structure:3539",
+              "top_id": "1eaad13bb8e4b8144c1a:structure:3539"
+            },
+            "rrf": {
+              "rank": 1,
+              "first_gold_id": "1eaad13bb8e4b8144c1a:structure:3539",
+              "top_id": "1eaad13bb8e4b8144c1a:structure:3539"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "filter_demo": {
+    "query": "In the Canada timeline, what did Statistics Canada announce about jobs?",
+    "page_filter": "2026 in Canada",
+    "hits": [
+      {
+        "id": "0fd300255a168e9d9d07:structure:3588",
+        "page": "2026 in Canada",
+        "section": "Events / January",
+        "url": "https://en.wikipedia.org/wiki/2026_in_Canada",
+        "text": "January 13 – Statistics Canada announces 850 job cuts, with over 100 to happen in the following days."
+      },
+      {
+        "id": "0fd300255a168e9d9d07:structure:13772",
+        "page": "2026 in Canada",
+        "section": "Events / May",
+        "url": "https://en.wikipedia.org/wiki/2026_in_Canada",
+        "text": "May 12 – The 2026 Canadian census takes place."
+      },
+      {
+        "id": "0fd300255a168e9d9d07:structure:0",
+        "page": "2026 in Canada",
+        "section": "",
+        "url": "https://en.wikipedia.org/wiki/2026_in_Canada",
+        "text": "The following is a list of events of the year 2026 in Canada, as well as events that are scheduled or predicted to take place during the year."
+      }
+    ]
+  }
+}
