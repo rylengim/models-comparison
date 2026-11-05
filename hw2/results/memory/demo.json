@@ -1,0 +1,702 @@
+{
+  "model": "Qwen2.5-1.5B-Instruct-Q4_K_M",
+  "window_pairs": 1,
+  "fact_limit": 2,
+  "collection": "freshqa_memory_v1",
+  "price_basis": "Local CPU, API charges",
+  "final_lookup": [
+    {
+      "key": "reminder_day",
+      "value": "Friday",
+      "session_id": "session-2"
+    },
+    {
+      "key": "distance_unit",
+      "value": "kilometers",
+      "session_id": "session-1"
+    }
+  ],
+  "sessions": [
+    {
+      "session_id": "session-1",
+      "turns": [
+        {
+          "question": "I prefer Tuesday for reminders. For my notes, what day should you use?",
+          "history": [],
+          "facts": [],
+          "answer": "If you prefer Tuesday for reminders, you should use Tuesday for your notes.",
+          "status": "ok",
+          "tool_calls": [],
+          "usage": {
+            "prompt_tokens": 505,
+            "completion_tokens": 16,
+            "cost_usd": 0.0
+          },
+          "receipts": [
+            {
+              "request_id": "chatcmpl-61YjP55ECdYGZgNTzQDCDFwRX2ApUcSD",
+              "prompt_tokens": 505,
+              "completion_tokens": 16,
+              "cost_usd": 0.0
+            }
+          ],
+          "full_answer": "If you prefer Tuesday for reminders, you should use Tuesday for your notes.",
+          "full_usage": {
+            "prompt_tokens": 505,
+            "completion_tokens": 16,
+            "cost_usd": 0.0
+          },
+          "full_receipts": [
+            {
+              "request_id": "chatcmpl-fm6j7fV86k576swYLNQUjIP5JV3pYQng",
+              "prompt_tokens": 505,
+              "completion_tokens": 16,
+              "cost_usd": 0.0
+            }
+          ],
+          "full_tool_calls": [],
+          "full_status": "ok"
+        },
+        {
+          "question": "I use kilometers for distances. What unit should a route card show?",
+          "history": [
+            {
+              "role": "user",
+              "content": "I prefer Tuesday for reminders. For my notes, what day should you use?"
+            },
+            {
+              "role": "assistant",
+              "content": "If you prefer Tuesday for reminders, you should use Tuesday for your notes."
+            }
+          ],
+          "facts": [],
+          "answer": "If you use kilometers for distances, a route card should show kilometers.",
+          "status": "ok",
+          "tool_calls": [],
+          "usage": {
+            "prompt_tokens": 544,
+            "completion_tokens": 15,
+            "cost_usd": 0.0
+          },
+          "receipts": [
+            {
+              "request_id": "chatcmpl-iq3NROX4LLemvzwATYuzghNjR76KRKuZ",
+              "prompt_tokens": 544,
+              "completion_tokens": 15,
+              "cost_usd": 0.0
+            }
+          ],
+          "full_answer": "If you use kilometers for distances, a route card should show kilometers.",
+          "full_usage": {
+            "prompt_tokens": 544,
+            "completion_tokens": 15,
+            "cost_usd": 0.0
+          },
+          "full_receipts": [
+            {
+              "request_id": "chatcmpl-aupIsnkczKIf5BDkLBKoGdlLaUvP9gpy",
+              "prompt_tokens": 544,
+              "completion_tokens": 15,
+              "cost_usd": 0.0
+            }
+          ],
+          "full_tool_calls": [],
+          "full_status": "ok"
+        },
+        {
+          "question": "For a walking route, suggest a short heading for the section about bridges. Give just one heading.",
+          "history": [
+            {
+              "role": "user",
+              "content": "I use kilometers for distances. What unit should a route card show?"
+            },
+            {
+              "role": "assistant",
+              "content": "If you use kilometers for distances, a route card should show kilometers."
+            }
+          ],
+          "facts": [],
+          "answer": "\"Bridge Structures on Walking Routes\"",
+          "status": "ok",
+          "tool_calls": [],
+          "usage": {
+            "prompt_tokens": 547,
+            "completion_tokens": 8,
+            "cost_usd": 0.0
+          },
+          "receipts": [
+            {
+              "request_id": "chatcmpl-a78mCjpGqV9FMheSdemmCAi52xlCO6Ik",
+              "prompt_tokens": 547,
+              "completion_tokens": 8,
+              "cost_usd": 0.0
+            }
+          ],
+          "full_answer": "\"Bridge Details\"",
+          "full_usage": {
+            "prompt_tokens": 588,
+            "completion_tokens": 5,
+            "cost_usd": 0.0
+          },
+          "full_receipts": [
+            {
+              "request_id": "chatcmpl-CD0b28ezYPgpGRKzISAEXNkNeiK5LjlR",
+              "prompt_tokens": 588,
+              "completion_tokens": 5,
+              "cost_usd": 0.0
+            }
+          ],
+          "full_tool_calls": [],
+          "full_status": "ok"
+        },
+        {
+          "question": "What is the distance unit I asked for? Reply with just the unit.",
+          "history": [
+            {
+              "role": "user",
+              "content": "For a walking route, suggest a short heading for the section about bridges. Give just one heading."
+            },
+            {
+              "role": "assistant",
+              "content": "\"Bridge Structures on Walking Routes\""
+            }
+          ],
+          "facts": [],
+          "answer": "meters",
+          "status": "ok",
+          "tool_calls": [],
+          "usage": {
+            "prompt_tokens": 541,
+            "completion_tokens": 3,
+            "cost_usd": 0.0
+          },
+          "receipts": [
+            {
+              "request_id": "chatcmpl-xoK7zQjsBBxmTyr6FkEHYNy3IZmUq3UX",
+              "prompt_tokens": 541,
+              "completion_tokens": 3,
+              "cost_usd": 0.0
+            }
+          ],
+          "full_answer": "kilometers",
+          "full_usage": {
+            "prompt_tokens": 620,
+            "completion_tokens": 3,
+            "cost_usd": 0.0
+          },
+          "full_receipts": [
+            {
+              "request_id": "chatcmpl-IPDLT48bLkFuBqlX5bbMTx8OjCFBEh3q",
+              "prompt_tokens": 620,
+              "completion_tokens": 3,
+              "cost_usd": 0.0
+            }
+          ],
+          "full_tool_calls": [],
+          "full_status": "ok"
+        },
+        {
+          "question": "Use the knowledge_base tool to look up the number of job cuts Statistics Canada announced on January 13, 2026.",
+          "history": [
+            {
+              "role": "user",
+              "content": "What is the distance unit I asked for? Reply with just the unit."
+            },
+            {
+              "role": "assistant",
+              "content": "meters"
+            }
+          ],
+          "facts": [],
+          "answer": "unknown",
+          "status": "ok",
+          "tool_calls": [
+            "knowledge_base"
+          ],
+          "usage": {
+            "prompt_tokens": 1445,
+            "completion_tokens": 40,
+            "cost_usd": 0.0
+          },
+          "receipts": [
+            {
+              "request_id": "chatcmpl-VQgepFUBlnhWOmNWzLS74r2szBo1jKVM",
+              "prompt_tokens": 544,
+              "completion_tokens": 38,
+              "cost_usd": 0.0
+            },
+            {
+              "request_id": "chatcmpl-yDbUgIo06mPBSnXbyt9yuUNrP8g64qio",
+              "prompt_tokens": 901,
+              "completion_tokens": 2,
+              "cost_usd": 0.0
+            }
+          ],
+          "full_answer": "The number of job cuts announced by Statistics Canada on January 13, 2026, was 850, with over 100 expected to happen in the following days.",
+          "full_usage": {
+            "prompt_tokens": 1679,
+            "completion_tokens": 79,
+            "cost_usd": 0.0
+          },
+          "full_receipts": [
+            {
+              "request_id": "chatcmpl-O7rBy9wK8cT6tRso7K7Ec7Ng1suOzWVF",
+              "prompt_tokens": 660,
+              "completion_tokens": 37,
+              "cost_usd": 0.0
+            },
+            {
+              "request_id": "chatcmpl-bxwuwIKXltSitC6FpJsiHulijgYguPm7",
+              "prompt_tokens": 1019,
+              "completion_tokens": 42,
+              "cost_usd": 0.0
+            }
+          ],
+          "full_tool_calls": [
+            "knowledge_base"
+          ],
+          "full_status": "ok"
+        },
+        {
+          "question": "Give me one short title for a note about walking to the train station.",
+          "history": [
+            {
+              "role": "user",
+              "content": "Use the knowledge_base tool to look up the number of job cuts Statistics Canada announced on January 13, 2026."
+            },
+            {
+              "role": "assistant",
+              "content": "unknown"
+            }
+          ],
+          "facts": [],
+          "answer": "\"Exploring the Benefits of Walking to the Train Station\"",
+          "status": "ok",
+          "tool_calls": [],
+          "usage": {
+            "prompt_tokens": 543,
+            "completion_tokens": 13,
+            "cost_usd": 0.0
+          },
+          "receipts": [
+            {
+              "request_id": "chatcmpl-I9rSyMp1SRUsW3jzNP1TynbHKXw1xgAG",
+              "prompt_tokens": 543,
+              "completion_tokens": 13,
+              "cost_usd": 0.0
+            }
+          ],
+          "full_answer": "\"Exploring Walking Routes to the Train Station\"",
+          "full_usage": {
+            "prompt_tokens": 686,
+            "completion_tokens": 11,
+            "cost_usd": 0.0
+          },
+          "full_receipts": [
+            {
+              "request_id": "chatcmpl-Iu2pX7jtTpVoj2cZ5bT2pS8Ov94q5Tsp",
+              "prompt_tokens": 686,
+              "completion_tokens": 11,
+              "cost_usd": 0.0
+            }
+          ],
+          "full_tool_calls": [],
+          "full_status": "ok"
+        }
+      ],
+      "extracted": [
+        {
+          "key": "reminder_day",
+          "value": "Tuesday",
+          "evidence": "I prefer Tuesday for reminders."
+        },
+        {
+          "key": "distance_unit",
+          "value": "kilometers",
+          "evidence": "I use kilometers for distances."
+        }
+      ],
+      "extraction_usage": {
+        "prompt_tokens": 127,
+        "completion_tokens": 17,
+        "cost_usd": 0.0,
+        "request_id": "chatcmpl-QIfCVYsIqLpqe44WEMCUABJrP50iOT76"
+      },
+      "facts_after": [
+        {
+          "key": "distance_unit",
+          "value": "kilometers",
+          "session_id": "session-1"
+        },
+        {
+          "key": "reminder_day",
+          "value": "Tuesday",
+          "session_id": "session-1"
+        }
+      ]
+    },
+    {
+      "session_id": "session-2",
+      "turns": [
+        {
+          "question": "What is my preferred reminder day? Reply with just the weekday.",
+          "history": [],
+          "facts": [
+            {
+              "key": "reminder_day",
+              "value": "Tuesday",
+              "session_id": "session-1"
+            },
+            {
+              "key": "distance_unit",
+              "value": "kilometers",
+              "session_id": "session-1"
+            }
+          ],
+          "answer": "Tuesday",
+          "status": "ok",
+          "tool_calls": [],
+          "usage": {
+            "prompt_tokens": 521,
+            "completion_tokens": 2,
+            "cost_usd": 0.0
+          },
+          "receipts": [
+            {
+              "request_id": "chatcmpl-o5x9QfmrUAjbIoRzmwR6oEyUXgJ0JEXW",
+              "prompt_tokens": 521,
+              "completion_tokens": 2,
+              "cost_usd": 0.0
+            }
+          ],
+          "full_answer": "Tuesday",
+          "full_usage": {
+            "prompt_tokens": 721,
+            "completion_tokens": 2,
+            "cost_usd": 0.0
+          },
+          "full_receipts": [
+            {
+              "request_id": "chatcmpl-WJ3gopGfhRQulwMwyr10KtOOYKjaZB8k",
+              "prompt_tokens": 721,
+              "completion_tokens": 2,
+              "cost_usd": 0.0
+            }
+          ],
+          "full_tool_calls": [],
+          "full_status": "ok"
+        },
+        {
+          "question": "What units should you use for distances in my route notes?",
+          "history": [
+            {
+              "role": "user",
+              "content": "What is my preferred reminder day? Reply with just the weekday."
+            },
+            {
+              "role": "assistant",
+              "content": "Tuesday"
+            }
+          ],
+          "facts": [
+            {
+              "key": "distance_unit",
+              "value": "kilometers",
+              "session_id": "session-1"
+            },
+            {
+              "key": "reminder_day",
+              "value": "Tuesday",
+              "session_id": "session-1"
+            }
+          ],
+          "answer": "kilometers",
+          "status": "ok",
+          "tool_calls": [],
+          "usage": {
+            "prompt_tokens": 544,
+            "completion_tokens": 3,
+            "cost_usd": 0.0
+          },
+          "receipts": [
+            {
+              "request_id": "chatcmpl-32Pt6taiE22SCP8ZmscbdnpcmDITKuny",
+              "prompt_tokens": 544,
+              "completion_tokens": 3,
+              "cost_usd": 0.0
+            }
+          ],
+          "full_answer": "kilometers",
+          "full_usage": {
+            "prompt_tokens": 744,
+            "completion_tokens": 3,
+            "cost_usd": 0.0
+          },
+          "full_receipts": [
+            {
+              "request_id": "chatcmpl-0yauHIvzZIeI15xrU7Q23nUjBVNEunTB",
+              "prompt_tokens": 744,
+              "completion_tokens": 3,
+              "cost_usd": 0.0
+            }
+          ],
+          "full_tool_calls": [],
+          "full_status": "ok"
+        },
+        {
+          "question": "I'm drafting a route card. Suggest a single short heading for the section about water stops.",
+          "history": [
+            {
+              "role": "user",
+              "content": "What units should you use for distances in my route notes?"
+            },
+            {
+              "role": "assistant",
+              "content": "kilometers"
+            }
+          ],
+          "facts": [
+            {
+              "key": "distance_unit",
+              "value": "kilometers",
+              "session_id": "session-1"
+            },
+            {
+              "key": "reminder_day",
+              "value": "Tuesday",
+              "session_id": "session-1"
+            }
+          ],
+          "answer": "Water Stop Locations",
+          "status": "ok",
+          "tool_calls": [],
+          "usage": {
+            "prompt_tokens": 552,
+            "completion_tokens": 4,
+            "cost_usd": 0.0
+          },
+          "receipts": [
+            {
+              "request_id": "chatcmpl-i1TXN65dl9sO19gRDB5RbjAaRlba93l5",
+              "prompt_tokens": 552,
+              "completion_tokens": 4,
+              "cost_usd": 0.0
+            }
+          ],
+          "full_answer": "\"Water Stops on Your Route\"",
+          "full_usage": {
+            "prompt_tokens": 776,
+            "completion_tokens": 8,
+            "cost_usd": 0.0
+          },
+          "full_receipts": [
+            {
+              "request_id": "chatcmpl-6uTal0jx0PHpbWzK7GZNnVS562nG8kn8",
+              "prompt_tokens": 776,
+              "completion_tokens": 8,
+              "cost_usd": 0.0
+            }
+          ],
+          "full_tool_calls": [],
+          "full_status": "ok"
+        },
+        {
+          "question": "I have changed my preference. I now prefer Friday for reminders. Which day should you use from now on?",
+          "history": [
+            {
+              "role": "user",
+              "content": "I'm drafting a route card. Suggest a single short heading for the section about water stops."
+            },
+            {
+              "role": "assistant",
+              "content": "Water Stop Locations"
+            }
+          ],
+          "facts": [
+            {
+              "key": "reminder_day",
+              "value": "Tuesday",
+              "session_id": "session-1"
+            },
+            {
+              "key": "distance_unit",
+              "value": "kilometers",
+              "session_id": "session-1"
+            }
+          ],
+          "answer": "Friday",
+          "status": "ok",
+          "tool_calls": [],
+          "usage": {
+            "prompt_tokens": 563,
+            "completion_tokens": 2,
+            "cost_usd": 0.0
+          },
+          "receipts": [
+            {
+              "request_id": "chatcmpl-ZQwU0ZSdd8nYhMOGiiGk5J45rP7DBYF0",
+              "prompt_tokens": 563,
+              "completion_tokens": 2,
+              "cost_usd": 0.0
+            }
+          ],
+          "full_answer": "Friday",
+          "full_usage": {
+            "prompt_tokens": 811,
+            "completion_tokens": 2,
+            "cost_usd": 0.0
+          },
+          "full_receipts": [
+            {
+              "request_id": "chatcmpl-LY2LHv9FZnm2EuKkBsBJLn9kIcK8LMeT",
+              "prompt_tokens": 811,
+              "completion_tokens": 2,
+              "cost_usd": 0.0
+            }
+          ],
+          "full_tool_calls": [],
+          "full_status": "ok"
+        },
+        {
+          "question": "Give me one short heading for the section on train connections in a route card.",
+          "history": [
+            {
+              "role": "user",
+              "content": "I have changed my preference. I now prefer Friday for reminders. Which day should you use from now on?"
+            },
+            {
+              "role": "assistant",
+              "content": "Friday"
+            }
+          ],
+          "facts": [
+            {
+              "key": "distance_unit",
+              "value": "kilometers",
+              "session_id": "session-1"
+            },
+            {
+              "key": "reminder_day",
+              "value": "Tuesday",
+              "session_id": "session-1"
+            }
+          ],
+          "answer": "unknown",
+          "status": "ok",
+          "tool_calls": [],
+          "usage": {
+            "prompt_tokens": 557,
+            "completion_tokens": 2,
+            "cost_usd": 0.0
+          },
+          "receipts": [
+            {
+              "request_id": "chatcmpl-029THKBe050cHIUaXeNWAEnVTY1ERAqZ",
+              "prompt_tokens": 557,
+              "completion_tokens": 2,
+              "cost_usd": 0.0
+            }
+          ],
+          "full_answer": "Train Connections in Your Route",
+          "full_usage": {
+            "prompt_tokens": 838,
+            "completion_tokens": 6,
+            "cost_usd": 0.0
+          },
+          "full_receipts": [
+            {
+              "request_id": "chatcmpl-nl8sXkDetqws7sdtS6YvPzvch326GFmF",
+              "prompt_tokens": 838,
+              "completion_tokens": 6,
+              "cost_usd": 0.0
+            }
+          ],
+          "full_tool_calls": [],
+          "full_status": "ok"
+        },
+        {
+          "question": "Write the weekday from my most recent correction, with no extra words.",
+          "history": [
+            {
+              "role": "user",
+              "content": "Give me one short heading for the section on train connections in a route card."
+            },
+            {
+              "role": "assistant",
+              "content": "unknown"
+            }
+          ],
+          "facts": [
+            {
+              "key": "reminder_day",
+              "value": "Tuesday",
+              "session_id": "session-1"
+            },
+            {
+              "key": "distance_unit",
+              "value": "kilometers",
+              "session_id": "session-1"
+            }
+          ],
+          "answer": "Tuesday",
+          "status": "ok",
+          "tool_calls": [],
+          "usage": {
+            "prompt_tokens": 549,
+            "completion_tokens": 2,
+            "cost_usd": 0.0
+          },
+          "receipts": [
+            {
+              "request_id": "chatcmpl-shtJyLLCJN9agfjrvUaOAlrc0Spcg5wE",
+              "prompt_tokens": 549,
+              "completion_tokens": 2,
+              "cost_usd": 0.0
+            }
+          ],
+          "full_answer": "Friday",
+          "full_usage": {
+            "prompt_tokens": 863,
+            "completion_tokens": 2,
+            "cost_usd": 0.0
+          },
+          "full_receipts": [
+            {
+              "request_id": "chatcmpl-ndpz0WWwv16krgeU0beiBe4NkFaKdPmE",
+              "prompt_tokens": 863,
+              "completion_tokens": 2,
+              "cost_usd": 0.0
+            }
+          ],
+          "full_tool_calls": [],
+          "full_status": "ok"
+        }
+      ],
+      "extracted": [
+        {
+          "key": "reminder_day",
+          "value": "Friday",
+          "evidence": "I now prefer Friday for reminders."
+        }
+      ],
+      "extraction_usage": {
+        "prompt_tokens": 135,
+        "completion_tokens": 14,
+        "cost_usd": 0.0,
+        "request_id": "chatcmpl-jTSDQhEhLahkS6cOXi24QjH46yFf4TyC"
+      },
+      "facts_after": [
+        {
+          "key": "distance_unit",
+          "value": "kilometers",
+          "session_id": "session-1"
+        },
+        {
+          "key": "reminder_day",
+          "value": "Friday",
+          "session_id": "session-2"
+        }
+      ]
+    }
+  ]
+}
