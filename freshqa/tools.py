@@ -63,7 +63,13 @@ class ExtraSearchArguments(Arguments):
     query: str = Field(min_length=1, max_length=500, description="Search query for the public web, including an organization and date when relevant.")
 
 
-def _json(value: dict) -> str:
+class KnowledgeArguments(Arguments):
+    query: str = Field(min_length=1, max_length=500, description="A question or search terms for the local article collection.")
+    page: str | None = Field(default=None, min_length=1, max_length=500,
+                             description="Optional exact article title, e.g. '2026 in Canada'. Omit to search all articles.")
+
+
+def _json(value: dict | list) -> str:
     encoded = json.dumps(value, ensure_ascii=False, allow_nan=False)
     if len(encoded) > MAX_OUTPUT_CHARS:
         return json.dumps({"truncated": True, "text": encoded[:MAX_OUTPUT_CHARS - 100]}, ensure_ascii=False)
@@ -234,7 +240,7 @@ except BaseException as error:
 class ToolRegistry:
     """OpenAI-compatible function schemas and validated JSON-string results."""
 
-    def __init__(self, extra_search: bool = False):
+    def __init__(self, extra_search: bool = False, *, knowledge_search=None):
         self.http = requests.Session()
         self.http.trust_env = False  # Never attach .netrc credentials or inherited proxies.
         self.definitions = {
@@ -245,6 +251,13 @@ class ToolRegistry:
         }
         if extra_search:
             self.definitions["web_search_extra"] = (ExtraSearchArguments, self.web_search_extra, "Optional second search source: DuckDuckGo HTML public-web search, separate from Wikipedia. No API key; may be rate-limited or unavailable. Prefer official sources and verify snippets with page_find.")
+        if knowledge_search is not None:
+            self.definitions["knowledge_base"] = (
+                KnowledgeArguments, knowledge_search,
+                "Search the local snapshot for evidence. Returns up to three passages with text, article, "
+                "section, URL and ID. Use a passage only if it supports the specific detail requested. "
+                "If the passages are insufficient, answer unknown.",
+            )
 
     def schemas(self, names: list[str]) -> list[dict]:
         result = []

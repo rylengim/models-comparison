@@ -3,6 +3,7 @@ import argparse
 import json
 import os
 import sys
+from contextlib import ExitStack
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -45,7 +46,10 @@ def main(argv=None):
     ask = sub.add_parser("ask", help="Один вопрос агенту")
     ask.add_argument("question")
     ask.add_argument("--model", default=configurations()["cheap_search_read"]["model"])
-    ask.add_argument("--extra-search", action="store_true")
+    ask_tools = ask.add_mutually_exclusive_group()
+    ask_tools.add_argument("--extra-search", action="store_true")
+    ask_tools.add_argument("--knowledge-base", action="store_true",
+                           help="Дать агенту только локальный поиск ДЗ‑2. Ответ модели использует обычный API.")
     ask.add_argument("--output", default="tmp/answer_trace.json")
     ask.add_argument("--budget-usd", type=float, default=float(os.getenv("BUDGET_USD", "5")))
     args = parser.parse_args(argv)
@@ -59,9 +63,17 @@ def main(argv=None):
             from .agent import run_agent
             from .tools import ToolRegistry
             client = get_client(args.budget_usd)
-            tools = configurations()["cheap_extra_search" if args.extra_search else "cheap_search_read"]["tools"]
-            result = run_agent(args.question, model=args.model, client=client,
-                               registry=ToolRegistry(args.extra_search), tool_names=tools)
+            with ExitStack() as resources:
+                if args.knowledge_base:
+                    from hw2.knowledge_base import KnowledgeBase
+                    kb = resources.enter_context(KnowledgeBase())
+                    registry = ToolRegistry(knowledge_search=kb.search)
+                    tools = ["knowledge_base"]
+                else:
+                    registry = ToolRegistry(args.extra_search)
+                    tools = configurations()["cheap_extra_search" if args.extra_search else "cheap_search_read"]["tools"]
+                result = run_agent(args.question, model=args.model, client=client,
+                                   registry=registry, tool_names=tools)
             write_json(args.output, result)
             print(f"FINAL: {result['final']}\nstatus={result['status']}; trace={args.output}")
             return 0 if result["status"] == "ok" else 2

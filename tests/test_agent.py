@@ -5,6 +5,7 @@ import pytest
 
 from freshqa.agent import run_agent
 from freshqa.client import BudgetExceeded, CostUnknownError
+from freshqa.tools import ToolRegistry
 
 
 def answer(text):
@@ -49,6 +50,33 @@ class Registry:
     def run(self, name, args):
         self.calls.append((name, args))
         return json.dumps({"text": "Paris is the capital of France."})
+
+
+def test_agent_can_choose_the_local_knowledge_base():
+    query = "Statistics Canada job cuts"
+    page = "2026 in Canada"
+    passage = {"id": "jan13", "page": page, "section": "Events / January",
+               "url": "https://example.org/canada", "text": "Statistics Canada announces 850 job cuts."}
+    inputs = []
+
+    def search(query, page=None):
+        inputs.append((query, page))
+        return [passage]
+
+    registry = ToolRegistry(knowledge_search=search)
+    client = ScriptedClient([
+        tool_request(call("knowledge_base", json.dumps({"query": query, "page": page}))),
+        answer("FINAL: 850"),
+    ])
+    result = run_agent("How many cuts did Statistics Canada announce?", model="test", client=client,
+                       registry=registry, tool_names=["knowledge_base"])
+    function, = [tool["function"] for tool in client.calls[0]["tools"]]
+    assert function["name"] == "knowledge_base"
+    assert function["parameters"]["required"] == ["query"]
+    assert json.loads(client.calls[1]["messages"][-1]["content"]) == [passage]
+    assert result["final"] == "850" and inputs == [(query, page)]
+    bad = json.loads(registry.run("knowledge_base", {"query": " ", "page": page}))
+    assert "error" in bad and inputs == [(query, page)]
 
 
 def test_baseline_makes_exactly_one_request_with_question_only():

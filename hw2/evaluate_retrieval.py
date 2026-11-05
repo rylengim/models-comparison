@@ -9,6 +9,7 @@ from hw2.prepare_corpus import normalize_evidence
 
 
 RRF_CONSTANT = 60
+CANDIDATE_DEPTH = 100
 
 
 def reciprocal_rank_fusion(*rankings):
@@ -20,7 +21,7 @@ def reciprocal_rank_fusion(*rankings):
     return sorted(scores, key=lambda chunk_id: (-scores[chunk_id], chunk_id))
 
 
-def evaluate_from_rankings(questions, chunks, vector_rankings, *, depth=100):
+def evaluate_from_rankings(questions, chunks, vector_rankings, *, depth=CANDIDATE_DEPTH):
     """Evaluate one chunking scheme; the query order must match the Milvus result."""
     if not questions or not chunks:
         raise ValueError("Нужны непустые выборки вопросов и фрагментов.")

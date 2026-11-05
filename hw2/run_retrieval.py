@@ -5,12 +5,11 @@ from pathlib import Path
 
 from freshqa.dataset import load_rows
 from hw2.embeddings import MODEL_ID, MODEL_REVISION, encode_texts
-from hw2.evaluate_retrieval import evaluate_from_rankings, save_report
+from hw2.evaluate_retrieval import CANDIDATE_DEPTH, evaluate_from_rankings, save_report
 from hw2.prepare_corpus import DATA
 from hw2.vector_store import DEFAULT_URI, index_chunks, open_store, search_many
 
 
-DEPTH = 100
 RESULTS = DATA.parent / "results"
 DEMO_PAGE = "2026 in Canada"
 DEMO_QUERY = "In the Canada timeline, what did Statistics Canada announce about jobs?"
@@ -46,8 +45,8 @@ def run(uri, output_dir=RESULTS):
             print(f"Индекс {method}, {len(chunks)} фрагментов", flush=True)
             vectors = encode_texts([row["text"] for row in chunks], role="passage")
             index_chunks(client, method, chunks, vectors)
-            rankings = search_many(client, method, queries, limit=DEPTH)
-            result = evaluate_from_rankings(questions, chunks, rankings, depth=DEPTH)
+            rankings = search_many(client, method, queries, limit=CANDIDATE_DEPTH)
+            result = evaluate_from_rankings(questions, chunks, rankings)
             report["methods"][method] = result
             for name, metrics in result["metrics"].items():
                 print(f"  {name}: {metrics['hits']} из {len(questions)}", flush=True)

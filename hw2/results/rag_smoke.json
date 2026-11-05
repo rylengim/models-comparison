@@ -1,0 +1,25 @@
+{
+  "model": "Qwen/Qwen2.5-0.5B-Instruct-GGUF",
+  "file": "qwen2.5-0.5b-instruct-q4_k_m.gguf",
+  "sha256": "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db",
+  "runtime": "llama.cpp b5996, CPU, 4 threads, context 2048",
+  "temperature": 0,
+  "seed": 1,
+  "max_tokens": 192,
+  "cases": [
+    {
+      "id": "fresh-113",
+      "question": "How many job cuts did Statistics Canada announce on January 13, 2026?",
+      "retrieved_ids": ["0fd300255a168e9d9d07:structure:3588", "0fd300255a168e9d9d07:structure:3241", "6029cff42612abb3e302:structure:93479"],
+      "completion": {"answer": "850", "quote": "Statistics Canada announces 850 job cuts, with over 100 to happen in the following days.", "source_id": "0fd300255a168e9d9d07:structure:3588"},
+      "usage": {"prompt_tokens": 419, "completion_tokens": 68}
+    },
+    {
+      "id": "unknown-7",
+      "question": "Of the 850 job cuts announced by Statistics Canada in January 2026, how many were in its IT division?",
+      "retrieved_ids": ["0fd300255a168e9d9d07:structure:3588", "6029cff42612abb3e302:structure:93479", "8b06b3359434c3a3a3e8:structure:8350"],
+      "completion": {"answer": "unknown", "source_id": "0fd300255a168e9d9d07:structure:3588"},
+      "usage": {"prompt_tokens": 429, "completion_tokens": 39}
+    }
+  ]
+}
