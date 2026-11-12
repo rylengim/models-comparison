@@ -1,3 +1,7 @@
+from pathlib import Path
+import subprocess
+import sys
+
 import pytest
 
 from hw3.evaluation import score
@@ -75,6 +79,91 @@ def test_does_not_extract_single_numbers_from_composites_with_and(expected, answ
 ])
 def test_and_in_prose_does_not_block_standalone_number_normalization(answer):
     assert score({'answer': '5'}, answer)
+
+
+@pytest.mark.parametrize(('expected', 'answer'), [
+    ('5', 'one point five'),
+    ('5', 'five and a half'),
+    ('1', 'one point five'),
+    ('1', 'one half'),
+    ('3', 'three quarters'),
+])
+@pytest.mark.parametrize('variant', ['plain', 'uppercase', 'hyphenated', 'multiline'])
+def test_does_not_extract_integer_parts_from_word_fractions(expected, answer, variant):
+    if variant == 'uppercase':
+        answer = answer.upper()
+    elif variant == 'hyphenated':
+        answer = answer.replace(' ', '-')
+    elif variant == 'multiline':
+        answer = answer.replace(' ', '\n')
+    assert not score({'answer': expected}, answer)
+
+
+@pytest.mark.parametrize(('expected', 'answer'), [
+    ('5', '5 and a half'),
+    ('1', '1 point five'),
+    ('5', '1 point five'),
+    ('1', '1 point 5'),
+    ('5', '1 point 5'),
+])
+def test_does_not_extract_integer_parts_from_mixed_digit_fractions(expected, answer):
+    assert not score({'answer': expected}, answer)
+
+
+@pytest.mark.parametrize(('expected', 'answer'), [
+    ('5', 'five'),
+    ('1', 'one'),
+    ('3', 'three'),
+    ('5', 'Five people walked one and a half miles.'),
+    ('5', 'Half the team left; five stayed.'),
+    ('5', 'At one point, five people arrived.'),
+    ('one point five', 'one point five'),
+    ('five and a half', 'five and a half'),
+    ('one half', 'one half'),
+    ('three quarters', 'three quarters'),
+])
+def test_fraction_guard_preserves_standalone_counts_and_complete_phrase_matches(expected, answer):
+    assert score({'answer': expected}, answer)
+
+
+@pytest.mark.parametrize(('expected', 'answer', 'correct'), [
+    ('1.5', 'FINAL: 1.5', True),
+    ('1', '1.5', False),
+    ('5', '1.5', False),
+    ('5.5', 'The distance was 5.5 miles.', True),
+    ('5', '5.5', False),
+    ('0.5', '0.5', True),
+    ('0.75', '0.75', True),
+    ('3', '0.75', False),
+])
+def test_fraction_guard_preserves_explicit_decimal_comparisons(expected, answer, correct):
+    assert score({'answer': expected}, answer) is correct
+
+
+@pytest.mark.parametrize('answer', [
+    'A five point plan.',
+    'It took one point five hours; five people attended.',
+    'It took 1 point 5 hours; 5 people attended.',
+    'Five people ran a half marathon.',
+])
+def test_fraction_guard_preserves_numbers_outside_fraction_spans(answer):
+    assert score({'answer': '5'}, answer)
+
+
+def test_explicit_fraction_alias_is_still_accepted():
+    row = {'answer': '1.5', 'answer_aliases': ['one point five']}
+    assert score(row, 'FINAL: one point five')
+
+
+def test_fraction_detector_finishes_on_repeated_digit_hyphen_input():
+    # A separate process bounds a regex regression that could hang the grader.
+    script = (
+        "from hw3.evaluation import canonical; "
+        "text = '1--' * 40 + 'items'; "
+        "assert canonical(text) == text"
+    )
+    subprocess.run([sys.executable, '-c', script], check=True, timeout=3,
+                   cwd=Path(__file__).resolve().parents[1], capture_output=True)
 
 
 def test_rejects_multiple_short_alternatives():

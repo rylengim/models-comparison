@@ -2,8 +2,9 @@
 
 Canonicalization removes combining diacritics and converts standalone English
 number words zero..twenty. Composite quantities are left intact, preventing
-"one hundred and five" from being silently interpreted as 1 or 5. Explicit negation and
-unresolved alternatives are conservatively rejected and remain auditable.
+"one hundred and five" from being silently interpreted as 1 or 5. Word decimals
+and half/quarter fractions are kept whole and excluded from numeric containment.
+Explicit negation and unresolved alternatives remain conservatively rejected.
 """
 import re
 import unicodedata
@@ -17,17 +18,31 @@ _NUMBER_WORDS = {word: str(value) for value, word in enumerate(
     'thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty'.split())}
 _COMPOSITE_WORDS = set(_NUMBER_WORDS) | set(
     'thirty forty fifty sixty seventy eighty ninety hundred thousand million billion'.split())
+_NUMBER_GAP = r'[\s-]+'
+# Signs stay outside detected spans; otherwise '-' also matches NUMBER_GAP and
+# repeated digit/hyphen input can cause exponential regex backtracking.
+_NUMBER_TOKEN = r'(?:\d[\d,]*(?:\.\d+)?|' + '|'.join(sorted(_COMPOSITE_WORDS)) + ')'
+_NUMBER_PHRASE = rf'{_NUMBER_TOKEN}(?:{_NUMBER_GAP}(?:and{_NUMBER_GAP})?{_NUMBER_TOKEN})*'
+# Recognize whole expressions without guessing their numeric value. Reuse the
+# same spans for word normalization and numeric matching, including mixed digits.
+_FRACTION = re.compile(
+    rf'(?<![\w.])(?:{_NUMBER_PHRASE}{_NUMBER_GAP}point{_NUMBER_GAP}{_NUMBER_PHRASE}'
+    rf'|(?:{_NUMBER_PHRASE}{_NUMBER_GAP}and{_NUMBER_GAP})?'
+    rf'(?:{_NUMBER_PHRASE}|a){_NUMBER_GAP}(?:half|halves|quarters?))(?!\w|\.\d)',
+    re.IGNORECASE,
+)
 
 
 def canonical(text: str) -> str:
     """Normalize spelling variants without reordering words or erasing decimals."""
     text = ''.join(char for char in unicodedata.normalize('NFKD', text)
                    if not unicodedata.combining(char))
+    fractions = [match.span() for match in _FRACTION.finditer(text)]
     words = list(re.finditer(r'[A-Za-z]+', text))
     replacements = []
     for index, word in enumerate(words):
         replacement = _NUMBER_WORDS.get(word[0].lower())
-        if replacement is None:
+        if replacement is None or any(start <= word.start() < end for start, end in fractions):
             continue
         adjacent = []
         if index:
@@ -64,5 +79,10 @@ def score(row: dict, answer: str) -> bool:
     count = re.fullmatch(r'(\d+)\s+(?:people|persons?)', expected, re.IGNORECASE)
     if count and re.match(r'^how many\b', row.get('question', ''), re.IGNORECASE):
         aliases.append(count[1])
-    normalized_row = {**row, 'answer': expected, 'answer_aliases': aliases}
-    return score_row(normalized_row, actual)
+    numeric_actual = _FRACTION.sub(' ', actual)
+    for candidate in [expected, *aliases]:
+        numeric = re.fullmatch(r'[+-]?\d+(?:\.\d+)?', candidate.strip().replace(',', ''))
+        normalized_row = {**row, 'answer': candidate, 'answer_aliases': []}
+        if score_row(normalized_row, numeric_actual if numeric else actual):
+            return True
+    return False
