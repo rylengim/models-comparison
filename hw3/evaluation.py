@@ -2,7 +2,7 @@
 
 Canonicalization removes combining diacritics and converts standalone English
 number words zero..twenty. Composite quantities are left intact, preventing
-"one hundred" from being silently interpreted as 1. Explicit negation and
+"one hundred and five" from being silently interpreted as 1 or 5. Explicit negation and
 unresolved alternatives are conservatively rejected and remain auditable.
 """
 import re
@@ -32,11 +32,15 @@ def canonical(text: str) -> str:
         adjacent = []
         if index:
             previous = words[index - 1]
-            if re.fullmatch(r'[\s-]+', text[previous.end():word.start()]):
+            if previous[0].lower() == 'and' and index > 1:
+                previous = words[index - 2]
+            if re.fullmatch(r'[\s-]+(?:and[\s-]+)?', text[previous.end():word.start()], re.IGNORECASE):
                 adjacent.append(previous[0].lower())
         if index + 1 < len(words):
             following = words[index + 1]
-            if re.fullmatch(r'[\s-]+', text[word.end():following.start()]):
+            if following[0].lower() == 'and' and index + 2 < len(words):
+                following = words[index + 2]
+            if re.fullmatch(r'[\s-]+(?:and[\s-]+)?', text[word.end():following.start()], re.IGNORECASE):
                 adjacent.append(following[0].lower())
         if not any(neighbor in _COMPOSITE_WORDS for neighbor in adjacent):
             replacements.append((word.start(), word.end(), replacement))

@@ -54,6 +54,29 @@ def test_does_not_treat_english_composite_numbers_as_single_numbers():
     assert not score({'answer': '1'}, 'one hundred')
 
 
+@pytest.mark.parametrize(('expected', 'answer'), [
+    ('five', 'one hundred and five'),
+    ('nine', 'one hundred and nine'),
+    ('Twelve', 'one hundred and twelve'),
+    ('1', 'two hundred and one'),
+    ('12', 'one thousand and twelve people'),
+    ('5', 'ONE HUNDRED AND FIVE'),
+    ('5', 'one-hundred-and-five'),
+    ('5', 'one hundred\nand\nfive'),
+])
+def test_does_not_extract_single_numbers_from_composites_with_and(expected, answer):
+    assert not score({'answer': expected}, answer)
+
+
+@pytest.mark.parametrize('answer', [
+    'And five people died.',
+    'Five people died and nine were injured.',
+    'Five, and the search continued.',
+])
+def test_and_in_prose_does_not_block_standalone_number_normalization(answer):
+    assert score({'answer': '5'}, answer)
+
+
 def test_rejects_multiple_short_alternatives():
     assert not score({'answer': 'Alice'}, 'Alice or Bob')
     assert not score({'answer': '43'}, '43 or 46')
