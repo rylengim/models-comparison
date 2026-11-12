@@ -1,0 +1,84 @@
+[
+  {
+    "id": "fresh-13",
+    "field": "question",
+    "old": "What is the highest recorded temperature in Germany during the 2026 European heatwaves?",
+    "new": "What temperature was recorded in Möckern-Drewitz, Germany, on 27 June 2026?",
+    "reason": "Original question asks maximum over all 2026 heatwaves, but gold evidence establishes 41.5 °C on 27 June only; another source passage reports 41.7 °C on 28 June. Scope narrowed to the exact date and place supported by unchanged gold.",
+    "source": "hw3/data/corpus.jsonl: 2026 in Germany (27 June) and 2026 European heatwaves (28 June)"
+  },
+  {
+    "id": "fresh-17",
+    "field": "answer_aliases",
+    "old": [],
+    "new": [
+      "GISAT-1A"
+    ],
+    "reason": "Saved retrieval names the article EOS-05 and explicitly identifies GISAT-1A as the spacecraft launched on GSLV-F17 at 02:55 IST on 4 September 2026. Names refer to the same satellite, launch and timestamp. Not a different candidate answer.",
+    "source": "hw3/results/online_diagnostic/bare/fresh-17.json: web_search result title EOS-05 and page_find(EOS-05), Launch section"
+  },
+  {
+    "id": "fresh-13",
+    "field": "answer_aliases",
+    "old": [],
+    "new": [
+      "41.5 degrees Celsius",
+      "106.7 °F",
+      "106.7 degrees Fahrenheit"
+    ],
+    "reason": "Units are explicitly paired in the unchanged evidence: 41.5 °C (106.7 °F).",
+    "source": "hw3/data/questions.jsonl: question and verbatim evidence; declared before snapshot model runs"
+  },
+  {
+    "id": "fresh-19",
+    "field": "answer_aliases",
+    "old": [],
+    "new": [
+      "Disney Kids and Family"
+    ],
+    "reason": "Spelling out ampersand does not change the organisation name.",
+    "source": "hw3/data/questions.jsonl: question and verbatim evidence; declared before snapshot model runs"
+  },
+  {
+    "id": "fresh-42",
+    "field": "answer_aliases",
+    "old": [],
+    "new": [
+      "Narendra Modi"
+    ],
+    "reason": "Question asks who, so omitting the office title Prime Minister retains the full person name.",
+    "source": "hw3/data/questions.jsonl: question and verbatim evidence; declared before snapshot model runs"
+  },
+  {
+    "id": "fresh-44",
+    "field": "answer_aliases",
+    "old": [],
+    "new": [
+      "LHS 1140b",
+      "LHS1140b"
+    ],
+    "reason": "Standard spacing variants retain the entire astronomical object designation.",
+    "source": "hw3/data/questions.jsonl: question and verbatim evidence; declared before snapshot model runs"
+  },
+  {
+    "id": "fresh-45",
+    "field": "answer_aliases",
+    "old": [],
+    "new": [
+      "F-16",
+      "F16"
+    ],
+    "reason": "F-16 is the full aircraft type designation; Fighting Falcon is its name. A generic fighter jet is not accepted.",
+    "source": "hw3/data/questions.jsonl: question and verbatim evidence; declared before snapshot model runs"
+  },
+  {
+    "id": "fresh-47",
+    "field": "answer_aliases",
+    "old": [],
+    "new": [
+      "Minister of Education"
+    ],
+    "reason": "The same office expressed with of instead of an attributive noun, with no change to ministry or role.",
+    "source": "hw3/data/questions.jsonl: question and verbatim evidence; declared before snapshot model runs"
+  }
+]

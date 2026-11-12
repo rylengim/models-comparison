@@ -13,11 +13,11 @@ os.environ["LANGCHAIN_TRACING_V2"] = "false"
 from dotenv import dotenv_values
 from freshqa.agent import run_agent
 from freshqa.dataset import load_rows
-from freshqa.tools import ToolRegistry
 from .agents import run_bare, run_graph, run_critic, run_planned
 from .client import MeteredClient
 from .evaluation import score
 from .report import render_report
+from .snapshot_tools import SnapshotRegistry
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIGS = ["bare", "langgraph", "strong_direct", "critic", "plan"]
@@ -30,27 +30,6 @@ def save(path, value):
     tmp.replace(path)
 
 
-class CachedRegistry:
-    """Freeze each exact public tool request on first use, preserving HW1 schemas."""
-    def __init__(self, path):
-        self.registry = ToolRegistry()
-        self.path = path
-        self.cache = json.loads(path.read_text()) if path.exists() else {}
-
-    def schemas(self, names):
-        return self.registry.schemas(names)
-
-    def run(self, name, arguments):
-        key = json.dumps([name, arguments], sort_keys=True, ensure_ascii=False)
-        if key not in self.cache:
-            self.cache[key] = self.registry.run(name, arguments)
-            save(self.path, self.cache)
-        return self.cache[key]
-
-    def close(self):
-        self.registry.http.close()
-
-
 def choose_runner(root, rows):
     candidates = []
     for name in ("bare", "langgraph"):
@@ -58,7 +37,7 @@ def choose_runner(root, rows):
         if not all(p.exists() for p in paths):
             raise ValueError("Complete bare and langgraph before selecting a pattern executor")
         records = [json.loads(p.read_text()) for p in paths]
-        if any(r["cost_usd"] is None or r["status"] in {"error", "cost_unknown", "budget_exceeded"} for r in records):
+        if any(r["cost_usd"] is None or r["status"] in {"error", "cost_unknown", "budget_exceeded", "output_truncated", "pending"} for r in records):
             raise ValueError("Cannot select an executor from an interrupted configuration")
         candidates.append({"config": name, "correct": sum(score(t, r["final"]) for t, r in zip(rows, records)),
                            "cost_usd": sum(r["cost_usd"] for r in records)})
@@ -111,7 +90,9 @@ def main():
     cheap = local.get("CHEAP_MODEL") or "openai/gpt-4o-mini"
     strong = local.get("STRONG_MODEL") or "anthropic/claude-sonnet-4.6"
     rates = json.loads((ROOT / "hw3/model_rates.json").read_text())
-    sources = ["hw3/agents.py", "hw3/client.py", "freshqa/agent.py", "freshqa/tools.py"]
+    sources = ["hw3/agents.py", "hw3/client.py", "hw3/run.py", "hw3/evaluation.py",
+               "hw3/snapshot_tools.py", "freshqa/agent.py", "freshqa/tools.py", "freshqa/dataset.py",
+               "hw2/lexical_baseline.py", "hw2/prepare_corpus.py", "hw3/data/corpus.jsonl"]
     signature = {"questions": hashlib.sha256(json.dumps(rows, sort_keys=True).encode()).hexdigest(),
                  "cheap": cheap, "strong": strong, "max_steps": 6, "question_calls": 24,
                  "sources": {p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest() for p in sources}}
@@ -123,9 +104,11 @@ def main():
         save(manifest, signature)
     if (root / "inflight_question.json").exists():
         raise RuntimeError("Interrupted question exists: inspect ledger before continuing")
-    client = MeteredClient(local.get("OPENROUTER_API_KEY"), root.parent / "calls.jsonl",
-                           budget_usd=args.budget_usd, rates=rates)
-    registry = CachedRegistry(root.parent / "tool_cache.json")
+    diagnostic = ROOT / "hw3/results/online_diagnostic/diagnostic.json"
+    prior_cost = json.loads(diagnostic.read_text())["known_cost_usd"] if diagnostic.exists() else 0
+    client = MeteredClient(local.get("OPENROUTER_API_KEY"), root / "calls.jsonl",
+                           budget_usd=args.budget_usd - prior_cost, rates=rates)
+    registry = SnapshotRegistry()
     try:
         probe(client, registry, root, cheap)
         for config in args.configs:
@@ -158,8 +141,12 @@ def main():
                 print(f"{config} {i}/{len(rows)} {row['id']} {result['status']} correct={result['correct']} total=${client.spent_usd:.6f}", flush=True)
                 if result["status"] in {"error", "cost_unknown", "budget_exceeded"}:
                     raise RuntimeError("Stopped after recorded failure; inspect result and ledger")
+                if (root / "STOP").exists():
+                    render_report(root, rows, root)
+                    print("Stopped after saving the current question; remove STOP and use --resume", flush=True)
+                    return
             render_report(root, rows, root)
-        print(f"Known total including pilot/probes: ${client.spent_usd:.8f}", flush=True)
+        print(f"Known total including prior diagnostic/pilot/probes: ${client.spent_usd + prior_cost:.8f}", flush=True)
     finally:
         client.close()
         registry.close()

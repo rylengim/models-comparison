@@ -14,7 +14,9 @@ def offline_experiment(tmp_path, monkeypatch):
     data.mkdir(parents=True)
     (data / "questions.jsonl").write_text("\n".join(json.dumps(row) for row in rows))
     (tmp_path / "hw3/model_rates.json").write_text("{}")
-    for source in ("hw3/agents.py", "hw3/client.py", "freshqa/agent.py", "freshqa/tools.py"):
+    for source in ("hw3/agents.py", "hw3/client.py", "hw3/run.py", "hw3/evaluation.py",
+                   "hw3/snapshot_tools.py", "freshqa/agent.py", "freshqa/tools.py", "freshqa/dataset.py",
+                   "hw2/lexical_baseline.py", "hw2/prepare_corpus.py", "hw3/data/corpus.jsonl"):
         path = tmp_path / source
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("# fixture source\n")
@@ -35,7 +37,7 @@ def offline_experiment(tmp_path, monkeypatch):
             self.closed = True
 
     class Registry:
-        def __init__(self, path):
+        def __init__(self):
             pass
 
         def close(self):
@@ -56,7 +58,7 @@ def offline_experiment(tmp_path, monkeypatch):
     monkeypatch.setattr(experiment, "ROOT", tmp_path)
     monkeypatch.setattr(experiment, "dotenv_values", lambda path: {"OPENROUTER_API_KEY": "test-only"})
     monkeypatch.setattr(experiment, "MeteredClient", Client)
-    monkeypatch.setattr(experiment, "CachedRegistry", Registry)
+    monkeypatch.setattr(experiment, "SnapshotRegistry", Registry)
     monkeypatch.setattr(experiment, "run_bare", runner)
     monkeypatch.setattr(experiment, "run_graph", runner)
     monkeypatch.setattr(experiment, "probe", lambda *args: None)
@@ -73,10 +75,10 @@ def offline_experiment(tmp_path, monkeypatch):
 def test_resume_skips_completed_questions_without_duplicate_http_cost(offline_experiment):
     run, root, _, invocations, clients = offline_experiment
     run()
-    before = (root.parent / "calls.jsonl").read_bytes()
+    before = (root / "calls.jsonl").read_bytes()
     run("--resume")
     assert invocations == [("bare", "q0"), ("bare", "q1")]
-    assert (root.parent / "calls.jsonl").read_bytes() == before
+    assert (root / "calls.jsonl").read_bytes() == before
     assert clients[-1].spent_usd == pytest.approx(.02)
     assert all(client.closed for client in clients)
 

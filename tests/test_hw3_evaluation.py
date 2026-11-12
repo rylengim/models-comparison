@@ -27,3 +27,42 @@ def test_declared_aliases_are_supported_without_changing_the_gold():
 def test_non_text_and_empty_answers_are_not_correct():
     assert not score({'answer': '43'}, None)
     assert not score({'answer': '43'}, '')
+
+
+@pytest.mark.parametrize(('expected', 'answer'), [
+    ('Twelve', '12'), ('nine', '9'), ('9', 'nine'), ('twenty', '20'),
+    ('Miguel Díaz-Canel', 'Miguel Diaz-Canel'),
+    ('Deniz Göktaş', 'Deniz Goktas'),
+    ('Markus Hinterhäuser', 'Markus Hinterhauser'),
+    ('Dina Levačić', 'Dina Levacic'),
+])
+def test_normalizes_single_number_words_and_diacritics(expected, answer):
+    assert score({'answer': expected}, answer)
+
+
+def test_count_question_does_not_require_echoing_people_unit():
+    row = {'answer': 'two people', 'question': 'How many people were killed?'}
+    assert score(row, '2')
+    assert score(row, 'two')
+    assert score(row, '2 people')
+    assert not score(row, '22')
+
+
+def test_does_not_treat_english_composite_numbers_as_single_numbers():
+    assert not score({'answer': '20'}, 'twenty one')
+    assert not score({'answer': '20'}, 'twenty-one')
+    assert not score({'answer': '1'}, 'one hundred')
+
+
+def test_rejects_multiple_short_alternatives():
+    assert not score({'answer': 'Alice'}, 'Alice or Bob')
+    assert not score({'answer': '43'}, '43 or 46')
+    assert not score({'answer': '43'}, '43 / 46')
+    assert not score({'answer': 'Alice'}, 'Alice либо Bob')
+    assert score({'answer': 'Alice'}, 'FINAL: Alice')
+
+
+def test_normalization_does_not_change_explicit_year_rule():
+    row = {'answer': '15 March', 'page': '2026 events'}
+    assert not score(row, '15 March 2025')
+    assert score(row, 'fifteen March 2026')

@@ -8,7 +8,7 @@ from hw3.report import render_report
 
 def write_trace(root, config, qid='one', answer='Alice', initial=None, cost=.01):
     record = dict(id=qid, question='Who won?', config=config, model='test-model',
-                  final=answer, status='ok', steps=1, prompt_tokens=10,
+                  final=answer, status='ok', measured=True, steps=1, prompt_tokens=10,
                   completion_tokens=2, cost_usd=cost, correct=False,
                   call_records=[dict(question_id=qid, config=config, cost_usd=cost,
                                      prompt_tokens=10, completion_tokens=2,
@@ -79,3 +79,37 @@ def test_ledger_mismatch_blocks_report_instead_of_hiding_spend(tmp_path):
     path.write_text(json.dumps(data))
     with pytest.raises(ValueError, match='ledger cost mismatch'):
         render_report(root, rows, tmp_path / 'out')
+
+
+def test_report_requires_explicit_measured_and_http_ledger(tmp_path):
+    rows = [dict(id='one', question='Who won?', answer='Alice')]
+    root = tmp_path / 'results'
+    path = write_trace(root, 'bare')
+    record = json.loads(path.read_text())
+    record.pop('measured')
+    path.write_text(json.dumps(record))
+    with pytest.raises(ValueError, match='Unmeasured'):
+        render_report(root, rows, tmp_path / 'out')
+    record['measured'] = True
+    record.pop('call_records')
+    path.write_text(json.dumps(record))
+    with pytest.raises(ValueError, match='call_records'):
+        render_report(root, rows, tmp_path / 'out')
+
+
+def test_empty_ledger_requires_exact_zero_totals(tmp_path):
+    rows = [dict(id='one', question='Who won?', answer='Alice')]
+    root = tmp_path / 'results'
+    path = write_trace(root, 'bare')
+    record = json.loads(path.read_text())
+    record['call_records'] = []
+    path.write_text(json.dumps(record))
+    with pytest.raises(ValueError, match='ledger'):
+        render_report(root, rows, tmp_path / 'out')
+    record.update(cost_usd=0, prompt_tokens=0, completion_tokens=0, steps=0,
+                  status='budget_exceeded', final='unknown')
+    path.write_text(json.dumps(record))
+    summary = render_report(root, rows, tmp_path / 'out')
+    assert summary[0]['cost_usd'] == 0
+    assert summary[0]['calls_per_question'] == 0
+    assert not summary[0]['complete']

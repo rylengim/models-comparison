@@ -58,6 +58,15 @@ class MeteredClient:
             stream.write(json.dumps(record, ensure_ascii=False, allow_nan=False) + "\n")
             stream.flush()
             os.fsync(stream.fileno())
+        self._sync_directory()
+
+    def _sync_directory(self):
+        """Persist file creation/removal as well as the contents of those files."""
+        fd = os.open(self.ledger.parent, os.O_RDONLY | os.O_DIRECTORY)
+        try:
+            os.fsync(fd)
+        finally:
+            os.close(fd)
 
     def on_response(self, response):
         """The hook sees raw request/response data, never authorization headers."""
@@ -85,12 +94,15 @@ class MeteredClient:
                   "response_message": choice.get("message")}
         self._append(record)
         self.inflight.unlink(missing_ok=True)
+        self._sync_directory()
         if cost is None:
             self.accounting_uncertain = True
         else:
             self.spent_usd += cost
 
     def complete(self, *, model, messages, tools=None, temperature=0, response_format=None):
+        if self.inflight.exists():
+            self.accounting_uncertain = True
         if self.accounting_uncertain:
             raise CostUnknownError("Unknown charge in HTTP ledger; reconcile before continuing")
         if not self.calls_remaining:
@@ -121,8 +133,12 @@ class MeteredClient:
         time.sleep(max(0, self.interval - (time.monotonic() - self._last_started)))
         self.scope_calls += 1
         self._last_started = time.monotonic()
-        self.inflight.write_text(json.dumps({"config": self.config, "question_id": self.question_id,
-                                            "model": model, "request": body}, ensure_ascii=False))
+        with self.inflight.open("x", encoding="utf-8") as stream:
+            json.dump({"config": self.config, "question_id": self.question_id,
+                       "model": model, "request": body}, stream, ensure_ascii=False)
+            stream.flush()
+            os.fsync(stream.fileno())
+        self._sync_directory()
         try:
             response = self.http.post("https://openrouter.ai/api/v1/chat/completions", content=encoded,
                                       headers={"Authorization": "Bearer " + self._key,

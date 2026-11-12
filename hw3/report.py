@@ -44,29 +44,35 @@ def _load_records(root, gold):
                 raise ValueError(f'Record identity/config mismatch: {path.name}')
             if record.get('question') != gold[qid].get('question'):
                 raise ValueError(f'Record question mismatch: {config}/{qid}')
-            if record.get('measured') is False:
-                raise ValueError(f'Synthetic record cannot enter report: {config}/{qid}')
+            if record.get('measured') is not True:
+                raise ValueError(f'Unmeasured record cannot enter report: {config}/{qid}')
             calls = record.get('call_records')
-            if isinstance(calls, list):
-                for call in calls:
-                    if call.get('config', config) != config or call.get('question_id', qid) != qid:
-                        raise ValueError(f'HTTP call scope mismatch: {config}/{qid}')
-                    request_id = call.get('request_id')
-                    if request_id:
-                        if request_id in request_ids:
-                            raise ValueError(f'Duplicate request_id in records: {config}/{qid}')
-                        request_ids.add(request_id)
-                if calls:
-                    ledger_cost = _sum_known(calls, 'cost_usd')
-                    if ledger_cost is None:
-                        record['cost_usd'] = None
-                    elif not _valid_number(record.get('cost_usd')) or not math.isclose(
-                        ledger_cost, record['cost_usd'], abs_tol=1e-10, rel_tol=1e-7
-                    ):
-                        raise ValueError(f'HTTP ledger cost mismatch: {config}/{qid}')
-                    for field in ('prompt_tokens', 'completion_tokens'):
-                        record[field] = _sum_known(calls, field)
-                record['steps'] = len(calls)
+            if not isinstance(calls, list):
+                raise ValueError(f'call_records must be a list: {config}/{qid}')
+            for call in calls:
+                if not isinstance(call, dict):
+                    raise ValueError(f'Invalid HTTP ledger entry: {config}/{qid}')
+                if call.get('config') != config or call.get('question_id') != qid:
+                    raise ValueError(f'HTTP call scope mismatch: {config}/{qid}')
+                request_id = call.get('request_id')
+                if request_id:
+                    if request_id in request_ids:
+                        raise ValueError(f'Duplicate request_id in records: {config}/{qid}')
+                    request_ids.add(request_id)
+            for field in ('cost_usd', 'prompt_tokens', 'completion_tokens'):
+                ledger_total = _sum_known(calls, field) if calls else 0
+                if ledger_total is None:
+                    record[field] = None
+                elif not _valid_number(record.get(field)) or not math.isclose(
+                    ledger_total, record[field], abs_tol=1e-10, rel_tol=1e-7
+                ):
+                    label = 'cost' if field == 'cost_usd' else field
+                    raise ValueError(f'HTTP ledger {label} mismatch: {config}/{qid}')
+                else:
+                    record[field] = ledger_total
+            if record.get('steps') != len(calls):
+                raise ValueError(f'HTTP ledger calls mismatch: {config}/{qid}')
+            record['steps'] = len(calls)
             record['correct'] = score(gold[qid], record.get('final'))
             grouped[config].append(record)
     return grouped
@@ -189,7 +195,8 @@ def render_report(result_dir: Path, rows: list[dict], output_dir: Path) -> list[
                   'незачтённых полных ответов каждой конфигурации с эталоном и опорой. '
                   'Нужно прочитать их, проверить спорные источники и записать решения в `manual_audit.md`.']
     lines += ['', 'Оценщик наследует проверки дат, чисел и явных алиасов из ДЗ 1; '
-              'дополнительно отвергает ответы с явным отрицанием. Это консервативная эвристика, '
+              'нормализует диакритику и отдельные числительные zero–twenty, допускает число без слова people в вопросе how many; '
+              'отвергает явное отрицание и неразрешённые альтернативы. Это консервативная эвристика, '
               'а не понимание смысла; неоднозначные ответы требуют ручного аудита.', '',
               '## Первый запрос и программный лимит', '']
     for filename, label in [('framework_probe.json', 'Побайтовое сравнение первого запроса'),

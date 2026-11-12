@@ -1,4 +1,5 @@
 import json
+import os
 
 import httpx
 import pytest
@@ -224,4 +225,74 @@ def test_network_timeout_is_not_retried_and_remains_uncertain_on_restart(tmp_pat
         resumed.complete(model="test", messages=[])
     assert len(sent) == 1
     assert len(resumed.records) == 1
+    resumed.close()
+
+
+def test_same_client_after_interruption_cannot_overwrite_pending_request(tmp_path):
+    sent = []
+    def interrupt_once(request):
+        sent.append(request)
+        if len(sent) == 1:
+            raise KeyboardInterrupt
+        return httpx.Response(200, json=response())
+    client = MeteredClient("test-key", tmp_path / "calls.jsonl", rates=RATES, interval=0,
+                           transport=httpx.MockTransport(interrupt_once))
+    client.set_scope("bare", "q1")
+    with pytest.raises(KeyboardInterrupt):
+        client.complete(model="test", messages=[])
+    pending = client.inflight.read_text()
+    with pytest.raises(CostUnknownError, match="reconcile"):
+        client.complete(model="test", messages=[])
+    assert len(sent) == 1
+    assert client.inflight.read_text() == pending
+    assert client.accounting_uncertain
+    client.close()
+
+
+def test_inflight_marker_and_directory_are_synced_before_request(tmp_path, monkeypatch):
+    synced = set()
+    real_fsync = os.fsync
+    def track_fsync(fd):
+        stat = os.fstat(fd)
+        synced.add((stat.st_dev, stat.st_ino))
+        real_fsync(fd)
+    monkeypatch.setattr(os, "fsync", track_fsync)
+    ledger = tmp_path / "calls.jsonl"
+    marker = ledger.with_suffix(".inflight.json")
+    synced_before_send = []
+    def serve(request):
+        for path in (marker, marker.parent):
+            stat = path.stat()
+            synced_before_send.append((stat.st_dev, stat.st_ino) in synced)
+        return httpx.Response(200, json=response())
+    client = MeteredClient("test-key", ledger, rates=RATES, interval=0,
+                           transport=httpx.MockTransport(serve))
+    client.complete(model="test", messages=[])
+    assert synced_before_send == [True, True]
+    client.close()
+
+
+def test_total_budget_is_shared_across_questions_and_restart(tmp_path):
+    sent = []
+    def serve(request):
+        sent.append(request)
+        return httpx.Response(200, json=response(cost=0.6))
+    rates = {"test": {"prompt": 0, "completion": 0, "request": 0.6}}
+    ledger = tmp_path / "calls.jsonl"
+    client = MeteredClient("test-key", ledger, budget_usd=1, rates=rates, interval=0,
+                           transport=httpx.MockTransport(serve))
+    client.set_scope("bare", "q1")
+    client.complete(model="test", messages=[])
+    client.set_scope("plan", "q2")
+    with pytest.raises(BudgetExceeded, match="budget reserve"):
+        client.complete(model="test", messages=[])
+    client.close()
+
+    resumed = MeteredClient("test-key", ledger, budget_usd=1, rates=rates, interval=0,
+                            transport=httpx.MockTransport(serve))
+    resumed.set_scope("plan", "q2")
+    with pytest.raises(BudgetExceeded, match="budget reserve"):
+        resumed.complete(model="test", messages=[])
+    assert resumed.spent_usd == 0.6
+    assert len(sent) == 1
     resumed.close()
