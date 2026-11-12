@@ -75,6 +75,9 @@ def _load_records(root, gold):
             record['steps'] = len(calls)
             record['correct'] = score(gold[qid], record.get('final'))
             grouped[config].append(record)
+    order = {qid: index for index, qid in enumerate(gold)}
+    for records in grouped.values():
+        records.sort(key=lambda record: order[record['id']])
     return grouped
 
 

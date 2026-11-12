@@ -51,6 +51,15 @@ def test_partial_unknown_cost_cannot_support_comparison(tmp_path):
     assert candidates[0]['expected'] == 'Alice'
 
 
+def test_audit_candidates_follow_dataset_order_not_lexical_filenames(tmp_path):
+    rows = [dict(id=qid, question='Who won?', answer='Alice') for qid in ('q2', 'q10', 'q3')]
+    for row in rows:
+        write_trace(tmp_path / 'results', 'bare', qid=row['id'], answer='unknown')
+    render_report(tmp_path / 'results', rows, tmp_path / 'out')
+    candidates = json.loads((tmp_path / 'out' / 'audit_candidates.json').read_text())
+    assert [row['id'] for row in candidates] == ['q2', 'q10', 'q3']
+
+
 def test_report_refuses_wrong_question_or_duplicate_request_ids(tmp_path):
     rows = [dict(id='one', question='Different question', answer='Alice')]
     write_trace(tmp_path / 'results', 'bare')
