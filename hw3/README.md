@@ -1,5 +1,8 @@
 # ДЗ 3: фреймворк, критик и план
 
+Решение для сдачи: ветка `codex/hw3-patterns` репозитория
+[`rylengim/models-comparison`](https://github.com/rylengim/models-comparison/tree/codex/hw3-patterns/hw3).
+
 Продолжение агента из ДЗ 1. Сравниваются голый цикл, его перенос на LangGraph,
 критик с опорой, отдельный планировщик и сильная модель без инструментов.
 Код и данные зафиксированы до основного эксперимента 12 ноября 2026 года.
@@ -47,6 +50,12 @@
 Из корня репозитория, Python 3.14:
 
 Клиент использует POSIX-блокировку `flock`; проверенная среда — Linux.
+Для чистого клона выберите ветку с ДЗ 3:
+
+```bash
+git clone --branch codex/hw3-patterns https://github.com/rylengim/models-comparison.git
+cd models-comparison
+```
 
 ```bash
 python3 -m venv .venv
@@ -209,7 +218,7 @@ LangGraph выполняет переходы между узлами и зав�
 Официальные описания использованных API:
 [StateGraph](https://reference.langchain.com/python/langgraph/graph/state/StateGraph),
 [ограничение цены OpenRouter](https://openrouter.ai/docs/guides/routing/provider-selection#max-price).
-Сдача в чат курса и публикация репозитория выполняются пользователем.
+Для сдачи достаточно ссылки на эту папку в ветке `codex/hw3-patterns`.
 
 ## Результат проверки оценщика
 

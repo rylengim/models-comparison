@@ -155,6 +155,50 @@ def test_explicit_fraction_alias_is_still_accepted():
     assert score(row, 'FINAL: one point five')
 
 
+@pytest.mark.parametrize(('phrase', 'answer'), [
+    ('one point five', 'twenty one point five'),
+    ('one half', 'two and one half'),
+    ('one point five miles', 'twenty one point five miles'),
+    ('one half mile', 'two and one half mile'),
+    ('one point five', 'one point five six'),
+])
+@pytest.mark.parametrize('as_alias', [False, True])
+def test_text_fractions_cannot_match_part_of_a_larger_fraction(phrase, answer, as_alias):
+    row = {'answer': '1.5', 'answer_aliases': [phrase]} if as_alias else {'answer': phrase}
+    assert not score(row, answer)
+
+
+@pytest.mark.parametrize('phrase', [
+    'one point five', 'one half', 'one point five miles', 'one half mile',
+])
+@pytest.mark.parametrize('as_alias', [False, True])
+def test_complete_text_fractions_still_match_inside_prose(phrase, as_alias):
+    row = {'answer': '1.5', 'answer_aliases': [phrase]} if as_alias else {'answer': phrase}
+    assert score(row, f'The measured distance was {phrase} yesterday.')
+
+
+@pytest.mark.parametrize(('expected', 'answer'), [
+    ('5', '1 point 5, 5 people'),
+    ('10', 'The ratio was one point five and 10 people attended.'),
+    ('5', '1 point 5; 5 people'),
+    ('10', 'The ratio was one point five, and 10 people attended.'),
+    ('9', 'The ratio was one point five and nine people attended.'),
+    ('12', 'one point 5, 12 people'),
+    ('12', 'one point 5 and 12 people'),
+])
+def test_fraction_spans_stop_before_separate_counts(expected, answer):
+    assert score({'answer': expected}, answer)
+
+
+def test_a_complete_fraction_match_can_follow_a_partial_match():
+    assert score({'answer': 'one half'}, 'It was two and one half; then one half.')
+
+
+def test_fraction_guard_preserves_reordered_dates_in_prose():
+    assert score({'answer': '15 March', 'page': '2026 events'},
+                 'One point five miles on March 15, 2026.')
+
+
 def test_fraction_detector_finishes_on_repeated_digit_hyphen_input():
     # A separate process bounds a regex regression that could hang the grader.
     script = (
