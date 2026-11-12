@@ -1,6 +1,7 @@
 """One HTTP client and a durable response-hook ledger for every model call."""
 from __future__ import annotations
 
+import fcntl
 import json
 import math
 import os
@@ -27,19 +28,30 @@ class MeteredClient:
             raise ValueError("A local API key and positive budget are required")
         if type(max_tokens) is not int or max_tokens < 1:
             raise ValueError("max_tokens must be a positive integer")
-        self.ledger = Path(ledger)
+        self.ledger = Path(ledger).resolve()
         self.ledger.parent.mkdir(parents=True, exist_ok=True)
         self.inflight = self.ledger.with_suffix(".inflight.json")
-        self.records = [json.loads(s) for s in self.ledger.read_text().splitlines()] if self.ledger.exists() else []
-        self.spent_usd = sum(r["cost_usd"] for r in self.records if r.get("cost_usd") is not None)
-        self.accounting_uncertain = self.inflight.exists() or any(r.get("cost_usd") is None for r in self.records)
-        self.budget_usd, self.interval = float(budget_usd), interval
-        self.rates, self.max_tokens = rates or {}, max_tokens
-        self.config, self.question_id, self.max_calls, self.scope_calls = "unscoped", "", 24, 0
-        self._last_started = 0.0
-        self._key = api_key
-        self.http = httpx.Client(timeout=90, trust_env=False, follow_redirects=False,
-                                 transport=transport, event_hooks={"response": [self.on_response]})
+        # Keep this file: unlinking it lets another process lock a different inode.
+        self._lock = self.ledger.with_suffix(".lock").open("a")
+        try:
+            try:
+                fcntl.flock(self._lock.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except BlockingIOError:
+                raise RuntimeError(f"Ledger already in use: {self.ledger}") from None
+            # Read the balance only after acquiring sole ownership of the ledger.
+            self.records = [json.loads(s) for s in self.ledger.read_text().splitlines()] if self.ledger.exists() else []
+            self.spent_usd = sum(r["cost_usd"] for r in self.records if r.get("cost_usd") is not None)
+            self.accounting_uncertain = self.inflight.exists() or any(r.get("cost_usd") is None for r in self.records)
+            self.budget_usd, self.interval = float(budget_usd), interval
+            self.rates, self.max_tokens = rates or {}, max_tokens
+            self.config, self.question_id, self.max_calls, self.scope_calls = "unscoped", "", 24, 0
+            self._last_started = 0.0
+            self._key = api_key
+            self.http = httpx.Client(timeout=90, trust_env=False, follow_redirects=False,
+                                     transport=transport, event_hooks={"response": [self.on_response]})
+        except BaseException:
+            self._lock.close()
+            raise
 
     @property
     def calls_remaining(self):
@@ -70,6 +82,8 @@ class MeteredClient:
 
     def on_response(self, response):
         """The hook sees raw request/response data, never authorization headers."""
+        # Stay blocked through every interruption point in the accounting commit.
+        self.accounting_uncertain = True
         response.read()
         body = json.loads(response.request.content)
         try:
@@ -93,14 +107,15 @@ class MeteredClient:
                   "request": body, "request_bytes": response.request.content.decode(),
                   "response_message": choice.get("message")}
         self._append(record)
+        if cost is not None:
+            self.spent_usd += cost
         self.inflight.unlink(missing_ok=True)
         self._sync_directory()
-        if cost is None:
-            self.accounting_uncertain = True
-        else:
-            self.spent_usd += cost
+        self.accounting_uncertain = cost is None
 
     def complete(self, *, model, messages, tools=None, temperature=0, response_format=None):
+        if self._lock.closed:
+            raise RuntimeError("Metered client is closed")
         if self.inflight.exists():
             self.accounting_uncertain = True
         if self.accounting_uncertain:
@@ -172,4 +187,9 @@ class MeteredClient:
             raise OpenRouterError("Malformed paid response; cost retained in HTTP ledger") from None
 
     def close(self):
-        self.http.close()
+        if self._lock.closed:
+            return
+        try:
+            self.http.close()
+        finally:
+            self._lock.close()

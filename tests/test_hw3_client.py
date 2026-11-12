@@ -1,5 +1,8 @@
 import json
 import os
+from pathlib import Path
+import subprocess
+import sys
 
 import httpx
 import pytest
@@ -296,3 +299,160 @@ def test_total_budget_is_shared_across_questions_and_restart(tmp_path):
     assert resumed.spent_usd == 0.6
     assert len(sent) == 1
     resumed.close()
+
+
+def test_ledger_has_one_owner_and_reopening_restores_limits(tmp_path):
+    sent = []
+    def serve(request):
+        sent.append(request)
+        return httpx.Response(200, json=response(cost=0.6))
+    ledger = tmp_path / "calls.jsonl"
+    kwargs = dict(budget_usd=1, interval=0,
+                  rates={"test": {"prompt": 0, "completion": 0, "request": 0.6}},
+                  transport=httpx.MockTransport(serve))
+    owner = MeteredClient("test-key", ledger, **kwargs)
+    try:
+        with pytest.raises(RuntimeError, match="already in use"):
+            contender = MeteredClient("test-key", ledger, **kwargs)
+            contender.close()
+        assert sent == []
+        owner.set_scope("bare", "q1", max_calls=1)
+        owner.complete(model="test", messages=[])
+    finally:
+        owner.close()
+    owner.close()
+
+    resumed = MeteredClient("test-key", ledger, **kwargs)
+    try:
+        assert resumed.spent_usd == 0.6
+        resumed.set_scope("bare", "q1", max_calls=1)
+        with pytest.raises(BudgetExceeded, match="Question model-call limit"):
+            resumed.complete(model="test", messages=[])
+        resumed.set_scope("bare", "q2", max_calls=1)
+        with pytest.raises(BudgetExceeded, match="budget reserve"):
+            resumed.complete(model="test", messages=[])
+        # Repeated cleanup of the previous owner must not release the new lock.
+        owner.close()
+        with pytest.raises(RuntimeError, match="already in use"):
+            contender = MeteredClient("test-key", ledger, **kwargs)
+            contender.close()
+        assert len(sent) == 1
+    finally:
+        resumed.close()
+
+
+def test_ledger_ownership_is_enforced_across_processes(tmp_path):
+    ledger = tmp_path / "calls.jsonl"
+    owner = MeteredClient("test-key", ledger, rates=RATES, interval=0,
+                          transport=httpx.MockTransport(lambda r: pytest.fail("Unexpected HTTP request")))
+    script = """
+import sys
+import httpx
+from hw3.client import MeteredClient
+def no_network(request):
+    raise AssertionError("Unexpected HTTP request")
+try:
+    client = MeteredClient("test-key", sys.argv[1], rates={"test": {"prompt": 0, "completion": 0}},
+                           transport=httpx.MockTransport(no_network))
+except RuntimeError as error:
+    assert "already in use" in str(error)
+    print("blocked")
+else:
+    client.close()
+    print("acquired")
+"""
+    def attempt():
+        result = subprocess.run([sys.executable, "-B", "-c", script, str(ledger)],
+                                cwd=Path(__file__).resolve().parents[1],
+                                capture_output=True, text=True, timeout=10, check=True)
+        return result.stdout.strip()
+    try:
+        assert attempt() == "blocked"
+    finally:
+        owner.close()
+    assert attempt() == "acquired"
+
+
+def test_interrupt_after_inflight_removal_blocks_until_reopened(tmp_path, monkeypatch):
+    sent = []
+    def serve(request):
+        sent.append(request)
+        return httpx.Response(200, json=response(cost=0.6))
+    ledger = tmp_path / "calls.jsonl"
+    kwargs = dict(budget_usd=1, interval=0,
+                  rates={"test": {"prompt": 0, "completion": 0, "request": 0.6}},
+                  transport=httpx.MockTransport(serve))
+    client = MeteredClient("test-key", ledger, **kwargs)
+    real_sync = client._sync_directory
+    interrupted = False
+    def interrupt_after_unlink():
+        nonlocal interrupted
+        real_sync()
+        if ledger.exists() and not client.inflight.exists() and not interrupted:
+            interrupted = True
+            raise KeyboardInterrupt
+    monkeypatch.setattr(client, "_sync_directory", interrupt_after_unlink)
+    try:
+        client.set_scope("bare", "q1")
+        with pytest.raises(KeyboardInterrupt):
+            client.complete(model="test", messages=[])
+        assert interrupted
+        assert json.loads(ledger.read_text())["cost_usd"] == 0.6
+        assert not client.inflight.exists()
+        with pytest.raises(CostUnknownError, match="reconcile"):
+            client.complete(model="test", messages=[])
+        assert len(sent) == 1
+    finally:
+        client.close()
+
+    resumed = MeteredClient("test-key", ledger, **kwargs)
+    try:
+        assert resumed.spent_usd == 0.6
+        assert not resumed.accounting_uncertain
+        resumed.set_scope("bare", "q2")
+        with pytest.raises(BudgetExceeded, match="budget reserve"):
+            resumed.complete(model="test", messages=[])
+        assert len(sent) == 1
+    finally:
+        resumed.close()
+
+
+def test_http_initialization_failure_releases_ledger_ownership(tmp_path, monkeypatch):
+    ledger = tmp_path / "calls.jsonl"
+    def fail_initialization(**kwargs):
+        raise RuntimeError("mock HTTP initialization failure")
+    with monkeypatch.context() as patch:
+        patch.setattr(httpx, "Client", fail_initialization)
+        with pytest.raises(RuntimeError, match="mock HTTP initialization failure"):
+            MeteredClient("test-key", ledger, rates=RATES)
+    client = MeteredClient("test-key", ledger, rates=RATES,
+                           transport=httpx.MockTransport(lambda r: pytest.fail("Unexpected HTTP request")))
+    client.close()
+
+
+def test_http_close_failure_still_releases_ledger_ownership(tmp_path, monkeypatch):
+    ledger = tmp_path / "calls.jsonl"
+    kwargs = dict(rates=RATES,
+                  transport=httpx.MockTransport(lambda r: pytest.fail("Unexpected HTTP request")))
+    client = MeteredClient("test-key", ledger, **kwargs)
+    real_close = client.http.close
+    def fail_close():
+        real_close()
+        raise RuntimeError("mock HTTP close failure")
+    monkeypatch.setattr(client.http, "close", fail_close)
+    with pytest.raises(RuntimeError, match="mock HTTP close failure"):
+        client.close()
+    replacement = MeteredClient("test-key", ledger, **kwargs)
+    replacement.close()
+
+
+def test_closed_client_rejects_requests_without_creating_inflight(tmp_path):
+    ledger = tmp_path / "calls.jsonl"
+    client = MeteredClient("test-key", ledger, rates=RATES, interval=0,
+                           transport=httpx.MockTransport(lambda r: pytest.fail("Unexpected HTTP request")))
+    client.close()
+    with pytest.raises(RuntimeError, match="closed"):
+        client.complete(model="test", messages=[])
+    assert not client.inflight.exists()
+    assert not ledger.exists()
+    assert client.records == []
