@@ -155,7 +155,7 @@ def render_report(result_dir: Path, rows: list[dict], output_dir: Path) -> list[
     _write_json(out / 'summary.json', summary)
     fields = list(dict.fromkeys(key for row in summary for key in row))
     with (out / 'summary.csv').open('w', encoding='utf-8', newline='') as stream:
-        writer = csv.DictWriter(stream, fieldnames=fields)
+        writer = csv.DictWriter(stream, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         writer.writerows(summary)
     candidates = []
