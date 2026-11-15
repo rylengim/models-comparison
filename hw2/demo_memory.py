@@ -14,12 +14,9 @@ import requests
 
 from freshqa.tools import ToolRegistry
 from hw2.benchmark_client import BenchmarkClient, PRICE_CAPS
-from hw2.knowledge_base import KnowledgeBase
-from hw2.memory_agent import EXTRACT_RULES, FACT_KEYS, MemorySession, answer_turn
+from hw2.memory_agent import EXTRACT_RULES, FACT_KEYS, MEMORY_POLICY, MemorySession, answer_turn
 from hw2.memory_comparison import write_comparison
-from hw2.memory_store import COLLECTION, EpisodeJournal, FactStore
 from hw2.prepare_corpus import ROOT
-from hw2.run_benchmark import project_key
 
 
 MODEL = "openai/gpt-4o-mini"
@@ -119,6 +116,10 @@ class LocalClient:
 
 
 def run_sessions(client, model, out, run_dir, *, local=False):
+    # Reading or validating an archived demo does not need a vector database.
+    from hw2.knowledge_base import KnowledgeBase
+    from hw2.memory_store import COLLECTION, EpisodeJournal, FactStore
+
     run_id = "fictional-" + uuid4().hex
     journal = EpisodeJournal(run_dir / "episodes.jsonl", run_id)
     full_history = []
@@ -141,7 +142,8 @@ def run_sessions(client, model, out, run_dir, *, local=False):
                 print(f"{session_id} · {len(turns)}/{len(questions)}", flush=True)
             sessions.append({"session_id": session_id, "turns": turns, **agent.finish()})
         final_lookup = store.search("Which day should I get reminders?", limit=2)
-    demo = {"model": model, "window_pairs": 1, "fact_limit": 2, "collection": COLLECTION,
+    demo = {"model": model, "memory_policy": MEMORY_POLICY,
+            "window_pairs": 1, "fact_limit": 2, "collection": COLLECTION,
             "price_basis": "Local CPU, API charges" if local else "OpenRouter usage.cost",
             "final_lookup": final_lookup, "sessions": sessions}
     validate_demo(demo)
@@ -150,6 +152,9 @@ def run_sessions(client, model, out, run_dir, *, local=False):
 
 
 def validate_demo(demo):
+    policy = demo.get("memory_policy", "session_end_v1")
+    if policy not in {"session_end_v1", MEMORY_POLICY}:
+        raise ValueError("Unknown memory policy")
     first, second = demo["sessions"]
     for session, (expected_id, questions) in zip((first, second), SESSIONS, strict=True):
         if session["session_id"] != expected_id or [t["question"] for t in session["turns"]] != list(questions):
@@ -171,6 +176,28 @@ def validate_demo(demo):
     if (not any(f["key"] == "reminder_day" and f["value"].casefold() == "tuesday" for f in recall["facts"])
             or "tuesday" not in recall["answer"].casefold()):
         raise ValueError("Агент не вспомнил предпочтение из первой сессии.")
+    if policy == MEMORY_POLICY:
+        # Old published artifacts are replayed as v1, never relabelled as fixed.
+        for session in (first, second):
+            updates = [turn["memory_update"] for turn in session["turns"]]
+            if updates != session["memory_updates"] or any(
+                update["status"] not in {"skipped", "no_facts", "persisted"} for update in updates
+            ):
+                raise ValueError("The session contains an incomplete memory update")
+            receipts = [u["extraction_usage"] for u in updates if u["extraction_usage"] is not None]
+            if receipts != session["extraction_receipts"]:
+                raise ValueError("Extraction receipts do not match the per-turn updates")
+            for key in ("prompt_tokens", "completion_tokens", "cost_usd"):
+                values = [receipt[key] for receipt in receipts]
+                if any(type(v) not in (int, float) or not math.isfinite(v) or v < 0 for v in values):
+                    raise ValueError("Unknown or invalid extraction usage")
+                if not math.isclose(math.fsum(values), session["extraction_usage"][key], abs_tol=1e-12):
+                    raise ValueError("Extraction usage must include every per-turn charge once")
+        latest = second["turns"][-1]
+        if (latest["answer"].strip().rstrip(".!").casefold() != "friday"
+                or not any(f["key"] == "reminder_day" and f["value"].casefold() == "friday"
+                           for f in latest["facts"])):
+            raise ValueError("The within-session correction must recall Friday before finish()")
 
 
 def compare(demo, out):
@@ -210,6 +237,8 @@ def main():
             if (calls / "pending.json").exists():
                 parser.error("Открытая попытка в журнале. Перед продолжением сверьте расходы.")
             if args.live:
+                from hw2.run_benchmark import project_key
+
                 spent = math.fsum(json.loads(p.read_text())["response"]["cost_usd"] for p in calls.glob("[0-9]*.json"))
                 client = BenchmarkClient(project_key(ROOT / ".env"), budget_usd=args.budget_usd, spent_usd=spent)
                 model = MODEL

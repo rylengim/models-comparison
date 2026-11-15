@@ -1,9 +1,19 @@
 import json
+from copy import deepcopy
 
 import pytest
 
 from freshqa.tools import ToolRegistry
-from hw2.memory_agent import MemorySession, extract_facts
+from freshqa.client import BudgetExceeded
+from hw2.memory_agent import EXTRACT_RULES, MemorySession, extract_facts
+
+
+@pytest.fixture(autouse=True)
+def forbid_http(monkeypatch):
+    def forbidden(*args, **kwargs):
+        raise AssertionError("Memory regression tests must never send HTTP requests")
+
+    monkeypatch.setattr("requests.sessions.Session.request", forbidden)
 
 
 class Client:
@@ -67,3 +77,255 @@ def test_extraction_rejects_a_fact_supported_only_by_the_assistant():
     with pytest.raises(ValueError, match="Факт"):
         extract_facts(messages, client, "test")
     assert bad["evidence"] not in client.messages[0][1]["content"]
+
+
+class MutableStore:
+    def __init__(self, user_id="alice", backend=None):
+        self.user_id = user_id
+        self.backend = backend if backend is not None else {}
+        self.writes = 0
+
+    def upsert(self, session_id, facts):
+        self.writes += 1
+        for fact in facts:
+            self.backend[self.user_id, fact["key"]] = {**fact, "session_id": session_id}
+
+    def all(self):
+        return [dict(value) for (user, _), value in self.backend.items() if user == self.user_id]
+
+    def search(self, question, limit):
+        return self.all()[:limit]
+
+
+class PreferenceClient:
+    """Deterministic completions: answers use only the saved preference card."""
+    def __init__(self):
+        self.spent_usd = 0.0
+        self.messages = []
+        self.extractions = 0
+        self.invalid_extraction = False
+
+    def complete(self, *, model, messages, tools=None):
+        self.messages.append(messages)
+        self.spent_usd += 0.01
+        if messages[0]["content"] == EXTRACT_RULES:
+            self.extractions += 1
+            text = messages[-1]["content"]
+            day = "Friday" if "Friday" in text else "Tuesday" if "Tuesday" in text else ""
+            content = "not json" if self.invalid_extraction else json.dumps({
+                "reminder_day": day, "distance_unit": "", "project_name": ""})
+        else:
+            text = messages[-1]["content"]
+            day = "Friday" if "reminder day: Friday" in text else "Tuesday" if "reminder day: Tuesday" in text else "unknown"
+            content = "FINAL: Train connections" if "Suggest a heading" in text else "FINAL: " + day
+        return {"message": {"role": "assistant", "content": content}, "finish_reason": "stop",
+                "prompt_tokens": 10, "completion_tokens": 2, "cost_usd": 0.01,
+                "request_id": f"call-{len(self.messages)}"}
+
+
+def memory_session(store, client, session_id="a", **kwargs):
+    return MemorySession(session_id, store=store, journal=Journal(), client=client,
+                         registry=ToolRegistry(knowledge_search=lambda query, page=None: []),
+                         model="test", **kwargs)
+
+
+def test_correction_is_saved_before_answer_and_survives_window_eviction():
+    store, client = MutableStore(), PreferenceClient()
+    session = memory_session(store, client)
+    assert session.ask("I prefer Tuesday for reminders.")["answer"] == "Tuesday"
+    corrected = session.ask("I now prefer Friday for reminders.")
+    assert corrected["answer"] == "Friday"
+    assert corrected["facts"][0]["value"] == "Friday"
+    session.ask("Suggest a heading for train connections.")
+    recalled = session.ask("Which reminder day should you use?")
+    assert "Friday" not in str(recalled["history"])
+    assert recalled["answer"] == "Friday"
+    assert client.extractions == 2
+    assert store.all() == [{"key": "reminder_day", "value": "Friday", "session_id": "a"}]
+
+
+def test_finish_is_a_zero_call_idempotent_summary_and_old_session_cannot_overwrite_newer_facts():
+    store, client = MutableStore(), PreferenceClient()
+    first = memory_session(store, client, "first")
+    first.ask("I prefer Tuesday for reminders.")
+    second = memory_session(store, client, "second", window_pairs=0)
+    second.ask("I now prefer Friday for reminders.")
+    calls, writes = len(client.messages), store.writes
+    summary = first.finish()
+    assert first.finish() == summary
+    assert len(client.messages) == calls and store.writes == writes
+    assert summary["extraction_usage"] == {"prompt_tokens": 10, "completion_tokens": 2, "cost_usd": 0.01}
+    assert summary["extraction_receipts"][0]["request_id"] == "call-1"
+    assert store.all()[0]["value"] == "Friday"
+    third = memory_session(store, client, "third")
+    assert third.ask("Which day should I use?")["answer"] == "Friday"
+    with pytest.raises(RuntimeError, match="finished"):
+        first.ask("I prefer Tuesday for reminders.")
+
+
+def test_memory_update_and_answer_costs_are_separate_and_extractions_count_once():
+    store, client = MutableStore(), PreferenceClient()
+    session = memory_session(store, client)
+    turns = [session.ask("I prefer Tuesday for reminders."),
+             session.ask("I now prefer Friday for reminders."),
+             session.ask("Which day should I use?")]
+    summary = session.finish()
+    assert summary["extraction_usage"]["cost_usd"] == pytest.approx(0.02)
+    assert len(summary["extraction_receipts"]) == 2
+    total = sum(t["usage"]["cost_usd"] for t in turns) + summary["extraction_usage"]["cost_usd"]
+    assert total == pytest.approx(client.spent_usd)
+    assert turns[-1]["memory_update"]["status"] == "skipped"
+    assert client.extractions == 2
+
+
+def test_invalid_extraction_does_not_answer_or_claim_a_persisted_fact_and_retains_charge():
+    store, client = MutableStore(), PreferenceClient()
+    store.upsert("previous", [{"key": "reminder_day", "value": "Tuesday"}])
+    client.invalid_extraction = True
+    session = memory_session(store, client)
+    with pytest.raises(ValueError):
+        session.ask("I now prefer Friday for reminders.")
+    assert len(client.messages) == 1 and client.extractions == 1
+    assert store.all()[0]["value"] == "Tuesday"
+    summary = session.finish()
+    assert summary["extraction_usage"]["cost_usd"] == pytest.approx(0.01)
+    assert summary["memory_updates"][0]["status"] == "invalid_extraction"
+    assert summary["extracted"] == []
+
+
+def test_failed_persistence_stops_answer_and_keeps_extraction_receipt():
+    class BrokenStore(MutableStore):
+        def upsert(self, session_id, facts):
+            raise OSError("local store unavailable")
+
+    store, client = BrokenStore(), PreferenceClient()
+    session = memory_session(store, client)
+    with pytest.raises(OSError, match="unavailable"):
+        session.ask("I now prefer Friday for reminders.")
+    assert len(client.messages) == 1
+    summary = session.finish()
+    assert summary["extraction_usage"]["cost_usd"] == pytest.approx(0.01)
+    assert summary["memory_updates"][0]["status"] == "persistence_failed"
+    assert summary["extracted"] == []
+
+
+def test_updates_stay_scoped_to_the_user_store():
+    backend, client = {}, PreferenceClient()
+    alice, bob = MutableStore("alice", backend), MutableStore("bob", backend)
+    memory_session(alice, client).ask("I prefer Friday for reminders.")
+    assert bob.all() == []
+    assert memory_session(bob, client).ask("Which day should I use?")["answer"] == "unknown"
+
+
+def test_explicit_turn_id_replays_the_result_without_another_update_or_charge():
+    store, client = MutableStore(), PreferenceClient()
+    session = memory_session(store, client)
+    first = session.ask("I prefer Friday for reminders.", turn_id="correction-1")
+    calls, writes = len(client.messages), store.writes
+    assert session.ask("I prefer Friday for reminders.", turn_id="correction-1") == first
+    assert len(client.messages) == calls and store.writes == writes
+    assert len(session.journal.rows) == 2
+    session.finish()
+    assert session.ask("I prefer Friday for reminders.", turn_id="correction-1") == first
+    assert len(client.messages) == calls and store.writes == writes
+    with pytest.raises(RuntimeError, match="finished"):
+        session.ask("I prefer Friday for reminders.", turn_id="new-turn")
+    with pytest.raises(ValueError, match="different question"):
+        session.ask("I prefer Tuesday for reminders.", turn_id="correction-1")
+
+
+def test_failed_turn_id_does_not_repeat_paid_extraction_automatically():
+    store, client = MutableStore(), PreferenceClient()
+    client.invalid_extraction = True
+    session = memory_session(store, client)
+    with pytest.raises(ValueError):
+        session.ask("I prefer Friday for reminders.", turn_id="correction-1")
+    with pytest.raises(RuntimeError, match="failed"):
+        session.ask("I prefer Friday for reminders.", turn_id="correction-1")
+    assert len(client.messages) == 1
+
+
+def test_unreported_extraction_failure_is_not_counted_as_zero_cost():
+    class InterruptedClient(PreferenceClient):
+        def complete(self, **kwargs):
+            raise RuntimeError("interrupted extraction")
+
+    session = memory_session(MutableStore(), InterruptedClient())
+    with pytest.raises(RuntimeError, match="interrupted"):
+        session.ask("I prefer Friday for reminders.")
+    summary = session.finish()
+    assert summary["extraction_usage"]["cost_usd"] is None
+    assert summary["memory_updates"][0]["status"] == "extraction_failed"
+
+
+@pytest.mark.parametrize("interruption", [KeyboardInterrupt, SystemExit])
+@pytest.mark.parametrize("stage", ["extraction", "persistence"])
+def test_interrupted_turn_keeps_receipt_state_and_blocks_automatic_retry(interruption, stage):
+    class InterruptedClient(PreferenceClient):
+        def complete(self, **kwargs):
+            response = super().complete(**kwargs)
+            if stage == "extraction":
+                raise interruption("interrupted extraction")
+            return response
+
+    class InterruptedStore(MutableStore):
+        def upsert(self, session_id, facts):
+            raise interruption("interrupted persistence")
+
+    store = InterruptedStore() if stage == "persistence" else MutableStore()
+    client = InterruptedClient()
+    session = memory_session(store, client)
+    with pytest.raises(interruption):
+        session.ask("I prefer Friday for reminders.", turn_id="interrupted-1")
+    with pytest.raises(RuntimeError, match="failed"):
+        session.ask("I prefer Friday for reminders.", turn_id="interrupted-1")
+    assert len(client.messages) == 1 and client.spent_usd == pytest.approx(0.01)
+    summary = session.finish()
+    assert summary["extracted"] == []
+    assert summary["memory_updates"][0]["status"] == f"{stage}_failed"
+    if stage == "extraction":
+        assert summary["extraction_usage"]["cost_usd"] is None
+    else:
+        assert summary["extraction_usage"]["cost_usd"] == pytest.approx(0.01)
+        assert summary["extraction_receipts"][0]["request_id"] == "call-1"
+
+
+def test_local_budget_rejection_has_no_provider_receipt_or_unknown_charge():
+    class BudgetClient(PreferenceClient):
+        def complete(self, **kwargs):
+            raise BudgetExceeded("No request was sent")
+
+    session = memory_session(MutableStore(), BudgetClient())
+    with pytest.raises(BudgetExceeded):
+        session.ask("I prefer Friday for reminders.")
+    summary = session.finish()
+    assert summary["extraction_usage"]["cost_usd"] == 0
+    assert summary["extraction_receipts"] == []
+    assert summary["memory_updates"][0]["status"] == "budget_exceeded"
+
+
+def test_new_demo_validates_recall_after_correction_and_accounts_for_all_extractions(tmp_path):
+    from hw2 import demo_memory
+
+    store, client, sessions = MutableStore(), PreferenceClient(), []
+    for session_id, questions in demo_memory.SESSIONS:
+        session = memory_session(store, client, session_id)
+        turns = [{**session.ask(question), "full_usage": {
+            "prompt_tokens": 0, "completion_tokens": 0, "cost_usd": 0.0}} for question in questions]
+        sessions.append({"session_id": session_id, "turns": turns, **session.finish()})
+    demo = {"memory_policy": "update_before_answer_v2", "model": "test", "price_basis": "synthetic",
+            "sessions": sessions, "final_lookup": store.search("Which day?", limit=2)}
+    demo_memory.validate_demo(demo)
+    assert demo["sessions"][1]["turns"][-1]["answer"] == "Friday"
+    report = demo_memory.compare(demo, tmp_path / "report")
+    assert report["totals"]["full"]["cost_usd"] + report["totals"]["window"]["cost_usd"] == pytest.approx(client.spent_usd)
+    broken = deepcopy(demo)
+    broken["sessions"][1]["turns"][-1]["answer"] = "Tuesday"
+    with pytest.raises(ValueError, match="Friday"):
+        demo_memory.validate_demo(broken)
+    # Accepted artifacts without the new marker retain their historical checks.
+    del broken["memory_policy"]
+    demo_memory.validate_demo(broken)
+    broken["memory_policy"] = "invented_policy"
+    with pytest.raises(ValueError, match="policy"):
+        demo_memory.validate_demo(broken)

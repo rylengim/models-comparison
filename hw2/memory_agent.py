@@ -1,9 +1,12 @@
 """Session memory for the step-three tool-calling agent."""
 import json
+import math
 import re
 from collections import deque
+from copy import deepcopy
 
 from freshqa.agent import run_agent
+from freshqa.client import BudgetExceeded
 
 
 CONTEXT_RULES = """You are helping the same user over multiple conversations.
@@ -18,6 +21,7 @@ EXTRACT_RULES = ('Read these user statements. Copy the most recent explicit valu
                  '{"reminder_day":"Monday","distance_unit":"miles","project_name":""}')
 FACT_KEYS = ("reminder_day", "distance_unit", "project_name")
 USAGE_FIELDS = ("prompt_tokens", "completion_tokens", "cost_usd")
+MEMORY_POLICY = "update_before_answer_v2"
 
 
 def usage(record):
@@ -55,15 +59,35 @@ def answer_turn(question, *, history, facts, client, registry, model):
             "receipts": [{"request_id": e["request_id"], **usage(e)} for e in calls]}
 
 
-def extract_facts(utterances, client, model):
-    statements = [
+def candidate_statements(utterances):
+    """The deliberately limited English assertion contract used by this demo."""
+    return [
         statement for row in utterances if row["role"] == "user"
         for statement in re.split(r"(?<=[.!?])\s+", row["content"].strip())
         if not statement.endswith("?") and re.match(r"(?:I|my|we|our)\b", statement, re.I)
     ]
+
+
+class FactExtractionError(ValueError):
+    """The model returned an invalid extraction; its known charge is still owed."""
+    def __init__(self, message, receipt):
+        super().__init__(message)
+        self.receipt = receipt
+
+
+def extract_facts(utterances, client, model):
+    statements = candidate_statements(utterances)
     messages = [{"role": "system", "content": EXTRACT_RULES},
                 {"role": "user", "content": " ".join(statements)}]
     response = client.complete(model=model, messages=messages)
+    receipt = {**usage(response), "request_id": response["request_id"]}
+    try:
+        return _validate_extraction(response, statements), receipt
+    except (ValueError, TypeError, KeyError, RecursionError) as error:
+        raise FactExtractionError(str(error), receipt) from error
+
+
+def _validate_extraction(response, statements):
     if response.get("finish_reason") != "stop":
         raise ValueError("Извлечение фактов не завершено.")
     obj = json.loads(response["message"]["content"])
@@ -80,7 +104,7 @@ def extract_facts(utterances, client, model):
         if not value.strip() or evidence is None:
             raise ValueError("Факт должен ссылаться на точные слова пользователя.")
         facts.append({"key": key, "value": value, "evidence": evidence})
-    return facts, {**usage(response), "request_id": response["request_id"]}
+    return facts
 
 
 class MemorySession:
@@ -94,19 +118,100 @@ class MemorySession:
         self.registry = registry
         self.model = model
         self.window = deque(maxlen=2 * window_pairs)
+        self._updates = []
+        self._extracted = {}
+        self._turns = {}
+        self._finished = None
 
-    def ask(self, question):
+    def _update_memory(self, question):
+        utterances = [{"role": "user", "content": question}]
+        update = {"status": "skipped", "extracted": [], "extraction_usage": None}
+        self._updates.append(update)
+        if not candidate_statements(utterances):
+            return update
+        update["status"] = "extracting"
+        try:
+            facts, receipt = extract_facts(utterances, self.client, self.model)
+        except FactExtractionError as error:
+            update.update(status="invalid_extraction", extraction_usage=deepcopy(error.receipt))
+            raise
+        except BudgetExceeded:
+            update["status"] = "budget_exceeded"
+            raise
+        except BaseException:
+            # Keep accounting on cancellation too, then propagate the interruption.
+            # No confirmed receipt: never disguise an unreported call as free.
+            update.update(status="extraction_failed", extraction_usage={
+                "request_id": None, **dict.fromkeys(USAGE_FIELDS)})
+            raise
+        update["extraction_usage"] = receipt
+        if not facts:
+            update["status"] = "no_facts"
+            return update
+        try:
+            self.store.upsert(self.session_id, [{"key": f["key"], "value": f["value"]} for f in facts])
+        except BaseException:
+            update["status"] = "persistence_failed"
+            raise
+        update.update(status="persisted", extracted=facts)
+        self._extracted.update({f["key"]: f for f in facts})
+        return update
+
+    def ask(self, question, *, turn_id=None):
+        """Update facts before answering; an optional turn ID provides session-local replay.
+
+        Finished sessions allow cached replay but reject new turns. A failed explicit turn ID is not retried
+        automatically: inspect its receipt/error before deliberately submitting a new ID.
+        """
+        if not isinstance(question, str) or not question.strip():
+            raise ValueError("question must be a nonempty string")
+        if turn_id is not None:
+            if not isinstance(turn_id, str) or not turn_id.strip() or len(turn_id) > 256:
+                raise ValueError("turn_id must be a nonempty string of at most 256 characters")
+            if turn_id in self._turns:
+                previous = self._turns[turn_id]
+                if previous["question"] != question:
+                    raise ValueError("turn_id already identifies a different question")
+                if previous["status"] != "complete":
+                    raise RuntimeError("The previous turn is pending or failed; automatic retry is disabled.")
+                return deepcopy(previous["result"])
+        if self._finished is not None:
+            raise RuntimeError("This memory session is finished; start a new session.")
+        if turn_id is not None:
+            self._turns[turn_id] = {"question": question, "status": "pending"}
+        try:
+            result = self._answer(question)
+        except BaseException:
+            if turn_id is not None:
+                self._turns[turn_id]["status"] = "failed"
+            raise
+        if turn_id is not None:
+            self._turns[turn_id].update(status="complete", result=deepcopy(result))
+        return result
+
+    def _answer(self, question):
+        self.journal.append(self.session_id, "user", question)
+        update = self._update_memory(question)
         facts = self.store.search(question, limit=2)
         history = list(self.window)
-        self.journal.append(self.session_id, "user", question)
         reply = answer_turn(question, history=history, facts=facts, client=self.client,
                             registry=self.registry, model=self.model)
         self.journal.append(self.session_id, "assistant", reply["answer"])
         self.window.extend([{"role": "user", "content": question},
                             {"role": "assistant", "content": reply["answer"]}])
-        return {"question": question, "history": history, "facts": facts, **reply}
+        return {"question": question, "history": history, "facts": facts,
+                "memory_update": deepcopy(update), **reply}
 
     def finish(self):
-        facts, charge = extract_facts(self.journal.session(self.session_id), self.client, self.model)
-        self.store.upsert(self.session_id, [{"key": f["key"], "value": f["value"]} for f in facts])
-        return {"extracted": facts, "extraction_usage": charge, "facts_after": self.store.all()}
+        """Close with a cached summary, without extraction or writes to shared facts."""
+        if self._finished is None:
+            receipts = [u["extraction_usage"] for u in self._updates if u["extraction_usage"] is not None]
+            totals = {key: (None if any(r[key] is None for r in receipts) else
+                            (math.fsum(r[key] for r in receipts) if key == "cost_usd" else
+                             sum(r[key] for r in receipts))) for key in USAGE_FIELDS}
+            self._finished = deepcopy({
+                "extracted": list(self._extracted.values()), "extraction_usage": totals,
+                "extraction_receipts": receipts, "memory_updates": self._updates,
+                "facts_after": self.store.all(),
+            })
+        return deepcopy(self._finished)

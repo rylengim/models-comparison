@@ -7,6 +7,7 @@ import pytest
 from hw2 import run_benchmark
 from hw2.benchmark import CONFIGS, RAG_CONFIGS, _signature
 from hw2.benchmark_snapshot import complete_records, load_snapshot, save_snapshot
+from hw2.rag import validate_response
 
 
 @pytest.fixture
@@ -71,3 +72,29 @@ def test_fresh_clone_live_flag_replays_without_opening_a_key_or_creating_ledger(
                                       "--traces", str(ledger), "--out", str(out)])
     assert run_benchmark.main() == 0
     assert (out / "report.md").is_file() and not ledger.exists()
+
+
+def test_snapshot_retains_future_rag_replay_inputs_but_not_transport_metadata(tmp_path, measurements):
+    rows, signature, prior, measured = measurements
+    source = {"id": "x", "page": "test", "section": "results", "url": "https://example.org/result", "text": "Value: 42"}
+    raw = {"message": {"role": "assistant", "content": '```json\n{"answer":"42","quote":"Value: 42","source_id":"x"}\n```'},
+           "finish_reason": "stop"}
+    for record in measured:
+        if record["config"] in RAG_CONFIGS:
+            receipt = record["rag_result"]["usage"]
+            record["rag_result"] = validate_response({**raw, **receipt}, [source])
+            record["rag_result"]["raw_response"]["private_header"] = "sensitive-test-value"
+            record["rag_result"]["raw_response"]["message"]["private_debug"] = "sensitive-test-value"
+            record["rag_result"]["retrieved_context"][0]["private_debug"] = "sensitive-test-value"
+    output = tmp_path / "new.json.gz"
+    save_snapshot(output, {"signature": signature}, signature, rows, prior, prior + measured)
+    payload = gzip.decompress(output.read_bytes()).decode()
+    assert "sensitive-test-value" not in payload
+    records = load_snapshot(output, signature, rows, prior)
+    for record in records:
+        if record["config"] in RAG_CONFIGS:
+            saved = record["rag_result"]
+            assert saved["raw_response"]["message"] == raw["message"]
+            assert saved["retrieved_context"] == [source]
+            replayed = validate_response(saved["raw_response"], saved["retrieved_context"])
+            assert replayed["status"] == "answered" and replayed["answer"] == "42"

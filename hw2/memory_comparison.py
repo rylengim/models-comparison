@@ -56,7 +56,8 @@ def write_comparison(turns, extractions, out_dir, *, model, price_basis, referen
 
     full and window refer to the replies to the same ordered questions. All
     model calls needed to answer a question count toward that turn. Extracting
-    semantic facts at session end is a separate cost of the window policy.
+    semantic facts is a separate cost of the window policy. Each extraction row
+    is the session total, including all updates performed before individual replies.
     Optional reference rates are hypothetical USD per million input/output tokens.
     """
     turns = [

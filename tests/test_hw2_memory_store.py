@@ -1,4 +1,5 @@
 from datetime import datetime
+import json
 
 import pytest
 
@@ -67,3 +68,40 @@ def test_journal_reopens_and_selects_one_user_and_session(tmp_path):
     assert [(r["role"], r["content"]) for r in rows] == [("user", "Two\nlines"), ("assistant", "OK")]
     assert all(r["session_id"] == "first" and r["user_id"] == "demo" for r in rows)
     assert all(datetime.fromisoformat(r["timestamp"]).utcoffset() is not None for r in rows)
+
+
+def test_session_correction_is_durable_before_finish_with_real_local_store(tmp_path, monkeypatch):
+    from freshqa.tools import ToolRegistry
+    from hw2.memory_agent import EXTRACT_RULES, MemorySession
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("The memory regression must not call HTTP")
+
+    monkeypatch.setattr("requests.sessions.Session.request", forbidden)
+
+    class Client:
+        spent_usd = 0.0
+
+        def complete(self, *, model, messages, tools=None):
+            if messages[0]["content"] == EXTRACT_RULES:
+                content = json.dumps({"reminder_day": "Friday", "distance_unit": "", "project_name": ""})
+            else:
+                content = "FINAL: " + ("Friday" if "reminder day: Friday" in messages[-1]["content"] else "unknown")
+            return {"message": {"role": "assistant", "content": content}, "finish_reason": "stop",
+                    "prompt_tokens": 10, "completion_tokens": 2, "cost_usd": 0.0, "request_id": "synthetic"}
+
+    path = tmp_path / "facts.db"
+    with facts_at(path) as facts:
+        facts.upsert("old", [{"key": "reminder_day", "value": "Tuesday"}])
+        session = MemorySession("current", store=facts,
+                                journal=EpisodeJournal(tmp_path / "episodes.jsonl", "demo"),
+                                client=Client(), registry=ToolRegistry(knowledge_search=lambda *a, **kw: []),
+                                model="test", window_pairs=0)
+        assert session.ask("I now prefer Friday for reminders.")["answer"] == "Friday"
+        assert session.ask("Which day should I use?")["answer"] == "Friday"
+        # The process may stop before finish(); the preference is already durable.
+    with facts_at(path) as reopened:
+        assert reopened.search("Which reminder day?", limit=1) == [
+            {"key": "reminder_day", "value": "Friday", "session_id": "current"}]
+    with facts_at(path, "another-user") as other:
+        assert other.all() == []

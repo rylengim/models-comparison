@@ -8,6 +8,7 @@ from tempfile import NamedTemporaryFile
 from freshqa.experiment import HARD_FAILURE_STATUSES
 from hw2.benchmark import CONFIGS, RAG_CONFIGS
 from hw2.prior_runs import valid_usd
+from hw2.rag import SOURCE_KEYS, response_snapshot
 
 
 def pick(record, names):
@@ -29,6 +30,12 @@ def public_record(record):
         source = rag["source"]
         result["rag_result"]["source"] = pick(source, ("id", "url", "section", "page")) if source else None
         result["rag_result"]["usage"] = pick(rag["usage"], BILLING)
+        result["rag_result"].update(pick(rag, ("parser_version", "format_valid", "validation_error")))
+        # Older snapshots lack these fields; never reconstruct a discarded model response.
+        if "raw_response" in rag:
+            result["rag_result"]["raw_response"] = response_snapshot(rag["raw_response"])
+        if "retrieved_context" in rag:
+            result["rag_result"]["retrieved_context"] = [pick(s, SOURCE_KEYS) for s in rag["retrieved_context"]]
     else:
         events = []
         for item in record["events"]:

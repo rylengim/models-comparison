@@ -2,9 +2,12 @@
 import json
 import re
 from datetime import date
-from decimal import Decimal
 from pathlib import Path
 from urllib.parse import urlsplit
+
+from .quantities import quantity_matches
+
+METRIC_VERSION = 'freshqa-quantity-v2'
 
 REQUIRED = ("id", "source", "question", "answer", "evidence", "url")
 MONTHS = {name.lower(): i for i, name in enumerate(
@@ -90,11 +93,17 @@ def dates_in(text):
     return found
 
 
-def is_correct(answer, output, *, event_year=None):
-    """Seminar containment, with FINAL isolation and date/numeric safeguards."""
+def is_correct(answer, output, *, event_year=None, allow_count_omission=False):
+    """Versioned containment with whole quantities and explicit-abstention guards."""
     actual = final_text(output)
     expected = str(answer).strip()
-    if not expected or normalize(actual) in {"unknown", "неизвестно", ""}:
+    first_line = actual.splitlines()[0].strip() if actual else ''
+    refusal = re.match(r'^(?:unknown|неизвестно)(?:\s*$|\s*[^\w\s])', first_line, re.I)
+    # An exact gold title such as "Unknown: Cosmic Time Machine" is a name;
+    # an abstention that merely mentions a gold answer is still a refusal.
+    if refusal and actual.casefold() == expected.casefold() and re.search(r'[^\W\d_]', actual[refusal.end():]):
+        refusal = None
+    if not expected or refusal or normalize(actual) == '':
         return False
     expected_dates = dates_in(expected)
     if expected_dates:
@@ -102,10 +111,9 @@ def is_correct(answer, output, *, event_year=None):
         return any(d == ad and m == am and (y is None or y == ay)
                    and (y is not None or event_year is None or ay is None or ay == event_year)
                    for ad, am, ay in dates_in(actual))
-    number = expected.replace(",", "")
-    if re.fullmatch(r"[+-]?\d+(?:\.\d+)?", number):
-        candidates = re.findall(r"(?<![\w.])[+-]?\d[\d,]*(?:\.\d+)?(?!\w|\.\d)", actual)
-        return any(Decimal(number) == Decimal(v.replace(",", "")) for v in candidates)
+    quantity = quantity_matches(expected, actual, allow_count_omission=allow_count_omission)
+    if quantity is not None:
+        return quantity
     needle = normalize(expected)
     return bool(needle) and f" {needle} " in f" {normalize(actual)} "
 
@@ -114,5 +122,6 @@ def score_row(row, output):
     """Use only declared aliases and the source's known year, never an LLM judge."""
     year_match = re.search(r"\b(20\d{2})\b", row.get("event_date", row.get("page", "")))
     year = int(year_match[1]) if year_match else None
-    return any(is_correct(answer, output, event_year=year)
+    count_question = bool(re.match(r'^how many\b', row.get('question', ''), re.I))
+    return any(is_correct(answer, output, event_year=year, allow_count_omission=count_question)
                for answer in [row["answer"], *row.get("answer_aliases", [])])
