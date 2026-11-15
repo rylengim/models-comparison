@@ -1,5 +1,11 @@
 # ДЗ 3: фреймворк, критик и план
 
+**Локальная ревизия 15 ноября 2026:** [разобраны три потери критика](../reports/revisions/2026-11-15/critic_audit.md)
+до вердикта и источника. Общая числовая метрика не изменила пять итоговых строк.
+[Пересчитанный отчёт](../reports/revisions/2026-11-15/hw3/report.md) и
+[границы первой итерации](../reports/revisions/2026-11-15/README.md).
+Политика критика и исходные результаты сохранены, новых запусков нет.
+
 Решение для сдачи: ветка `codex/hw3-patterns` репозитория
 [`rylengim/models-comparison`](https://github.com/rylengim/models-comparison/tree/codex/hw3-patterns/hw3).
 

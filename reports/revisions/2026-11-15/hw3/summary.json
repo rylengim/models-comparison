@@ -1,0 +1,105 @@
+[
+  {
+    "config": "bare",
+    "label": "Голый цикл",
+    "n": 40,
+    "total": 40,
+    "complete": true,
+    "correct": 38,
+    "accuracy": 0.95,
+    "calls_per_question": 2.5,
+    "prompt_tokens_per_question": 4520.45,
+    "completion_tokens_per_question": 59.0,
+    "tokens_per_question": 4579.45,
+    "cents_per_question": 0.06453075,
+    "cents_per_correct": 0.0679271052631579,
+    "cost_usd": 0.0258123,
+    "status_counts": {
+      "ok": 38,
+      "max_steps": 1,
+      "repeated_tool_call": 1
+    }
+  },
+  {
+    "config": "langgraph",
+    "label": "LangGraph",
+    "n": 40,
+    "total": 40,
+    "complete": true,
+    "correct": 38,
+    "accuracy": 0.95,
+    "calls_per_question": 2.475,
+    "prompt_tokens_per_question": 4435.5,
+    "completion_tokens_per_question": 57.8,
+    "tokens_per_question": 4493.3,
+    "cents_per_question": 0.0494085,
+    "cents_per_correct": 0.05200894736842105,
+    "cost_usd": 0.0197634,
+    "status_counts": {
+      "ok": 38,
+      "max_steps": 1,
+      "repeated_tool_call": 1
+    }
+  },
+  {
+    "config": "critic",
+    "label": "Критик с опорой",
+    "n": 40,
+    "total": 40,
+    "complete": true,
+    "correct": 35,
+    "accuracy": 0.875,
+    "calls_per_question": 5.25,
+    "prompt_tokens_per_question": 11167.575,
+    "completion_tokens_per_question": 133.5,
+    "tokens_per_question": 11301.075,
+    "cents_per_question": 0.142499625,
+    "cents_per_correct": 0.16285671428571427,
+    "cost_usd": 0.05699985,
+    "status_counts": {
+      "unverified": 5,
+      "ok": 35
+    },
+    "paired_n": 40,
+    "fixed": 1,
+    "broken": 3
+  },
+  {
+    "config": "plan",
+    "label": "План + исполнитель",
+    "n": 40,
+    "total": 40,
+    "complete": true,
+    "correct": 40,
+    "accuracy": 1.0,
+    "calls_per_question": 4.125,
+    "prompt_tokens_per_question": 6677.85,
+    "completion_tokens_per_question": 178.725,
+    "tokens_per_question": 6856.575,
+    "cents_per_question": 0.09464325000000001,
+    "cents_per_correct": 0.09464325000000001,
+    "cost_usd": 0.0378573,
+    "status_counts": {
+      "ok": 40
+    }
+  },
+  {
+    "config": "strong_direct",
+    "label": "Сильная модель без инструментов",
+    "n": 40,
+    "total": 40,
+    "complete": true,
+    "correct": 1,
+    "accuracy": 0.025,
+    "calls_per_question": 1.0,
+    "prompt_tokens_per_question": 174.35,
+    "completion_tokens_per_question": 46.7,
+    "tokens_per_question": 221.05,
+    "cents_per_question": 0.12235499999999999,
+    "cents_per_correct": 4.8942,
+    "cost_usd": 0.048942,
+    "status_counts": {
+      "ok": 40
+    }
+  }
+]
