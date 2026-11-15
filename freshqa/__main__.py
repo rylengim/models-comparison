@@ -9,7 +9,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 from .dataset import load_rows, validate_rows
-from .experiment import LABELS, REQUIRED_CONFIGS, benchmark, configurations, write_json
+from .experiment import BONUS_CONFIGS, LABELS, REQUIRED_CONFIGS, benchmark, configurations, write_json
 from .reporting import render_report
 
 
@@ -22,13 +22,14 @@ def get_client(budget):
 
 
 def main(argv=None):
-    load_dotenv(Path.cwd() / ".env")
     parser = argparse.ArgumentParser(description="Домашняя работа: свежие вопросы и агент")
     sub = parser.add_subparsers(dest="command", required=True)
     validate = sub.add_parser("validate", help="Проверка JSONL без модели и ключа")
     validate.add_argument("data", nargs="?", default="data/fresh.jsonl")
     schemas = sub.add_parser("schemas", help="Показать схемы инструментов")
-    schemas.add_argument("--extra-search", action="store_true")
+    schema_tools = schemas.add_mutually_exclusive_group()
+    schema_tools.add_argument("--extra-search", action="store_true")
+    schema_tools.add_argument("--official-sources", action="store_true")
     report = sub.add_parser("report", help="Построить таблицу/график из сохранённых трейсов")
     report.add_argument("--data", default="data/fresh.jsonl")
     report.add_argument("--traces", default="traces")
@@ -38,26 +39,39 @@ def main(argv=None):
     run.add_argument("--traces", default="traces")
     run.add_argument("--out", default="reports")
     run.add_argument("--configs", nargs="+", choices=list(LABELS), default=REQUIRED_CONFIGS)
-    run.add_argument("--bonuses", action="store_true", help="Все семь конфигураций")
+    run.add_argument("--bonuses", action="store_true", help="Исходные семь конфигураций; официальный поиск включается отдельно через --configs cheap_official_sources")
     run.add_argument("--resume", action="store_true")
     run.add_argument("--limit", type=int, help="Только smoke; используйте отдельные --traces и --out")
-    run.add_argument("--budget-usd", type=float, default=float(os.getenv("BUDGET_USD", "5")))
-    run.add_argument("--max-steps", type=int, default=int(os.getenv("MAX_STEPS", "6")))
+    run.add_argument("--budget-usd", type=float)
+    run.add_argument("--max-steps", type=int)
     ask = sub.add_parser("ask", help="Один вопрос агенту")
     ask.add_argument("question")
-    ask.add_argument("--model", default=configurations()["cheap_search_read"]["model"])
+    ask.add_argument("--model")
     ask_tools = ask.add_mutually_exclusive_group()
     ask_tools.add_argument("--extra-search", action="store_true")
+    ask_tools.add_argument("--official-sources", action="store_true")
     ask_tools.add_argument("--knowledge-base", action="store_true",
                            help="Дать агенту только локальный поиск ДЗ‑2. Ответ модели использует обычный API.")
     ask.add_argument("--output", default="tmp/answer_trace.json")
-    ask.add_argument("--budget-usd", type=float, default=float(os.getenv("BUDGET_USD", "5")))
+    ask.add_argument("--budget-usd", type=float)
     args = parser.parse_args(argv)
     try:
+        # Offline validation, schema inspection and reports never read credentials.
+        if args.command in {"ask", "benchmark"}:
+            load_dotenv(Path.cwd() / ".env")
+            if args.budget_usd is None:
+                args.budget_usd = float(os.getenv("BUDGET_USD", "5"))
+            if args.command == "benchmark" and args.max_steps is None:
+                args.max_steps = int(os.getenv("MAX_STEPS", "6"))
+            if args.command == "ask" and args.model is None:
+                args.model = configurations()["cheap_search_read"]["model"]
         if args.command == "schemas":
             from .tools import ToolRegistry
-            names = configurations()["cheap_extra_search" if args.extra_search else "cheap_search_read"]["tools"]
-            print(json.dumps(ToolRegistry(args.extra_search).schemas(names), ensure_ascii=False, indent=2))
+            config = "cheap_official_sources" if args.official_sources else (
+                "cheap_extra_search" if args.extra_search else "cheap_search_read")
+            names = configurations()[config]["tools"]
+            registry = ToolRegistry(args.extra_search, official_sources=args.official_sources)
+            print(json.dumps(registry.schemas(names), ensure_ascii=False, indent=2))
             return 0
         if args.command == "ask":
             from .agent import run_agent
@@ -70,8 +84,10 @@ def main(argv=None):
                     registry = ToolRegistry(knowledge_search=kb.search)
                     tools = ["knowledge_base"]
                 else:
-                    registry = ToolRegistry(args.extra_search)
-                    tools = configurations()["cheap_extra_search" if args.extra_search else "cheap_search_read"]["tools"]
+                    registry = ToolRegistry(args.extra_search, official_sources=args.official_sources)
+                    config = "cheap_official_sources" if args.official_sources else (
+                        "cheap_extra_search" if args.extra_search else "cheap_search_read")
+                    tools = configurations()[config]["tools"]
                 result = run_agent(args.question, model=args.model, client=client,
                                    registry=registry, tool_names=tools)
             write_json(args.output, result)
@@ -100,7 +116,7 @@ def main(argv=None):
             raise ValueError("--max-steps должен быть положительным")
         client = get_client(args.budget_usd)
         done = benchmark(rows, trace_dir=args.traces,
-                         config_names=list(LABELS) if args.bonuses else args.configs,
+                         config_names=BONUS_CONFIGS if args.bonuses else args.configs,
                          client=client, max_steps=args.max_steps, resume=args.resume)
         render_report(rows, args.traces, args.out)
         print(f"{'Готово' if done else 'Прогон остановлен'}; отчёт: {args.out}/report.md")

@@ -92,6 +92,7 @@ def main():
     rates = json.loads((ROOT / "hw3/model_rates.json").read_text())
     sources = ["hw3/agents.py", "hw3/client.py", "hw3/run.py", "hw3/evaluation.py",
                "hw3/snapshot_tools.py", "freshqa/agent.py", "freshqa/tools.py", "freshqa/dataset.py",
+               "freshqa/official_sources.py", "freshqa/source_diagnostics.py",
                "hw2/lexical_baseline.py", "hw2/prepare_corpus.py", "hw3/data/corpus.jsonl"]
     signature = {"questions": hashlib.sha256(json.dumps(rows, sort_keys=True).encode()).hexdigest(),
                  "cheap": cheap, "strong": strong, "max_steps": 6, "question_calls": 24,

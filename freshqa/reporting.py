@@ -27,8 +27,13 @@ def render_report(rows, trace_dir="traces", out_dir="reports"):
         if meta["signature"]["dataset_sha256"] != dataset_hash(rows):
             raise ValueError("Хэш датасета не совпадает с трейсами; нельзя смешивать замеры.")
         configs = meta["signature"]["configs"]
+    if (not isinstance(configs, dict) or not set(REQUIRED_CONFIGS).issubset(configs)
+            or not set(configs).issubset(LABELS)):
+        raise ValueError("Манифест содержит неизвестные или неполные конфигурации.")
     gold = {r["id"]: r for r in rows}
-    grouped = {name: [] for name in LABELS}
+    # An archived manifest defines its own coverage, even when new optional
+    # configurations have since been added to the executable experiment.
+    grouped = {name: [] for name in configs}
     trace_paths = {}
     for path in sorted(root.glob("*/*.json")):
         if not manifest.exists():
@@ -38,6 +43,8 @@ def render_report(rows, trace_dir="traces", out_dir="reports"):
             raise ValueError(f"Посторонний или тестовый трейс: {path}")
         if trace["config"] != path.parent.name or trace["id"] != path.stem:
             raise ValueError(f"Трейс не соответствует пути: {path}")
+        if trace["config"] not in grouped:
+            raise ValueError(f"Конфигурация трейса отсутствует в манифесте: {path}")
         trace["correct"] = score_row(gold[trace["id"]], trace["final"])
         grouped[trace["config"]].append(trace)
         trace_paths[(trace["config"], trace["id"])] = path
@@ -130,8 +137,9 @@ def _chart(summary, out):
 
 def _failure_candidates(grouped, paths, out):
     import os
-    failures = [t for name in ("cheap_search_read", "cheap_extra_search", "medium_search_read", "cheap_search")
-                for t in grouped[name] if not t["correct"]]
+    failures = [t for name in ("cheap_search_read", "cheap_extra_search", "medium_search_read",
+                              "cheap_search", "cheap_official_sources")
+                for t in grouped.get(name, []) if not t["correct"]]
     lines = ["# Кандидаты для разбора провалов", "",
              "Автоматическая предварительная классификация: перед сдачей прочитайте два трейса и уточните причину.", ""]
     if not failures:

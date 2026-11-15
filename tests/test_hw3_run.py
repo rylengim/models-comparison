@@ -16,6 +16,7 @@ def offline_experiment(tmp_path, monkeypatch):
     (tmp_path / "hw3/model_rates.json").write_text("{}")
     for source in ("hw3/agents.py", "hw3/client.py", "hw3/run.py", "hw3/evaluation.py",
                    "hw3/snapshot_tools.py", "freshqa/agent.py", "freshqa/tools.py", "freshqa/dataset.py",
+                   "freshqa/official_sources.py", "freshqa/source_diagnostics.py",
                    "hw2/lexical_baseline.py", "hw2/prepare_corpus.py", "hw3/data/corpus.jsonl"):
         path = tmp_path / source
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -94,10 +95,11 @@ def test_results_take_calls_tokens_and_cost_from_http_records(offline_experiment
     assert not (root / "inflight_question.json").exists()
 
 
-def test_changed_agent_source_blocks_resume_before_client_creation(offline_experiment):
+@pytest.mark.parametrize('source', ['hw3/agents.py', 'freshqa/official_sources.py', 'freshqa/source_diagnostics.py'])
+def test_changed_agent_source_blocks_resume_before_client_creation(offline_experiment, source):
     run, root, _, invocations, clients = offline_experiment
     run()
-    (root.parents[1] / "agents.py").write_text("# changed agent\n")
+    (root.parents[2] / source).write_text("# changed source\n")
     with pytest.raises(ValueError, match="exactly the same"):
         run("--resume")
     assert len(clients) == 1 and len(invocations) == 2

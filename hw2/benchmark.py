@@ -28,6 +28,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def _signature(rows, models, max_steps):
     # A fresh clone with the same corpus, code and model IDs can resume a run.
     sources = ("freshqa/agent.py", "freshqa/tools.py", "freshqa/client.py", "hw2/rag.py",
+               "freshqa/official_sources.py", "freshqa/source_diagnostics.py",
                "hw2/knowledge_base.py", "hw2/chunk_corpus.py", "hw2/embeddings.py",
                "hw2/vector_store.py", "hw2/lexical_baseline.py", "hw2/evaluate_retrieval.py",
                "hw2/benchmark.py", "hw2/benchmark_client.py", "hw2/data/corpus.jsonl")

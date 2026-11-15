@@ -15,8 +15,10 @@ LABELS = {
     "medium_search_read": "Средняя, поиск + чтение",
     "cheap_extra_search": "Дешёвая, Wiki + второй поиск + чтение",
     "cascade": "Каскад: дешёвая → средняя",
+    "cheap_official_sources": "Дешёвая, Wiki + официальные источники + чтение",
 }
 REQUIRED_CONFIGS = list(LABELS)[:5]
+BONUS_CONFIGS = REQUIRED_CONFIGS + ["cheap_extra_search", "cascade"]
 HARD_FAILURE_STATUSES = {"error", "cost_unknown", "budget_exceeded"}
 
 
@@ -33,6 +35,7 @@ def configurations():
         "medium_search_read": {"model": medium, "tools": full},
         "cheap_extra_search": {"model": cheap, "tools": full + ["web_search_extra"]},
         "cascade": {"model": cheap, "fallback_model": medium, "tools": full + ["web_search_extra"]},
+        "cheap_official_sources": {"model": cheap, "tools": full + ["official_search"]},
     }
 
 
@@ -119,7 +122,8 @@ def benchmark(rows, *, trace_dir, config_names, client, max_steps=6, resume=Fals
     client.spent_usd = max(client.spent_usd, sum(t["cost_usd"] for t in previous))
     for name in config_names:
         cfg = configs[name]
-        registry = ToolRegistry(extra_search=name in {"cheap_extra_search", "cascade"})
+        registry = ToolRegistry(extra_search=name in {"cheap_extra_search", "cascade"},
+                                official_sources=name == "cheap_official_sources")
         for index, row in enumerate(rows, 1):
             path = root / name / f"{row['id']}.json"
             if path.exists():

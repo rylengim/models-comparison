@@ -77,6 +77,7 @@ def test_search_success_and_empty_are_observations_not_fact_grades(monkeypatch, 
 
 
 @pytest.mark.parametrize('response,kind', [(Response('<html>oops</html>'), 'invalid_response'),
+                                         (Response({'query': []}), 'invalid_response'),
                                          (Response({'query': {'search': 'oops'}}), 'invalid_response'),
                                          (Response('x' * (MAX_RESPONSE_BYTES + 1)), 'response_too_large'),
                                          (Response('', 302), 'redirect_blocked')])
@@ -84,6 +85,7 @@ def test_response_failures_are_not_reported_as_empty_search(monkeypatch, respons
     result = source_call(monkeypatch, response)
     assert result['diagnostic']['outcome'] == 'error'
     assert result['diagnostic']['error_kind'] == kind
+    assert result['diagnostic']['http_status'] == response.status_code
     assert response.closed
 
 
@@ -136,3 +138,29 @@ def test_valid_text_mentioning_a_scientific_challenge_is_not_blocked(monkeypatch
     result = source_call(monkeypatch, Response('<p>Scientific challenge. No results.</p>', content_type='text/html'),
                          'web_search_extra', query='nebula')
     assert result['diagnostic']['outcome'] == 'empty'
+
+
+def test_oversized_tool_result_keeps_a_complete_diagnostic(monkeypatch):
+    # Valid long titles become much longer when encoded as URL paths.
+    items = [{'title': '星' * 500, 'snippet': 'text' * 225} for _ in range(5)]
+    result = source_call(monkeypatch, Response({'query': {'search': items}}))
+    assert result['diagnostic']['error_kind'] == 'output_truncated'
+    assert result['diagnostic']['stage'] == 'control'
+    assert result['diagnostic']['http_status'] == 200
+    assert result['truncated'] is True
+
+
+@pytest.mark.parametrize('body', [{}, {'query': {'pages': []}}, {'query': {'pages': {'1': {}}}}])
+def test_malformed_wiki_page_is_not_reported_as_missing(monkeypatch, body):
+    result = source_call(monkeypatch, Response(body), 'page_find', title='Nebula')
+    assert result['diagnostic']['outcome'] == 'error'
+    assert result['diagnostic']['error_kind'] == 'invalid_response'
+    assert result['diagnostic']['http_status'] == 200
+
+
+def test_page_api_error_is_fetch_failure_not_search_failure(monkeypatch):
+    result = source_call(monkeypatch, Response({'error': {'info': 'sensitive server detail'}}),
+                         'page_find', title='Nebula')
+    assert result['diagnostic']['stage'] == 'fetch'
+    assert result['diagnostic']['error_kind'] == 'api_error'
+    assert result['diagnostic']['http_status'] == 200
