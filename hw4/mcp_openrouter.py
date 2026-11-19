@@ -204,6 +204,16 @@ def _accept_early_final(final, events, *, question, model, client):
 
     judge = events[-1]
     if evidence_verdict(judge) == "UNSUPPORTED":
+        # Reading an unread candidate also needs a step for the final answer.
+        if judge["step"] <= MAX_STEPS - 2:
+            unread_urls = _unread_search_urls(events, url)
+            if unread_urls:
+                judge["fallback_read_urls"] = unread_urls
+                return EarlyFinalDecision(
+                    accepted=False, additional_steps=steps,
+                    retry_message="The selected passage did not support the answer. Call page_find on an unread URL "
+                                  "from the previous search: " + ", ".join(unread_urls),
+                )
         other_reads = any(number != evidence[0] for number, _ in successful_reads(events))
         if other_reads and judge["step"] < MAX_STEPS:
             return EarlyFinalDecision(
@@ -212,16 +222,6 @@ def _accept_early_final(final, events, *, question, model, client):
                 retry_message="The selected passage did not support the answer. Answer the original question "
                               "using another page_find result already in the history. Select its QUOTE_ID.",
             )
-        # Reading an unread candidate also needs a step for the final answer.
-        if judge["step"] <= MAX_STEPS - 2:
-            unread_urls = _unread_search_urls(events, url)
-            if unread_urls:
-                judge["fallback_read_urls"] = unread_urls
-                return EarlyFinalDecision(
-                    accepted=False, additional_steps=steps,
-                    retry_message="The first passage did not support the answer. Call page_find on an unread URL "
-                                  "from the previous search: " + ", ".join(unread_urls),
-                )
     return EarlyFinalDecision(accepted=False, additional_steps=steps, stop_status=status)
 
 

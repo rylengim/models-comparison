@@ -56,6 +56,17 @@ _REJECTED = re.compile(
     r"\b(?:no|not|never|used to|instead of|except|other than|off|cancel(?:l?ed|l?ing)?|stop|remove|may|might|could|maybe)\b|n['’]t\b",
     re.IGNORECASE,
 )
+_DISTANCE_ASSIGNMENT = re.compile(
+    r"""
+    \s*(?:I|we)\s+(?:now\s+)?(?:
+        (?:use|prefer|want|choose)\s+(?P<preferred_unit>[\w-]+(?:\s+[\w-]+)*?)
+        \s+for\s+(?:(?:my|our)\s+)?distances?
+        |measure\s+(?:(?:my|our)\s+)?distances?\s+in\s+(?P<measured_unit>[\w-]+(?:\s+[\w-]+)*?)
+    )
+    (?:\s+(?:now|instead|from\s+now\s+on))?\s*[,.!]?\s*
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
 
 
 def usage(record):
@@ -141,6 +152,24 @@ def _reminder_evidence(value, statements):
     return evidence
 
 
+def _distance_evidence(value, statements):
+    """Find the latest explicit distance unit in the demo's English forms."""
+    requested = re.compile(r"(?<!\w)" + re.escape(" ".join(value.split())) + r"(?!\w)", re.IGNORECASE)
+    evidence = None
+    for statement in statements:
+        for clause in _CLAUSE_BREAK.split(statement):
+            normalized = " ".join(clause.split())
+            if _REJECTED.search(normalized):
+                if requested.search(normalized):
+                    evidence = None
+                continue
+            assignment = _DISTANCE_ASSIGNMENT.fullmatch(clause)
+            if assignment is not None:
+                unit = assignment["preferred_unit"] or assignment["measured_unit"]
+                evidence = statement if unit == value else None
+    return evidence
+
+
 def _validate_extraction(response, statements):
     if response.get("finish_reason") != "stop":
         raise ValueError("Извлечение фактов не завершено.")
@@ -155,6 +184,8 @@ def _validate_extraction(response, statements):
             continue
         if key == "reminder_day":
             evidence = _reminder_evidence(value, statements)
+        elif key == "distance_unit":
+            evidence = _distance_evidence(value, statements)
         else:
             pattern = re.compile(r"(?<!\w)" + re.escape(value) + r"(?!\w)")
             evidence = next((s for s in reversed(statements) if pattern.search(s)), None)

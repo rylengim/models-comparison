@@ -210,6 +210,59 @@ def test_explicit_reminder_assignment_is_saved_before_answer_and_recalled(statem
 
 
 @pytest.mark.parametrize("statement", [
+    "I no longer use miles. I now measure distances in kilometers.",
+    "I don't use miles for distances anymore.",
+    "I use miles for distances. I now measure distances in kilometers.",
+])
+def test_rejected_or_superseded_distance_unit_does_not_overwrite_saved_preference(statement):
+    store = MutableStore()
+    store.upsert("previous", [{"key": "distance_unit", "value": "kilometers"}])
+    stale_extraction = {"reminder_day": "", "distance_unit": "miles", "project_name": ""}
+    client = Client([{"content": json.dumps(stale_extraction)}, {"content": "FINAL: miles"}])
+    session = memory_session(store, client)
+
+    with pytest.raises(FactExtractionError):
+        session.ask(statement)
+
+    assert store.writes == len(client.messages) == 1
+    assert store.all() == [{"key": "distance_unit", "value": "kilometers", "session_id": "previous"}]
+    summary = session.finish()
+    assert summary["memory_updates"][0]["status"] == "invalid_extraction"
+    assert summary["memory_updates"][0]["extraction_usage"]["request_id"] == "1"
+    assert summary["extracted"] == []
+
+
+@pytest.mark.parametrize(("statement", "unit", "evidence"), [
+    ("I now measure distances in miles.", "miles", "I now measure distances in miles."),
+    ("I use miles for distances.", "miles", "I use miles for distances."),
+    ("I no longer use kilometers. I now prefer miles for distances.",
+     "miles", "I now prefer miles for distances."),
+    ("I measure distances in nautical miles.", "nautical miles", "I measure distances in nautical miles."),
+])
+def test_explicit_distance_preference_is_saved_before_answer_and_recalled(statement, unit, evidence):
+    store = MutableStore()
+    store.upsert("previous", [{"key": "distance_unit", "value": "kilometers"}])
+    extraction = {"reminder_day": "", "distance_unit": unit, "project_name": ""}
+    client = Client([{"content": json.dumps(extraction)}, {"content": f"FINAL: {unit}"},
+                     {"content": f"FINAL: {unit}"}])
+    session = memory_session(store, client, window_pairs=0)
+
+    result = session.ask(statement)
+    recalled = session.ask("Which distance unit should I use?")
+
+    assert result["memory_update"]["status"] == "persisted"
+    assert result["memory_update"]["extracted"] == [
+        {"key": "distance_unit", "value": unit, "evidence": evidence}]
+    assert result["answer"] == recalled["answer"] == unit
+    assert recalled["history"] == []
+    assert recalled["facts"] == store.all() == [
+        {"key": "distance_unit", "value": unit, "session_id": "a"}]
+    assert f"distance unit: {unit}" in client.messages[1][-1]["content"]
+    assert f"distance unit: {unit}" in client.messages[2][-1]["content"]
+    assert store.writes == 2
+
+
+@pytest.mark.parametrize("statement", [
     "I moved reminders to Friday.",
     "I moved reminders from Monday to Friday.",
     "I no longer prefer Monday for reminders; use Friday now.",
