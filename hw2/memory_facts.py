@@ -17,6 +17,44 @@ _CLAUSE_BREAK = re.compile(
 )
 
 
+def split_unquoted(text, separator):
+    """Split outside paired straight quotes; return None for unclosed quotes.
+
+    Apostrophes inside words (don't, project's) are ordinary word characters.
+    Quoted names remain literal data before either sentence or clause parsing.
+    """
+    spans = []
+    quote = None
+    start = 0
+    for index, char in enumerate(text):
+        if char not in {"'", '"'}:
+            continue
+        if (char == "'" and 0 < index < len(text) - 1
+                and (text[index - 1].isalnum() or text[index - 1] == "_")
+                and (text[index + 1].isalnum() or text[index + 1] == "_")):
+            continue
+        if quote is None:
+            quote, start = char, index
+        elif char == quote:
+            spans.append((start, index + 1))
+            quote = None
+    if quote is not None:
+        return None
+
+    parts = []
+    start = 0
+    literal = 0
+    for match in separator.finditer(text):
+        while literal < len(spans) and spans[literal][1] <= match.start():
+            literal += 1
+        if literal < len(spans) and spans[literal][0] <= match.start():
+            continue
+        parts.append(text[start:match.start()])
+        start = match.end()
+    parts.append(text[start:])
+    return parts
+
+
 def _grammar(pattern):
     return re.compile(r"\s*" + pattern + _TAIL, re.I | re.X)
 
@@ -139,7 +177,11 @@ def memory_events(statements):
     """An unrelated clause resets the narrowly supported reminder continuation."""
     for statement in statements:
         reminder_context = False
-        for clause in _CLAUSE_BREAK.split(statement):
+        clauses = split_unquoted(statement, _CLAUSE_BREAK)
+        if clauses is None:
+            yield MemoryEvent("irrelevant", None, None, statement)
+            continue
+        for clause in clauses:
             event = (_reminder_event(clause, statement, reminder_context)
                      or _distance_event(clause, statement) or _project_event(clause, statement)
                      or MemoryEvent("irrelevant", None, None, statement))

@@ -2,6 +2,7 @@
 import csv
 import hashlib
 import json
+import os
 from pathlib import Path
 
 from .dataset import METRIC_VERSION, is_correct
@@ -13,12 +14,30 @@ ARCHIVED_REVISIONS = ("2026-11-15", "2026-11-15-sources")
 
 
 def validate_report_output(out_dir):
-    """Reject accepted report locations before credentials, inference or writes."""
-    out = Path(out_dir).resolve()
+    """Reject archives and existing symlinks before credentials or writes.
+
+    This is a local, single-process preflight, not protection against another
+    process replacing a checked path during report generation.
+    """
+    out = Path(out_dir).absolute()
+    # Check from the root first: resolve() would hide links, and checking a child
+    # before its parents could already follow an intermediate directory link.
+    for path in (*reversed(out.parents), out):
+        if path.is_symlink():
+            raise ValueError(f"Выходной путь содержит символическую ссылку: {path}")
+    resolved = out.resolve()
     canonical = Path(__file__).resolve().parents[1] / "reports"
     archives = [canonical / "revisions" / name for name in ARCHIVED_REVISIONS]
-    if out == canonical or any(out.is_relative_to(archive) for archive in archives):
+    if resolved == canonical or any(resolved.is_relative_to(archive) for archive in archives):
         raise ValueError("Исторические отчёты сохраняются. Укажите отдельный --out.")
+    pending = [out] if out.is_dir() else []
+    while pending:
+        with os.scandir(pending.pop()) as children:
+            for child in children:
+                if child.is_symlink():
+                    raise ValueError(f"Выходной каталог содержит символическую ссылку: {child.path}")
+                if child.is_dir(follow_symlinks=False):
+                    pending.append(Path(child.path))
 
 
 def freshness(traces, total, model):
@@ -174,7 +193,6 @@ def _chart(summary, out):
 
 
 def _failure_candidates(grouped, paths, out):
-    import os
     failures = [t for name in ("cheap_search_read", "cheap_extra_search", "medium_search_read",
                               "cheap_search", "cheap_official_sources")
                 for t in grouped.get(name, []) if not t["correct"]]

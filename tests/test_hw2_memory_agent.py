@@ -5,7 +5,9 @@ import pytest
 
 from freshqa.tools import ToolRegistry
 from freshqa.client import BudgetExceeded
-from hw2.memory_agent import EXTRACT_RULES, FactExtractionError, MemorySession, extract_facts
+from hw2.memory_agent import (
+    EXTRACT_RULES, FactExtractionError, MemorySession, candidate_statements, extract_facts,
+)
 
 
 @pytest.fixture(autouse=True)
@@ -742,3 +744,89 @@ def test_retracted_project_blocks_other_valid_fields_in_the_same_batch():
     assert summary["memory_updates"][0]["status"] == "invalid_extraction"
     assert summary["extracted"] == []
     assert summary["extraction_receipts"][0]["request_id"] == "1"
+
+
+@pytest.mark.parametrize("quote", ['"', "'"])
+@pytest.mark.parametrize("name", [
+    "Orion but Better",
+    "Orion and Our Research",
+    "Orion, not Atlas",
+    "Orion; Research",
+    "Orion. Research",
+    "Orion? Research",
+    "Orion. I prefer Monday for reminders. Research",
+])
+def test_quoted_project_name_is_saved_whole_before_answer_and_recalled(quote, name):
+    statement = f"My project is {quote}{name}{quote}."
+    store = MutableStore()
+    store.upsert("previous", [{"key": "project_name", "value": "Atlas"}])
+    client = SavedFactClient(store, {
+        "reminder_day": "", "distance_unit": "", "project_name": name})
+    session = memory_session(store, client, window_pairs=0)
+
+    updated = session.ask(statement)
+    recalled = session.ask("What is my project called?")
+
+    expected_fact = {"key": "project_name", "value": name, "evidence": statement}
+    saved = [{"key": "project_name", "value": name, "session_id": "a"}]
+    assert updated["memory_update"]["extracted"] == [expected_fact]
+    assert updated["memory_update"]["status"] == "persisted"
+    assert updated["answer"] == recalled["answer"] == name
+    assert recalled["history"] == []
+    assert recalled["memory_update"]["status"] == "skipped"
+    assert store.all() == updated["facts"] == recalled["facts"] == saved
+    assert client.answer_snapshots == [saved, saved]
+    assert store.writes == 2 and len(client.messages) == 3
+    assert session.finish()["extracted"] == [expected_fact]
+
+
+@pytest.mark.parametrize("quote", ['"', "'"])
+@pytest.mark.parametrize("name", ["Orion. Research", "Orion? Research", "Orion! Research"])
+def test_candidate_statements_preserve_quoted_sentence_boundaries_and_exact_evidence(quote, name):
+    statement = f"My project is {quote}{name}{quote}."
+    correction = "My project is Lyra."
+
+    assert candidate_statements([
+        {"role": "user", "content": f"{statement} {correction}"},
+        {"role": "assistant", "content": "My project is Atlas."},
+    ]) == [statement, correction]
+
+
+@pytest.mark.parametrize("quote", ['"', "'"])
+@pytest.mark.parametrize("separator", ["; ", ". "])
+def test_assignment_text_inside_quoted_name_cannot_update_another_field(quote, separator):
+    name = separator.join(["Orion", "I prefer Monday for reminders", "Research"])
+    statement = f"My project is {quote}{name}{quote}."
+    store = MutableStore()
+    store.upsert("previous", [{"key": "reminder_day", "value": "Tuesday"}])
+    saved = store.all()
+    client = SavedFactClient(store, {
+        "reminder_day": "Monday", "distance_unit": "", "project_name": ""})
+    session = memory_session(store, client, window_pairs=0)
+
+    with pytest.raises(FactExtractionError):
+        session.ask(statement)
+
+    assert store.all() == saved
+    assert store.writes == len(client.messages) == 1
+    assert client.answer_snapshots == []
+    assert session.finish()["memory_updates"][0]["status"] == "invalid_extraction"
+
+
+@pytest.mark.parametrize("quote", ['"', "'"])
+def test_unclosed_quote_does_not_persist_a_partial_project_name(quote):
+    statement = f"My project is {quote}Orion but Better."
+    store = MutableStore()
+    store.upsert("previous", [{"key": "project_name", "value": "Atlas"}])
+    saved = store.all()
+    client = SavedFactClient(store, {
+        "reminder_day": "", "distance_unit": "", "project_name": quote + "Orion"})
+    session = memory_session(store, client)
+
+    with pytest.raises(FactExtractionError):
+        session.ask(statement)
+
+    assert store.all() == saved
+    assert store.writes == len(client.messages) == 1
+    assert client.answer_snapshots == []
+    assert session.finish()["extracted"] == []

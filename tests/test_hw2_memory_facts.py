@@ -49,3 +49,56 @@ def test_candidate_reducer_uses_order_and_rejects_only_the_same_full_value(key):
 
     replacement = MemoryEvent("set", key, "Beta", "latest")
     assert current_candidates([first, replacement, rejection]) == {key: replacement}
+
+
+@pytest.mark.parametrize("quote", ['"', "'"])
+@pytest.mark.parametrize("name", [
+    "Orion but Better",
+    "Orion and Our Research",
+    "Orion, not Atlas",
+    "Orion; Research",
+    "Orion. Research",
+    "Orion? Research",
+    "Orion; I prefer Monday for reminders; Research",
+])
+def test_quoted_project_name_is_one_complete_event(quote, name):
+    statement = f"My project is {quote}{name}{quote}."
+
+    assert list(memory_events([statement])) == [
+        MemoryEvent("set", "project_name", name, statement)]
+
+
+@pytest.mark.parametrize("quote", ['"', "'"])
+@pytest.mark.parametrize(("suffix", "action", "value"), [
+    (", but my project is not {quote}Orion but Better{quote} anymore.",
+     "reject", "Orion but Better"),
+    (" and our project is now called {quote}Lyra{quote}.", "set", "Lyra"),
+    ("; I don't call my project {quote}Orion but Better{quote} anymore.",
+     "reject", "Orion but Better"),
+])
+def test_boundaries_after_quoted_name_preserve_real_rejection_and_rename(quote, suffix, action, value):
+    statement = f"My project's name is {quote}Orion but Better{quote}" + suffix.format(quote=quote)
+    events = list(memory_events([statement]))
+
+    assert events == [
+        MemoryEvent("set", "project_name", "Orion but Better", statement),
+        MemoryEvent(action, "project_name", value, statement),
+    ]
+    expected = {} if action == "reject" else {"project_name": events[-1]}
+    assert current_candidates(events) == expected
+
+
+@pytest.mark.parametrize("quote", ['"', "'"])
+def test_unclosed_project_quote_cannot_authorize_a_partial_name(quote):
+    statement = f"My project is {quote}Orion but Better."
+
+    assert current_candidates(memory_events([statement])) == {}
+
+
+def test_apostrophes_do_not_hide_real_clause_boundaries():
+    statement = "My project's name is Orion but I don't call my project Orion anymore."
+
+    assert list(memory_events([statement])) == [
+        MemoryEvent("set", "project_name", "Orion", statement),
+        MemoryEvent("reject", "project_name", "Orion", statement),
+    ]

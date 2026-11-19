@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import pytest
+
 import freshqa.__main__ as cli
 
 
@@ -50,3 +52,33 @@ def test_smoke_still_requires_an_explicit_separate_report_output(monkeypatch):
 
     monkeypatch.setattr(cli, "get_client", forbidden)
     assert cli.main(["benchmark", "--limit", "1", "--traces", "tmp/separate-smoke"]) == 2
+
+
+@pytest.mark.parametrize("command", ["report", "benchmark"])
+@pytest.mark.parametrize("location", ["artifact", "temporary", "output", "ancestor"])
+def test_cli_rejects_output_symlinks_before_credentials_or_inference(
+        tmp_path, monkeypatch, capsys, command, location):
+    target = tmp_path / "historical"
+    target.mkdir()
+    sentinel = target / "report.md"
+    original = b"accepted historical report\n"
+    sentinel.write_bytes(original)
+    out = tmp_path / "current"
+    if location in {"artifact", "temporary"}:
+        out.mkdir()
+        name = "report.md" if location == "artifact" else "grading.tmp"
+        (out / name).symlink_to(sentinel)
+    else:
+        out.symlink_to(target, target_is_directory=True)
+        if location == "ancestor":
+            out = out / "not-created" / "output"
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("Output validation must precede credentials, input reads and inference")
+
+    for name in ("load_dotenv", "get_client", "benchmark", "load_rows", "render_report"):
+        monkeypatch.setattr(cli, name, forbidden)
+    assert cli.main([command, "--out", str(out)]) == 2
+    assert "символическ" in capsys.readouterr().err
+    assert sentinel.read_bytes() == original
+    assert not (target / "not-created").exists()

@@ -1,3 +1,6 @@
+import os
+from pathlib import Path
+
 import pytest
 
 from freshqa.experiment import dataset_hash, configurations, write_json
@@ -111,3 +114,122 @@ def test_report_rejects_unknown_grading_policy_before_writes(tmp_path):
     with pytest.raises(ValueError, match="политика"):
         render_report([], out_dir=tmp_path / "not-created", grading_policy="typo")
     assert not (tmp_path / "not-created").exists()
+
+
+@pytest.mark.parametrize("policy", ["freshqa-final-eligibility-v1", "historical-recorded"])
+def test_report_symlink_does_not_overwrite_historical_sentinel(tmp_path, monkeypatch, policy):
+    sentinel = tmp_path / "historical-report.md"
+    original = b"accepted historical report\n"
+    sentinel.write_bytes(original)
+    out = tmp_path / "current"
+    out.mkdir()
+    (out / "report.md").symlink_to(sentinel)
+    monkeypatch.setattr("freshqa.reporting._chart", lambda *args: None)
+
+    try:
+        with pytest.raises(ValueError, match="символическ"):
+            render_report([], tmp_path / "no-traces", out, grading_policy=policy)
+    finally:
+        assert sentinel.read_bytes() == original
+    assert {p.name for p in out.iterdir()} == {"report.md"}
+
+
+@pytest.mark.parametrize("policy", ["freshqa-final-eligibility-v1", "historical-recorded"])
+@pytest.mark.parametrize("relative", [
+    "report.md", "report.csv", "money_chart.png", "failure_candidates.md",
+    "grading.json", "report.json", "freshness.json", "grading.tmp", "report.tmp",
+    "freshness.tmp", "nested/unrelated.tmp", "nested/broken.tmp",
+])
+def test_report_rejects_child_symlinks_before_mkdir(tmp_path, monkeypatch, policy, relative):
+    out = tmp_path / "current"
+    link = out / relative
+    link.parent.mkdir(parents=True)
+    target = tmp_path / "historical-artifact"
+    original = b"accepted artifact\x00\n"
+    if relative != "nested/broken.tmp":
+        target.write_bytes(original)
+    link.symlink_to(target)
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("Symlink validation must precede mkdir and all writes")
+
+    monkeypatch.setattr(Path, "mkdir", forbidden)
+    with pytest.raises(ValueError, match="символическ"):
+        render_report([], tmp_path / "no-traces", out, grading_policy=policy)
+    if target.exists():
+        assert target.read_bytes() == original
+    else:
+        assert relative == "nested/broken.tmp"
+    assert link.is_symlink()
+
+
+@pytest.mark.parametrize("policy", ["freshqa-final-eligibility-v1", "historical-recorded"])
+def test_report_rejects_directory_symlink_without_scanning_target(tmp_path, monkeypatch, policy):
+    out = tmp_path / "current"
+    (out / "nested").mkdir(parents=True)
+    target = tmp_path / "historical-directory"
+    target.mkdir()
+    sentinel = target / "report.md"
+    sentinel.write_bytes(b"accepted report\n")
+    link = out / "nested" / "directory-link"
+    link.symlink_to(target, target_is_directory=True)
+    original_scandir = os.scandir
+
+    def guarded_scandir(path):
+        if Path(path) == link or Path(path).is_relative_to(target):
+            raise AssertionError("Validation must not traverse directory symlinks")
+        return original_scandir(path)
+
+    monkeypatch.setattr(os, "scandir", guarded_scandir)
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("Symlink validation must precede mkdir and all writes")
+
+    monkeypatch.setattr(Path, "mkdir", forbidden)
+    with pytest.raises(ValueError, match="символическ"):
+        render_report([], tmp_path / "no-traces", out, grading_policy=policy)
+    assert sentinel.read_bytes() == b"accepted report\n"
+
+
+@pytest.mark.parametrize("policy", ["freshqa-final-eligibility-v1", "historical-recorded"])
+@pytest.mark.parametrize("location", [
+    "output", "ancestor", "ancestor-before-dotdot", "broken-output", "broken-ancestor",
+])
+def test_report_rejects_symlink_in_output_path_before_resolve(
+        tmp_path, monkeypatch, policy, location):
+    target = tmp_path / "target"
+    if not location.startswith("broken"):
+        target.mkdir()
+    link = tmp_path / "alias"
+    link.symlink_to(target, target_is_directory=True)
+    if location.endswith("output"):
+        out = link
+    elif location == "ancestor-before-dotdot":
+        out = link / ".." / "new-output"
+    else:
+        out = link / "not-created" / "output"
+
+    def forbidden(*args, **kwargs):
+        raise AssertionError("Output links must be rejected before resolve, mkdir or writes")
+
+    monkeypatch.setattr(Path, "resolve", forbidden)
+    monkeypatch.setattr(Path, "mkdir", forbidden)
+    with pytest.raises(ValueError, match="символическ"):
+        render_report([], tmp_path / "no-traces", out, grading_policy=policy)
+    assert not (target / "not-created").exists()
+    assert not (tmp_path / "new-output").exists()
+
+
+@pytest.mark.parametrize("policy", ["freshqa-final-eligibility-v1", "historical-recorded"])
+def test_report_allows_clean_nested_output_and_preserves_unrelated_files(tmp_path, monkeypatch, policy):
+    out = tmp_path / "current"
+    nested = out / "nested"
+    nested.mkdir(parents=True)
+    sentinel = nested / "notes.txt"
+    sentinel.write_bytes(b"local notes\n")
+    monkeypatch.setattr("freshqa.reporting._chart", lambda *args: None)
+    first = render_report([], tmp_path / "no-traces", out, grading_policy=policy)
+    artifacts = {p.relative_to(out): p.read_bytes() for p in out.rglob("*") if p.is_file()}
+    assert render_report([], tmp_path / "no-traces", out, grading_policy=policy) == first
+    assert {p.relative_to(out): p.read_bytes() for p in out.rglob("*") if p.is_file()} == artifacts
+    assert sentinel.read_bytes() == b"local notes\n"

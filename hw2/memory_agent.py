@@ -7,7 +7,7 @@ from copy import deepcopy
 
 from freshqa.agent import run_agent
 from freshqa.client import BudgetExceeded
-from hw2.memory_facts import FACT_KEYS, current_candidates, memory_events
+from hw2.memory_facts import FACT_KEYS, current_candidates, memory_events, split_unquoted
 
 
 CONTEXT_RULES = """You are helping the same user over multiple conversations.
@@ -22,6 +22,7 @@ EXTRACT_RULES = ('Read these user statements. Copy the most recent explicit valu
                  '{"reminder_day":"Monday","distance_unit":"miles","project_name":""}')
 USAGE_FIELDS = ("prompt_tokens", "completion_tokens", "cost_usd")
 MEMORY_POLICY = "update_before_answer_v2"
+_SENTENCE_BREAK = re.compile(r"(?<=[.!?])\s+")
 
 
 def usage(record):
@@ -61,11 +62,17 @@ def answer_turn(question, *, history, facts, client, registry, model):
 
 def candidate_statements(utterances):
     """The deliberately limited English assertion contract used by this demo."""
-    return [
-        statement for row in utterances if row["role"] == "user"
-        for statement in re.split(r"(?<=[.!?])\s+", row["content"].strip())
-        if not statement.endswith("?") and re.match(r"(?:I|my|we|our)\b", statement, re.I)
-    ]
+    statements = []
+    for row in utterances:
+        if row["role"] != "user":
+            continue
+        content = row["content"].strip()
+        parts = split_unquoted(content, _SENTENCE_BREAK)
+        # Keep malformed input intact: validation rejects it and retains the receipt.
+        for statement in parts if parts is not None else [content]:
+            if not statement.endswith("?") and re.match(r"(?:I|my|we|our)\b", statement, re.I):
+                statements.append(statement)
+    return statements
 
 
 class FactExtractionError(ValueError):
