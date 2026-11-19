@@ -3,12 +3,15 @@ import subprocess
 import sys
 from decimal import Decimal
 from pathlib import Path
+from types import SimpleNamespace
 
+import httpx
 import pytest
 
 from freshqa.dataset import load_rows
 from hw4 import run_mcp_benchmark as benchmark
 from hw4.mcp_benchmark_report import evaluate_case
+from hw4.mcp_openrouter import run_openrouter
 
 
 MODEL = "anthropic/claude-sonnet-4.6"
@@ -261,6 +264,89 @@ def test_paid_evaluator_does_not_credit_wrong_answer_with_correct_quote(tmp_path
 
     assert case["status"] == "ok" and case["source_matches"] and case["evidence_found"]
     assert not case["answer_correct"] and not case["verified_correct"]
+
+
+@pytest.fixture
+def quote_id_case(tmp_path):
+    row = next(row for row in load_rows(benchmark.QUESTIONS) if row["id"] == "fresh-136")
+    other_block = "The star, named S301,"
+    steps = []
+
+    def execute(name, arguments):
+        if name == "web_search":
+            return {"results": [{"url": row["url"]}]}
+        assert name == "page_find" and arguments["url"] == row["url"]
+        return {"found": True, "url": row["url"], "excerpts": [f"> {other_block}\n> {row['evidence']}"]}
+
+    def handle(request):
+        body = json.loads(request.content)
+        steps.append(body)
+        step = len(steps)
+        message = {"role": "assistant", "content": None}
+        if step <= 2:
+            name, arguments = (
+                ("web_search", {"query": row["question"]}) if step == 1 else ("page_find", {"url": row["url"]})
+            )
+            message["tool_calls"] = [{
+                "id": f"call-{step}", "type": "function",
+                "function": {"name": name, "arguments": json.dumps(arguments)},
+            }]
+        elif step == 3:
+            prompt = body["messages"][-1]["content"]
+            blocks = json.loads(prompt[prompt.index("{"):])["excerpts"]
+            block_id = next(block["id"] for block in blocks if block["text"] == row["evidence"])
+            message["content"] = f"FINAL: {row['answer']}\nQUOTE_ID: {block_id}"
+        else:
+            assert step == 4 and "tools" not in body
+            message["content"] = "SUPPORTED"
+        return httpx.Response(200, json={
+            "id": f"receipt-{step}",
+            "choices": [{"message": message, "finish_reason": "tool_calls" if step <= 2 else "stop"}],
+            "usage": {"prompt_tokens": 1000, "completion_tokens": 40, "cost": .001},
+        })
+
+    registry = SimpleNamespace(
+        schemas=lambda names: [{"type": "function", "function": {"name": name, "parameters": {"type": "object"}}}
+                               for name in names],
+        run=execute,
+    )
+    trace = run_openrouter(row["question"], registry, api_key=MOCK_KEY, model=MODEL, budget_usd="0.06",
+                           ledger_path=tmp_path / "quote-id.jsonl", transport=httpx.MockTransport(handle))
+    assert trace["status"] == "ok" and trace["quote"] == row["evidence"]
+    assert trace["events"][-1]["evidence_supported"] is True
+    return row, trace, other_block
+
+
+@pytest.mark.parametrize("changed", [
+    None, "quote", "judge_verdict", "judge_missing", "candidate_missing", "judge_role",
+])
+def test_paid_evaluator_checks_quote_id_output_and_judge(quote_id_case, changed):
+    row, trace, other_block = quote_id_case
+    if changed == "quote":
+        trace["quote"] = other_block
+    elif changed == "judge_verdict":
+        trace["events"][-1]["message"]["content"] = "UNSUPPORTED"
+    elif changed == "judge_missing":
+        trace["events"].pop()
+    elif changed == "candidate_missing":
+        trace["events"].pop(-2)
+    elif changed == "judge_role":
+        trace["events"][-1]["message"]["role"] = "system"
+
+    case = evaluate_case(row, trace, model=MODEL, returncode=0, duration_s=0.1)
+
+    assert case["status"] == "ok" and case["answer_correct"] and case["source_matches"] and case["evidence_found"]
+    assert case["verified_correct"] is (changed is None)
+
+
+def test_paid_evaluator_preserves_legacy_trace_credit(tmp_path):
+    row = next(row for row in load_rows(benchmark.QUESTIONS) if row["id"] == "fresh-152")
+    trace_path = tmp_path / "trace.json"
+    write_mock_case(["--budget-usd", "0.06"], row, tmp_path / "spend.jsonl", trace_path, [Decimal("0.004413")])
+    trace = json.loads(trace_path.read_text(encoding="utf-8"))
+
+    assert "quote" not in trace
+    assert evaluate_case(row, trace, model=MODEL, returncode=0, duration_s=0.1)["verified_correct"] is True
 
 
 @pytest.mark.parametrize(("question_id", "final", "correct"), [

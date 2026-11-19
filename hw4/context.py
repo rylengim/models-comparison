@@ -50,13 +50,15 @@ def _compact_search(content, index, reads):
     urls = [hit.get("url") if isinstance(hit, dict) else None for hit in hits]
     if any(not isinstance(url, str) or not url.strip() for url in urls):
         return content, False
-    read_hits = [{"url": url} for url in urls if reads.get(url, -1) > index]
-    if read_hits:
-        payload = {"results": read_hits, "compacted": True}
-    else:
-        payload = {"results": [_preview_hit(hit) for hit in hits]}
+    read_urls = {url for url in urls if reads.get(url, -1) > index}
+    payload = {"results": [
+        {"url": hit["url"]} if hit["url"] in read_urls else _preview_hit(hit)
+        for hit in hits
+    ]}
+    if read_urls:
+        payload["compacted"] = True
     compacted = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
-    return (compacted, not read_hits) if len(compacted) < len(content) else (content, False)
+    return (compacted, not read_urls) if len(compacted) < len(content) else (content, False)
 
 
 def compact_search_results(messages):

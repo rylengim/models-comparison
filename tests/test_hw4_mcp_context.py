@@ -67,8 +67,7 @@ def test_stub_previews_candidates_then_compacts_consumed_search(monkeypatch, tmp
     search, page = final
     compacted = json.loads(search["content"])
     assert compacted["compacted"] is True
-    assert [hit["url"] for hit in compacted["results"]] == [SOURCE]
-    assert "snippet" not in compacted["results"][0]
+    assert compacted["results"] == [{"url": SOURCE}, second_hit]
     assert search["tool_call_id"] == search_only[0]["tool_call_id"]
     assert json.loads(page["content"]) == tools.read_result
 

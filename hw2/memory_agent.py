@@ -22,6 +22,40 @@ EXTRACT_RULES = ('Read these user statements. Copy the most recent explicit valu
 FACT_KEYS = ("reminder_day", "distance_unit", "project_name")
 USAGE_FIELDS = ("prompt_tokens", "completion_tokens", "cost_usd")
 MEMORY_POLICY = "update_before_answer_v2"
+_WEEKDAY_NAMES = "Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday"
+_WEEKDAY = re.compile(rf"\b(?:{_WEEKDAY_NAMES})\b", re.IGNORECASE)
+_REMINDER_TOPIC = re.compile(r"\bremind(?:ers?|ed|ing|s)?\b", re.IGNORECASE)
+_REMINDER_ASSIGNMENT = re.compile(
+    rf"""
+    \s*(?:
+        (?:I|we)\s+
+        (?:(?:now|no\s+longer|do\s+not|don['’]t|never|used\s+to|may|might|could|maybe)\s+)?
+        (?:prefer|want|need|like|choose|use|set|move[d]?|switch(?:ed)?|change[d]?|(?:re)?schedule[d]?)\s+
+        (?:
+            (?:(?:my|our)\s+)?reminders?\s+(?:on|for|to|off)\s+(?:{_WEEKDAY_NAMES})
+            |(?:(?:my|our)\s+)?reminders?\s+from\s+(?:{_WEEKDAY_NAMES})\s+to\s+(?:{_WEEKDAY_NAMES})
+            |(?:{_WEEKDAY_NAMES})\s+(?:for\s+(?:(?:my|our)\s+)?reminders?|reminders?)
+        )
+        |(?:my|our)\s+reminders?(?:\s+day)?\s+(?:is|are|should\s+be|will\s+be)\s+(?:{_WEEKDAY_NAMES})
+        |(?:I|we)\s+(?:want|need)\s+(?:you\s+)?to\s+remind\s+(?:me|us)\s+on\s+(?:{_WEEKDAY_NAMES})
+    )
+    (?:\s+(?:now|instead|from\s+now\s+on|anymore|any\s+longer))?\s*[,.!]?\s*
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+_REMINDER_CONTINUATION = re.compile(
+    r"\s*(?:(?:please\s+)?(?:use|switch to|make it)|(?:I|we)\s+"
+    r"(?:(?:now|no longer|do not|don['’]t)\s+)?(?:prefer|want|choose)|not)"
+    rf"\s+(?:{_WEEKDAY_NAMES})"
+    r"(?:\s+(?:now|instead|from now on|anymore|any longer))?[.!]?\s*",
+    re.IGNORECASE,
+)
+_CLAUSE_BREAK = re.compile(r"[;\n]|\bbut\b|\band\s+(?=(?:I|we|my|our)\b)|,\s*(?=(?:not|I|we|my|our)\b)",
+                           re.IGNORECASE)
+_REJECTED = re.compile(
+    r"\b(?:no|not|never|used to|instead of|except|other than|off|cancel(?:l?ed|l?ing)?|stop|remove|may|might|could|maybe)\b|n['’]t\b",
+    re.IGNORECASE,
+)
 
 
 def usage(record):
@@ -87,6 +121,26 @@ def extract_facts(utterances, client, model):
         raise FactExtractionError(str(error), receipt) from error
 
 
+def _reminder_evidence(value, statements):
+    """Find the latest unambiguous reminder day in the English demo contract."""
+    evidence = None
+    for statement in statements:
+        reminder_context = False
+        for clause in _CLAUSE_BREAK.split(statement):
+            continuation = reminder_context and _REMINDER_CONTINUATION.fullmatch(clause)
+            reminder_context = bool(_REMINDER_ASSIGNMENT.fullmatch(clause) or continuation)
+            days = _WEEKDAY.findall(clause)
+            if _REJECTED.search(clause):
+                # Rejections can have a wider form than affirmative assignments.
+                if (_REMINDER_TOPIC.search(clause) or continuation) and any(
+                    day.casefold() == value.casefold() for day in days
+                ):
+                    evidence = None
+            elif reminder_context:
+                evidence = statement if days[-1] == value else None
+    return evidence
+
+
 def _validate_extraction(response, statements):
     if response.get("finish_reason") != "stop":
         raise ValueError("Извлечение фактов не завершено.")
@@ -99,8 +153,11 @@ def _validate_extraction(response, statements):
             raise ValueError("Неверное значение извлечённого факта.")
         if value == "":
             continue
-        pattern = re.compile(r"(?<!\w)" + re.escape(value) + r"(?!\w)")
-        evidence = next((s for s in reversed(statements) if pattern.search(s)), None)
+        if key == "reminder_day":
+            evidence = _reminder_evidence(value, statements)
+        else:
+            pattern = re.compile(r"(?<!\w)" + re.escape(value) + r"(?!\w)")
+            evidence = next((s for s in reversed(statements) if pattern.search(s)), None)
         if not value.strip() or evidence is None:
             raise ValueError("Факт должен ссылаться на точные слова пользователя.")
         facts.append({"key": key, "value": value, "evidence": evidence})

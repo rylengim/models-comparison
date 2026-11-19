@@ -65,6 +65,8 @@ def run_hw4_ask(args, parser):
     result = asyncio.run(operation(args.question, budget_usd=args.budget_usd, ledger_path=ledger, **options))
     write_json(output, result)
     print(f"FINAL: {result['final']}")
+    if result.get("quote"):
+        print(f"QUOTE: {result['quote']}")
     if result["source_url"]:
         print(f"SOURCE: {result['source_url']}")
     print(f"model={model}; status={result['status']}; trace={output}")

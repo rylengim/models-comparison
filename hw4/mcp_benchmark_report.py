@@ -7,6 +7,8 @@ import re
 from freshqa.dataset import normalize
 from hw3.evaluation import score
 
+from .quote_evidence import quote_id_evidence_matches_trace
+
 
 _TELEMETRY = (
     "stub_steps", "tool_calls", "input_tokens_estimate", "cached_tokens_estimate",
@@ -161,6 +163,8 @@ def evaluate_case(row, trace, *, returncode, duration_s, trace_path=None, diagno
             case["source_matches"] = source == row["url"]
             case["evidence_found"] = case["source_matches"] and _page_contains_evidence(events, source, row["evidence"])
             case["verified_correct"] = all(case[key] for key in _CHECKS[:-1])
+            if case["verified_correct"] and model != "stub":
+                case["verified_correct"] = quote_id_evidence_matches_trace(trace)
     return case
 
 

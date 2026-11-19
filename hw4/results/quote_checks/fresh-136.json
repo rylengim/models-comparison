@@ -1,0 +1,46 @@
+{
+  "id": "fresh-136",
+  "model": "openai/gpt-4o-mini",
+  "status": "ok",
+  "final": "25,000 km/s",
+  "quote": "reaches speeds of 25 000 km/s",
+  "source_url": "https://www.eso.org/public/news/eso2612/",
+  "question_budget_usd": 0.06,
+  "cost_usd": 0.00035265,
+  "model_calls": 4,
+  "usage": {
+    "prompt_tokens": 2115,
+    "completion_tokens": 59,
+    "cached_tokens": 0
+  },
+  "events": [
+    {
+      "step": 1,
+      "name": "web_search"
+    },
+    {
+      "step": 2,
+      "name": "page_find",
+      "url": "https://www.eso.org/public/news/eso2612/",
+      "selected_block": {
+        "id": "r2-b4",
+        "text": "reaches speeds of 25 000 km/s"
+      }
+    },
+    {
+      "step": 3,
+      "tools_enabled": false,
+      "early_final": true,
+      "early_final_accepted": true,
+      "quote_id": "r2-b4"
+    },
+    {
+      "step": 4,
+      "tools_enabled": false,
+      "evidence_check": true,
+      "evidence_supported": true,
+      "finish_reason": "stop",
+      "verdict": "SUPPORTED"
+    }
+  ]
+}

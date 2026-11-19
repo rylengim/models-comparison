@@ -153,7 +153,8 @@ class MeteredClient:
         self._sync_directory()
         self.accounting_uncertain = cost is None
 
-    def complete(self, *, model, messages, tools=None, temperature=0, response_format=None, session_id=None):
+    def complete(self, *, model, messages, tools=None, temperature=0, response_format=None, session_id=None,
+                 tool_choice="auto", max_tokens=None):
         if self._lock.closed:
             raise RuntimeError("Metered client is closed")
         if self.inflight.exists():
@@ -162,10 +163,13 @@ class MeteredClient:
             raise CostUnknownError("Unknown charge in HTTP ledger; reconcile before continuing")
         if not self.calls_remaining:
             raise BudgetExceeded("Question model-call limit reached; no request sent")
-        body = {"model": model, "messages": messages, "max_tokens": self.max_tokens,
+        max_tokens = self.max_tokens if max_tokens is None else max_tokens
+        if type(max_tokens) is not int or not 1 <= max_tokens <= self.max_tokens:
+            raise ValueError("max_tokens must be between 1 and the client limit")
+        body = {"model": model, "messages": messages, "max_tokens": max_tokens,
                 "stream": False, "temperature": temperature}
         if tools:
-            body.update(tools=tools, tool_choice="auto")
+            body.update(tools=tools, tool_choice=tool_choice)
         if response_format:
             body["response_format"] = response_format
         if session_id is not None:
@@ -184,7 +188,7 @@ class MeteredClient:
             body["provider"]["require_parameters"] = True
         encoded = json.dumps(body, ensure_ascii=False, separators=(",", ":"), allow_nan=False).encode()
         reserve = ((len(encoded) + 4096) * rate["prompt"] * self._input_reserve_multiplier
-                   + self.max_tokens * rate["completion"]
+                   + max_tokens * rate["completion"]
                    + rate.get("request", 0))
         spent = self._run_spent_usd if self._per_run_budget else self.spent_usd
         if spent + reserve >= self.budget_usd:

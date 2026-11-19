@@ -1,4 +1,7 @@
 import json
+from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
+from threading import Event
 from types import SimpleNamespace
 
 import pytest
@@ -101,6 +104,51 @@ def test_resume_restores_cost_and_does_not_repeat_saved_task(tmp_path, fake_envi
     assert question == "Who won?"
     assert all(name not in arguments for name in ("answer", "expected", "url", "evidence"))
     assert not (tmp_path / "inflight.json").exists()
+
+
+def test_concurrent_resume_does_not_repeat_a_pending_task(tmp_path, fake_environment, monkeypatch):
+    before_marker, release_writer = Event(), Event()
+    marker = tmp_path / "inflight.json"
+    original_open = Path.open
+
+    def pause_before_first_marker(path, mode="r", *args, **kwargs):
+        if path == marker and mode == "x" and not before_marker.is_set():
+            before_marker.set()
+            assert release_writer.wait(5), "The competing benchmark did not finish"
+        return original_open(path, mode, *args, **kwargs)
+
+    options = {"trace_dir": tmp_path, "config_names": ["cheap_no_tools"]}
+    exhausted_client = SimpleNamespace(spent_usd=5.0, budget_usd=5.0)
+    assert not benchmark(dataset(), client=exhausted_client, **options)
+    options["resume"] = True
+    monkeypatch.setattr(Path, "open", pause_before_first_marker)
+    first_client = SimpleNamespace(spent_usd=0.0, budget_usd=5.0)
+    second_client = SimpleNamespace(spent_usd=0.0, budget_usd=5.0)
+    with ThreadPoolExecutor(max_workers=1) as executor:
+        first = executor.submit(benchmark, dataset(), client=first_client, **options)
+        try:
+            assert before_marker.wait(5), "The first benchmark did not reach the in-flight marker"
+            with pytest.raises(ValueError, match=r"^Этот каталог уже занят работающим benchmark\.$"):
+                benchmark(dataset(), client=second_client, **options)
+        finally:
+            release_writer.set()
+        assert first.result(timeout=5)
+
+    assert first_client.spent_usd == pytest.approx(.01)
+    assert second_client.spent_usd == 0.0
+    assert len(fake_environment) == 1
+    trace_path = tmp_path / "cheap_no_tools" / "one.json"
+    assert list(tmp_path.glob("*/*.json")) == [trace_path]
+    trace = trace_path.read_bytes()
+    decoded = json.loads(trace)
+    assert decoded["id"] == "one" and decoded["status"] == "ok"
+    assert decoded["cost_usd"] == pytest.approx(.01)
+    assert not marker.exists()
+
+    assert benchmark(dataset(), client=second_client, **options)
+    assert second_client.spent_usd == pytest.approx(.01)
+    assert len(fake_environment) == 1
+    assert trace_path.read_bytes() == trace
 
 
 def test_resume_preserves_client_spending_larger_than_saved_trace_total(tmp_path, fake_environment):
