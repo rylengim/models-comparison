@@ -26,7 +26,7 @@ def _url_key(url):
 
 
 class SnapshotRegistry(ToolRegistry):
-    def __init__(self, corpus_path=None, *, rows=None):
+    def __init__(self, corpus_path=None, *, rows=None, allow_wikipedia_aliases=True):
         if corpus_path is not None and rows is not None:
             raise ValueError("Provide a corpus path or rows, not both")
         if rows is None:
@@ -46,6 +46,7 @@ class SnapshotRegistry(ToolRegistry):
                 by_url[key] = source
         self.rows = list(by_url.values())
         self.by_url = by_url
+        self.allow_wikipedia_aliases = allow_wikipedia_aliases
         self.by_title = {}
         for row in self.rows:
             key = _title_key(row["page"])
@@ -82,7 +83,7 @@ class SnapshotRegistry(ToolRegistry):
             return {"found": False, "title": title, "excerpts": [],
                     "note": "Only English source snapshots are available; no live network fallback."}
         row = self.by_url.get(_url_key(url)) if url else self.by_title.get(_title_key(title))
-        if row is None and url:
+        if row is None and url and self.allow_wikipedia_aliases:
             parsed = urlsplit(url)
             if parsed.hostname == "en.wikipedia.org" and parsed.path.startswith("/wiki/"):
                 row = self.by_title.get(_title_key(parsed.path[len("/wiki/"):]))

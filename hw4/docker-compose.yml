@@ -1,0 +1,16 @@
+name: freshqa-hw4
+
+services:
+  mcp:
+    build:
+      context: ..
+      dockerfile: hw4/Dockerfile
+    image: freshqa-hw4-mcp:local
+    network_mode: none
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    stdin_open: true
+    tty: false

@@ -1,0 +1,375 @@
+{
+  "method": "Paired local replay of saved traces with HTTP MockTransport",
+  "network_api_requests": 0,
+  "context_compaction": {
+    "kind": "offline_mock_replay",
+    "model_in_saved_traces": "anthropic/claude-sonnet-4.6",
+    "source": "tmp/hw4-mcp-benchmark-comparison-live-20261119-124709-469759/claude_mcp/traces",
+    "dataset_hash": "1335c6c36359bd85ca7b3d669e4bc87f7b58eb25156b47897881a999ddc4d147",
+    "tokenizer": "Qwen2.5-1.5B-Instruct GGUF via llama-tokenize, no BOS/escapes/special parsing",
+    "tokenizer_scope": "canonical JSON encoded in UTF-8 for messages and tools only",
+    "provider_token_counts": "Saved provider completion counts are fixed. Prompt counts in this comparison use the local tokenizer.",
+    "limited_arms": "Current compactor or identity, same mock replies, same history, no budget-related interruption in either arm.",
+    "question_count": 30,
+    "request_count_per_arm": 93,
+    "network_api_requests": 0,
+    "outputs_matching_saved_trace_per_arm": 30,
+    "input_tokens_before": 90898,
+    "input_tokens_after": 68427,
+    "input_tokens_saved": 22471,
+    "input_tokens_reduction_percent": 24.72111597614909,
+    "input_tokens_per_question_before": 3029.9333333333334,
+    "input_tokens_per_question_after": 2280.9,
+    "saved_completion_tokens_per_arm": 8044,
+    "changed_requests": 33,
+    "changed_request_stages": {
+      "before_page_find": 30,
+      "after_page_find": 3
+    },
+    "questions": [
+      {
+        "id": "fresh-125",
+        "requests": 3,
+        "changed_requests": 1,
+        "input_tokens_before": 2723,
+        "input_tokens_after": 2115,
+        "saved_completion_tokens": 263,
+        "saved_trace_sha256": "9c950d95f434d69e231adb86f43faf1aa337f747ab4e747dd79b2a3b20d24497"
+      },
+      {
+        "id": "fresh-126",
+        "requests": 3,
+        "changed_requests": 1,
+        "input_tokens_before": 3828,
+        "input_tokens_after": 2636,
+        "saved_completion_tokens": 306,
+        "saved_trace_sha256": "17ba0ae9f1acbabd0172cb3936423c163197d44ec2dbb9795d215a957f1ef566"
+      },
+      {
+        "id": "fresh-127",
+        "requests": 3,
+        "changed_requests": 1,
+        "input_tokens_before": 2794,
+        "input_tokens_after": 2142,
+        "saved_completion_tokens": 259,
+        "saved_trace_sha256": "f344828a6de9c118206cb2bde582b48f82914326c55fbc1040edc3e55c2434db"
+      },
+      {
+        "id": "fresh-128",
+        "requests": 3,
+        "changed_requests": 1,
+        "input_tokens_before": 2629,
+        "input_tokens_after": 2129,
+        "saved_completion_tokens": 302,
+        "saved_trace_sha256": "f7c341be8ca8dd55c343aaafed9148d19fdd566aeeb09708cc29407aa43101e1"
+      },
+      {
+        "id": "fresh-129",
+        "requests": 3,
+        "changed_requests": 1,
+        "input_tokens_before": 2800,
+        "input_tokens_after": 2152,
+        "saved_completion_tokens": 230,
+        "saved_trace_sha256": "3cacf0cfdedaccb5b1bdd1f586393c2c89dd22e9a0642ec31bb360c47f07c3f3"
+      },
+      {
+        "id": "fresh-130",
+        "requests": 3,
+        "changed_requests": 1,
+        "input_tokens_before": 2769,
+        "input_tokens_after": 2160,
+        "saved_completion_tokens": 249,
+        "saved_trace_sha256": "c84be3a8abaf4597c84780fdfdb28c2d3cf36ff90fabf9d2575d4d8e8a6ce95e"
+      },
+      {
+        "id": "fresh-131",
+        "requests": 3,
+        "changed_requests": 1,
+        "input_tokens_before": 2707,
+        "input_tokens_after": 2096,
+        "saved_completion_tokens": 235,
+        "saved_trace_sha256": "e686ba07dffe78ec619657a803640a7858ecdd8ba6cb2099e645baac595efaab"
+      },
+      {
+        "id": "fresh-132",
+        "requests": 3,
+        "changed_requests": 1,
+        "input_tokens_before": 2775,
+        "input_tokens_after": 2146,
+        "saved_completion_tokens": 268,
+        "saved_trace_sha256": "b49456efc6a06f11c0e6930652d9cd18cf5528e645770b99e4c7b2e9eff5abba"
+      },
+      {
+        "id": "fresh-133",
+        "requests": 3,
+        "changed_requests": 1,
+        "input_tokens_before": 2774,
+        "input_tokens_after": 2174,
+        "saved_completion_tokens": 231,
+        "saved_trace_sha256": "105d14937e9249f61b808928cac272d595327bd57de3663dc28d06b5f9cbe922"
+      },
+      {
+        "id": "fresh-134",
+        "requests": 3,
+        "changed_requests": 1,
+        "input_tokens_before": 2798,
+        "input_tokens_after": 2170,
+        "saved_completion_tokens": 236,
+        "saved_trace_sha256": "a2814e82a97109a21b825efb7ff3f63d282f1513c77d8f45f163b7f08e00f2c4"
+      },
+      {
+        "id": "fresh-135",
+        "requests": 3,
+        "changed_requests": 1,
+        "input_tokens_before": 2797,
+        "input_tokens_after": 2111,
+        "saved_completion_tokens": 215,
+        "saved_trace_sha256": "e5a14aded59a41fbdda359fdc13a84594e796794c2f842f26e0275d3a7c5a8fc"
+      },
+      {
+        "id": "fresh-136",
+        "requests": 3,
+        "changed_requests": 1,
+        "input_tokens_before": 2739,
+        "input_tokens_after": 2149,
+        "saved_completion_tokens": 278,
+        "saved_trace_sha256": "1f774f1c8835f256dbd29e9c298ba4deaeb4a88ec79bb8acf252c860d2022faf"
+      },
+      {
+        "id": "fresh-137",
+        "requests": 3,
+        "changed_requests": 1,
+        "input_tokens_before": 2787,
+        "input_tokens_after": 2117,
+        "saved_completion_tokens": 223,
+        "saved_trace_sha256": "1e8222441671194730003ad856f777aa65ddcc8db5df29a9289a7966ef05b2fe"
+      },
+      {
+        "id": "fresh-138",
+        "requests": 3,
+        "changed_requests": 1,
+        "input_tokens_before": 2359,
+        "input_tokens_after": 2029,
+        "saved_completion_tokens": 258,
+        "saved_trace_sha256": "42e125685377bfd6088ca38c3f1f65354629f9cf06529dc5f7cdaf9bc19e7d7d"
+      },
+      {
+        "id": "fresh-139",
+        "requests": 4,
+        "changed_requests": 2,
+        "input_tokens_before": 4821,
+        "input_tokens_after": 3215,
+        "saved_completion_tokens": 331,
+        "saved_trace_sha256": "de5f1bd3475ad54f012d375632a318ee9c414240c11fd9ed41d061adefdb84a7"
+      },
+      {
+        "id": "fresh-140",
+        "requests": 4,
+        "changed_requests": 2,
+        "input_tokens_before": 5009,
+        "input_tokens_after": 3311,
+        "saved_completion_tokens": 378,
+        "saved_trace_sha256": "df68a66a5e0020e3ad8086777379f7882c9338919e7aff90a69c0d929f2ddb8e"
+      },
+      {
+        "id": "fresh-141",
+        "requests": 3,
+        "changed_requests": 1,
+        "input_tokens_before": 2702,
+        "input_tokens_after": 2117,
+        "saved_completion_tokens": 219,
+        "saved_trace_sha256": "c60f1232b8ef76944936afb6ef70be424f3051065c5f331723f8416ff674cca2"
+      },
+      {
+        "id": "fresh-142",
+        "requests": 3,
+        "changed_requests": 1,
+        "input_tokens_before": 2721,
+        "input_tokens_after": 2136,
+        "saved_completion_tokens": 241,
+        "saved_trace_sha256": "3b085208b7652742ced8bdcb49c4b0b8375fe1ca72f1c781374235a3b613f422"
+      },
+      {
+        "id": "fresh-143",
+        "requests": 3,
+        "changed_requests": 1,
+        "input_tokens_before": 2762,
+        "input_tokens_after": 2114,
+        "saved_completion_tokens": 229,
+        "saved_trace_sha256": "1e7dad2afbc103b01e826eb15304d66106ae70906c046dc2f8a26b9e5b7676ec"
+      },
+      {
+        "id": "fresh-144",
+        "requests": 3,
+        "changed_requests": 1,
+        "input_tokens_before": 2820,
+        "input_tokens_after": 2160,
+        "saved_completion_tokens": 271,
+        "saved_trace_sha256": "c62ac36565307bf120d6afda413fc0f2a1a99068a69f0aa7178102c92130c8e2"
+      },
+      {
+        "id": "fresh-145",
+        "requests": 3,
+        "changed_requests": 1,
+        "input_tokens_before": 2844,
+        "input_tokens_after": 2215,
+        "saved_completion_tokens": 248,
+        "saved_trace_sha256": "3bb08943954e353ecc042dff4d82d54a9e7fc384e45a288380e4cb86d3b409fc"
+      },
+      {
+        "id": "fresh-146",
+        "requests": 3,
+        "changed_requests": 1,
+        "input_tokens_before": 2747,
+        "input_tokens_after": 2153,
+        "saved_completion_tokens": 272,
+        "saved_trace_sha256": "f4e7ee2a72d257582e8cfdf5fc201a273cc2198b95dbd0ad03ba4f9d43307a7a"
+      },
+      {
+        "id": "fresh-147",
+        "requests": 3,
+        "changed_requests": 1,
+        "input_tokens_before": 3980,
+        "input_tokens_after": 2776,
+        "saved_completion_tokens": 390,
+        "saved_trace_sha256": "1a7aff585fc748ccec1e2e2798e71667f02bcd9905fe4aec9fb37d27f6fa4497"
+      },
+      {
+        "id": "fresh-148",
+        "requests": 3,
+        "changed_requests": 1,
+        "input_tokens_before": 2748,
+        "input_tokens_after": 2096,
+        "saved_completion_tokens": 262,
+        "saved_trace_sha256": "5b34f9553aef4ca4ffa57c4a9e9646f258955ddc16f34bee415af2d12b870510"
+      },
+      {
+        "id": "fresh-149",
+        "requests": 3,
+        "changed_requests": 1,
+        "input_tokens_before": 2843,
+        "input_tokens_after": 2170,
+        "saved_completion_tokens": 266,
+        "saved_trace_sha256": "348e44811fbd4087579291fd064ccdb396d141345f94cb2749b1162c2426d09a"
+      },
+      {
+        "id": "fresh-150",
+        "requests": 3,
+        "changed_requests": 1,
+        "input_tokens_before": 2673,
+        "input_tokens_after": 2106,
+        "saved_completion_tokens": 250,
+        "saved_trace_sha256": "67eeb2adad2e641f543b1da22443efd02293e5da66a70f0a15050425f04c683a"
+      },
+      {
+        "id": "fresh-151",
+        "requests": 4,
+        "changed_requests": 2,
+        "input_tokens_before": 4882,
+        "input_tokens_after": 3175,
+        "saved_completion_tokens": 309,
+        "saved_trace_sha256": "aa36605279a0980150dc236f3892be036e788eb8ca1e003b8c10995256678751"
+      },
+      {
+        "id": "fresh-152",
+        "requests": 3,
+        "changed_requests": 1,
+        "input_tokens_before": 2347,
+        "input_tokens_after": 1917,
+        "saved_completion_tokens": 265,
+        "saved_trace_sha256": "b37c1f5bd3453669c1694eb5969918236593be47c55e003cf1db0968cd263df2"
+      },
+      {
+        "id": "fresh-153",
+        "requests": 3,
+        "changed_requests": 1,
+        "input_tokens_before": 2908,
+        "input_tokens_after": 2258,
+        "saved_completion_tokens": 274,
+        "saved_trace_sha256": "b0805a855065710bc42d8db84fabdb81fe7fd517d7d1286586f5e586ae7cc385"
+      },
+      {
+        "id": "fresh-154",
+        "requests": 3,
+        "changed_requests": 1,
+        "input_tokens_before": 2812,
+        "input_tokens_after": 2182,
+        "saved_completion_tokens": 286,
+        "saved_trace_sha256": "5c7582187ba4aedcb5fbe9d6a77ef406cf15b74600d25ae83d2235fec29aef53"
+      }
+    ]
+  },
+  "prompt_cache_cost": {
+    "mode": "offline_http_mock_replay",
+    "model": "openai/gpt-4o-mini",
+    "question_id": "fresh-136",
+    "source": {
+      "benchmark_dir": "tmp/hw4-mcp-benchmark-comparison-live-20261119-124709-469759",
+      "trace": "tmp/hw4-mcp-benchmark-comparison-live-20261119-124709-469759/gpt4o_mini_mcp/traces/fresh-136.json",
+      "ledger": "tmp/hw4-mcp-benchmark-comparison-live-20261119-124709-469759/gpt4o_mini_mcp/spend.jsonl",
+      "base_token_rates": "hw3/model_rates.json"
+    },
+    "method": "Replay the five saved completions and successful search results through the FreshQA MCP OpenRouter client using HTTP MockTransport and the pinned production tool schemas. Fix session ID so corresponding request payloads are byte-identical. The cached arm replays observed costs; the counterfactual reprices the one hit as ordinary input tokens. The response differs only in usage.cost and usage.prompt_tokens_details.cached_tokens on step 4.",
+    "source_completeness": {
+      "gpt_receipts": 102,
+      "gpt_cache_hits": 1,
+      "unchanged_receipts_matching_base_tariff_exactly": 101
+    },
+    "base_token_rates_usd_per_million": {
+      "prompt": "0.15000000",
+      "completion": "0.6000000"
+    },
+    "implied_cache_read_usd_per_million": "0.075000000",
+    "equal_request_bytes_between_arms": 5,
+    "same_prompt_prefix_hashes_as_saved_trace": true,
+    "request_body_sha256": [
+      "2d68d55584e69793d0350a0fd01bcd8d2c3446c1750547eb7ec1320b015cf944",
+      "299832a206ed7ae003bdb6b3c5dd627df22d317d46097e865d19ddb20e1af5d3",
+      "833dbe0f5ef726bae08f611f0d9d5f0272c921c0281546d41eca1766de232de6",
+      "3854b52543969bd3554f3a1b377212010a7edbba3952357a5cc6d1226dab1ebd",
+      "c8ffb5eab14c128bde5a16e216a1280c2bd8253e5c9aeb6df4b96406ff478907"
+    ],
+    "request_body_bytes": [
+      2671,
+      4957,
+      6825,
+      8290,
+      7577
+    ],
+    "changed_step": {
+      "step": 4,
+      "prompt_tokens": 1530,
+      "completion_tokens": 22,
+      "cached_tokens_observed": 1152,
+      "cache_write_tokens_observed": 0,
+      "cached_input_share_pct": "75.29411765",
+      "with_cache_usd": "0.00015630",
+      "without_cache_usd": "0.00024270",
+      "difference_usd": "0.00008640",
+      "relative_savings_pct": "35.59950556"
+    },
+    "whole_question": {
+      "prompt_tokens": 5513,
+      "completion_tokens": 95,
+      "cached_tokens_observed": 1152,
+      "model_calls": 5,
+      "status_both_arms": "repeated_tool_call",
+      "final_both_arms": "unknown",
+      "with_cache_usd": "0.00079755",
+      "without_cache_usd": "0.00088395",
+      "difference_usd": "0.00008640",
+      "relative_savings_pct": "9.77430850"
+    },
+    "whole_gpt_configuration": {
+      "questions": 30,
+      "cached_tokens_observed": 1152,
+      "with_cache_usd": "0.01154580",
+      "without_cache_usd": "0.01163220",
+      "difference_usd": "0.00008640",
+      "relative_savings_pct": "0.74276577",
+      "mean_cost_per_question_with_cache_usd": "0.00038486",
+      "mean_cost_per_question_without_cache_usd": "0.00038774"
+    },
+    "limits": "Saved traces record provider usage, not original serialized bodies. Hash equality refers to the two local replays. Counterfactual without the hit is calculated, and savings are an observation from one hit on a question whose final is unknown; the mock does not test whether a provider would hit for a new request."
+  }
+}

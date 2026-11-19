@@ -3,6 +3,7 @@
 import json
 import re
 import time
+from copy import deepcopy
 
 from .client import BudgetExceeded, CostUnknownError, OpenRouterError
 
@@ -37,12 +38,17 @@ def _final_text(content):
 
 
 def run_agent(question: str, *, model: str, client, registry, tool_names: list[str],
-              max_steps: int = 6) -> dict:
+              max_steps: int = 6, prepare_early_final=None, accept_early_final=None) -> dict:
     """Run baseline (one request) or an agent with a reserved final-answer step.
 
     ``steps`` counts attempted LLM requests, excluding a local budget rejection.
     ``cost_usd=None`` means at least one charge is unknown; ``known_cost_usd``
     retains the verified portion for audit. Traces are JSON-serializable.
+
+    ``prepare_early_final(messages, events)`` may supply an isolated prompt for
+    one early request without tools. After an inconclusive response, the agent
+    resumes from the original history. ``accept_early_final(final, events)``
+    can check the candidate answer before the agent returns it.
     """
     if not isinstance(max_steps, int) or isinstance(max_steps, bool) or max_steps < 1:
         raise ValueError("max_steps must be a positive integer")
@@ -63,6 +69,7 @@ def run_agent(question: str, *, model: str, client, registry, tool_names: list[s
     final = "unknown"
     status = "ok"
     force_reason = None
+    early_final_tried = False
 
     for slot in range(1, (max_steps if names else 1) + 1):
         finalize = bool(names) and (force_reason is not None or slot == max_steps)
@@ -71,11 +78,20 @@ def run_agent(question: str, *, model: str, client, registry, tool_names: list[s
             messages.append({"role": "user", "content": (
                 "Tool use has ended. Answer the original question now using the evidence already available. "
                 "Return FINAL: <short answer> or FINAL: unknown.")})
+        early_messages = None
+        if not finalize and schemas and not early_final_tried and prepare_early_final is not None:
+            early_messages = prepare_early_final(deepcopy(messages), events)
+        early_final = early_messages is not None
+        request_tools = None if finalize or early_final else schemas
         call_started = time.perf_counter()
         spent_before_call = client.spent_usd
-        event = {"type": "llm", "step": slot, "tools_enabled": bool(schemas and not finalize)}
+        event = {"type": "llm", "step": slot, "tools_enabled": bool(request_tools)}
+        if early_final:
+            early_final_tried = True
+            event["early_final"] = True
         try:
-            response = client.complete(model=model, messages=messages, tools=None if finalize else schemas)
+            response = client.complete(model=model, messages=early_messages if early_final else messages,
+                                       tools=request_tools)
             steps += 1
             event.update({key: response[key] for key in
                           ("cost_usd", "prompt_tokens", "completion_tokens", "request_id")})
@@ -105,11 +121,23 @@ def run_agent(question: str, *, model: str, client, registry, tool_names: list[s
             event["elapsed_s"] = time.perf_counter() - call_started
             events.append(event)
 
+        calls = message.get("tool_calls") or []
+        if early_final:
+            content = message.get("content")
+            candidate = _final_text(content)
+            accepted = (not calls and response.get("finish_reason") != "length"
+                        and isinstance(content, str) and re.match(r"\s*FINAL\s*:", content, re.IGNORECASE)
+                        and candidate.splitlines()[0].strip().casefold() != "unknown"
+                        and (accept_early_final is None or accept_early_final(candidate, events)))
+            event["early_final_accepted"] = bool(accepted)
+            if accepted:
+                final = candidate
+                break
+            continue
         if response.get("finish_reason") == "length":
             status = "output_truncated"
             final = _final_text(message.get("content"))
             break
-        calls = message.get("tool_calls") or []
         if not calls:
             final = _final_text(message.get("content"))
             status = force_reason or ("ok" if message.get("content") else "empty_response")

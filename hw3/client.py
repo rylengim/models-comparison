@@ -14,20 +14,43 @@ import httpx
 from freshqa.client import BudgetExceeded, CostUnknownError, OpenRouterError
 
 
+class LedgerInUseError(RuntimeError):
+    """Another process holds the spend ledger lock."""
+
+
 def valid_number(value):
     return type(value) in (int, float) and math.isfinite(value) and value >= 0
+
+
+def _cache_usage(usage):
+    details = usage.get("prompt_tokens_details")
+    if details is None:
+        return None, None
+    if not isinstance(details, dict):
+        raise ValueError("Invalid prompt token details")
+    cached_tokens = details.get("cached_tokens")
+    cache_write_tokens = details.get("cache_write_tokens")
+    total = usage.get("prompt_tokens")
+    for count in (cached_tokens, cache_write_tokens):
+        if count is not None and (type(count) is not int or type(total) is not int or not 0 <= count <= total):
+            raise ValueError("Invalid cache token count")
+    return cached_tokens, cache_write_tokens
 
 
 class MeteredClient:
     provider = "openrouter"
     cost_basis = "provider_reported"
+    require_parameters = False
 
     def __init__(self, api_key, ledger, budget_usd=2.0, *, transport=None, interval=1.0,
-                 rates=None, max_tokens=512):
+                 rates=None, max_tokens=512, per_run_budget=False, store_payloads=True,
+                 input_reserve_multiplier=1.0):
         if not api_key or not valid_number(budget_usd) or budget_usd == 0:
             raise ValueError("A local API key and positive budget are required")
         if type(max_tokens) is not int or max_tokens < 1:
             raise ValueError("max_tokens must be a positive integer")
+        if not valid_number(input_reserve_multiplier) or input_reserve_multiplier < 1:
+            raise ValueError("input_reserve_multiplier must be finite and at least one")
         self.ledger = Path(ledger).resolve()
         self.ledger.parent.mkdir(parents=True, exist_ok=True)
         self.inflight = self.ledger.with_suffix(".inflight.json")
@@ -37,13 +60,16 @@ class MeteredClient:
             try:
                 fcntl.flock(self._lock.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
             except BlockingIOError:
-                raise RuntimeError(f"Ledger already in use: {self.ledger}") from None
+                raise LedgerInUseError(f"Ledger already in use: {self.ledger}") from None
             # Read the balance only after acquiring sole ownership of the ledger.
             self.records = [json.loads(s) for s in self.ledger.read_text().splitlines()] if self.ledger.exists() else []
             self.spent_usd = sum(r["cost_usd"] for r in self.records if r.get("cost_usd") is not None)
+            self._run_spent_usd = 0.0
             self.accounting_uncertain = self.inflight.exists() or any(r.get("cost_usd") is None for r in self.records)
             self.budget_usd, self.interval = float(budget_usd), interval
             self.rates, self.max_tokens = rates or {}, max_tokens
+            self._per_run_budget, self._store_payloads = per_run_budget, store_payloads
+            self._input_reserve_multiplier = input_reserve_multiplier
             self.config, self.question_id, self.max_calls, self.scope_calls = "unscoped", "", 24, 0
             self._last_started = 0.0
             self._key = api_key
@@ -96,24 +122,38 @@ class MeteredClient:
         rejected = response.status_code in {400, 401, 402, 403, 404, 422, 429}
         if not valid_number(cost):
             cost = 0.0 if rejected else None
-        choices = data.get("choices") if isinstance(data, dict) else None
-        choice = choices[0] if isinstance(choices, list) and choices and isinstance(choices[0], dict) else {}
+        try:
+            cached_tokens, cache_write_tokens = _cache_usage(usage)
+        except ValueError:
+            cached_tokens = cache_write_tokens = None
         record = {"timestamp": datetime.now(timezone.utc).isoformat(), "config": self.config,
                   "question_id": self.question_id, "model": body["model"],
                   "status_code": response.status_code, "cost_usd": cost,
                   "prompt_tokens": usage.get("prompt_tokens", 0 if rejected else None),
                   "completion_tokens": usage.get("completion_tokens", 0 if rejected else None),
-                  "request_id": data.get("id") if isinstance(data, dict) else None,
-                  "request": body, "request_bytes": response.request.content.decode(),
-                  "response_message": choice.get("message")}
+                  "cached_tokens": cached_tokens, "cache_write_tokens": cache_write_tokens,
+                  "request_id": data.get("id") if isinstance(data, dict) else None}
+        if self._store_payloads:
+            choices = data.get("choices") if isinstance(data, dict) else None
+            choice = choices[0] if isinstance(choices, list) and choices and isinstance(choices[0], dict) else {}
+            record.update(request=body, request_bytes=response.request.content.decode(),
+                          response_message=choice.get("message"))
+        else:
+            for field in ("prompt_tokens", "completion_tokens"):
+                count = record[field]
+                if type(count) is not int or count < 0:
+                    record[field] = None
+            if not isinstance(record["request_id"], str):
+                record["request_id"] = None
         self._append(record)
         if cost is not None:
             self.spent_usd += cost
+            self._run_spent_usd += cost
         self.inflight.unlink(missing_ok=True)
         self._sync_directory()
         self.accounting_uncertain = cost is None
 
-    def complete(self, *, model, messages, tools=None, temperature=0, response_format=None):
+    def complete(self, *, model, messages, tools=None, temperature=0, response_format=None, session_id=None):
         if self._lock.closed:
             raise RuntimeError("Metered client is closed")
         if self.inflight.exists():
@@ -128,6 +168,8 @@ class MeteredClient:
             body.update(tools=tools, tool_choice="auto")
         if response_format:
             body["response_format"] = response_format
+        if session_id is not None:
+            body["session_id"] = session_id
         # One token cannot consume less than one byte of text. Include a generous
         # protocol allowance; reserve output at max_tokens before issuing a call.
         rate = self.rates.get(model)
@@ -138,32 +180,39 @@ class MeteredClient:
         body["provider"] = {"max_price": {"prompt": rate["prompt"] * 1e6,
                                               "completion": rate["completion"] * 1e6,
                                               "request": rate.get("request", 0)}}
+        if self.require_parameters:
+            body["provider"]["require_parameters"] = True
         encoded = json.dumps(body, ensure_ascii=False, separators=(",", ":"), allow_nan=False).encode()
-        reserve = ((len(encoded) + 4096) * rate["prompt"] + self.max_tokens * rate["completion"]
+        reserve = ((len(encoded) + 4096) * rate["prompt"] * self._input_reserve_multiplier
+                   + self.max_tokens * rate["completion"]
                    + rate.get("request", 0))
-        if self.spent_usd + reserve >= self.budget_usd:
-            raise BudgetExceeded("Experiment budget reserve reached; no request sent")
+        spent = self._run_spent_usd if self._per_run_budget else self.spent_usd
+        if spent + reserve >= self.budget_usd:
+            budget = "Run" if self._per_run_budget else "Experiment"
+            raise BudgetExceeded(f"{budget} budget reserve reached; no request sent")
         if len(encoded) > 180000:
             raise BudgetExceeded("Prompt byte limit reached; no request sent")
         time.sleep(max(0, self.interval - (time.monotonic() - self._last_started)))
-        self.scope_calls += 1
-        self._last_started = time.monotonic()
+        inflight = {"config": self.config, "question_id": self.question_id, "model": model}
+        if self._store_payloads:
+            inflight["request"] = body
         with self.inflight.open("x", encoding="utf-8") as stream:
-            json.dump({"config": self.config, "question_id": self.question_id,
-                       "model": model, "request": body}, stream, ensure_ascii=False)
+            json.dump(inflight, stream, ensure_ascii=False)
             stream.flush()
             os.fsync(stream.fileno())
         self._sync_directory()
+        self.scope_calls += 1
+        self._last_started = time.monotonic()
         try:
             response = self.http.post("https://openrouter.ai/api/v1/chat/completions", content=encoded,
                                       headers={"Authorization": "Bearer " + self._key,
                                                "Content-Type": "application/json"})
         except httpx.HTTPError:
             self.accounting_uncertain = True
-            self._append({"timestamp": datetime.now(timezone.utc).isoformat(), "config": self.config,
-                          "question_id": self.question_id, "model": model, "cost_usd": None,
-                          "prompt_tokens": None, "completion_tokens": None, "status_code": None,
-                          "request_id": None, "request": body, "error": "transport_error"})
+            self._append({"timestamp": datetime.now(timezone.utc).isoformat(), **inflight,
+                          "cost_usd": None, "prompt_tokens": None, "completion_tokens": None,
+                          "cached_tokens": None, "cache_write_tokens": None, "status_code": None,
+                          "request_id": None, "error": "transport_error"})
             raise CostUnknownError("Network failure; no retry because billing is uncertain") from None
         except Exception:
             self.accounting_uncertain = True
@@ -180,8 +229,10 @@ class MeteredClient:
                 raise ValueError
             if any(type(usage[k]) is not int or usage[k] < 0 for k in ("prompt_tokens", "completion_tokens")):
                 raise ValueError
+            cached_tokens, cache_write_tokens = _cache_usage(usage)
             return {"message": message, "cost_usd": usage["cost"], "prompt_tokens": usage["prompt_tokens"],
-                    "completion_tokens": usage["completion_tokens"], "request_id": data.get("id", ""),
+                    "completion_tokens": usage["completion_tokens"], "cached_tokens": cached_tokens,
+                    "cache_write_tokens": cache_write_tokens, "request_id": data.get("id", ""),
                     "finish_reason": choice.get("finish_reason")}
         except (KeyError, IndexError, TypeError, ValueError):
             raise OpenRouterError("Malformed paid response; cost retained in HTTP ledger") from None
