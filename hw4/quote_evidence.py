@@ -58,7 +58,8 @@ def _read_evidence(event):
     return {"url": url, "excerpts": passages} if passages else None
 
 
-def _successful_reads(events, *, step=None):
+def successful_reads(events, *, step=None):
+    """Yield validated reads with their original tool-result numbers for QUOTE_ID."""
     tool_events = (event for event in events if event.get("type") == "tool")
     for read_number, event in enumerate(tool_events, start=1):
         if step is None or step == event.get("step"):
@@ -73,7 +74,7 @@ def recent_evidence(events):
             step = event.get("step")
             if type(step) is not int or step < 1:
                 return None
-            reads = list(_successful_reads(events, step=step))
+            reads = list(successful_reads(events, step=step))
             return reads[-1] if reads else None
     return None
 
@@ -100,7 +101,7 @@ def resolve_final_quote(final, events):
     if events and events[-1].get("early_final_accepted") is True:
         reads = (recent_evidence(events),)
     else:
-        reads = _successful_reads(events)
+        reads = successful_reads(events)
     return resolve_quote(final, reads)
 
 

@@ -456,6 +456,94 @@ def test_openrouter_reads_second_candidate_after_rejected_early_final(tmp_path, 
     assert result["verified_correct"] is True
 
 
+def test_openrouter_reuses_first_parallel_read_after_unsupported_early_final(tmp_path):
+    from hw4.mcp_benchmark_report import evaluate_case
+
+    data = Path(__file__).resolve().parents[1] / "hw4" / "data"
+    with (data / "questions.jsonl").open(encoding="utf-8") as stream:
+        row = next(item for line in stream if (item := json.loads(line))["id"] == "fresh-136")
+    other_url = "https://www.esa.int/articles/about-us/directorates/science/euclid/euclid-discovers-new-comet"
+    search = {"query": "ESO S301 discovery announcement 19 August 2026"}
+    first_read = {"url": row["url"], "keywords": ["S301", "speed"]}
+    second_read = {"url": other_url, "keywords": ["comet"]}
+    calls, bodies, outputs = [], [], []
+    early_reply = None
+    rejected_quote = None
+    selected_id = None
+
+    def execute(name, arguments):
+        calls.append((name, arguments))
+        output = json.loads(snapshot.run(name, arguments))
+        if name == "web_search":
+            output["results"] = output["results"][:2]
+            assert {hit["url"] for hit in output["results"]} == {row["url"], other_url}
+        outputs.append(output)
+        return output
+
+    def handle(request):
+        nonlocal early_reply, rejected_quote, selected_id
+        body = json.loads(request.content)
+        bodies.append(body)
+        step = len(bodies)
+        if step == 1:
+            reply = assistant_tool_call("web_search", search)
+        elif step == 2:
+            reply = assistant_tool_call("page_find", first_read)
+            reply["tool_calls"][0]["id"] = "call-first-read"
+            second = assistant_tool_call("page_find", second_read)["tool_calls"][0]
+            second["id"] = "call-second-read"
+            reply["tool_calls"].append(second)
+        elif step == 3:
+            assert "tools" not in body
+            blocks = shown_excerpts(body)
+            wrong_block = next(block for block in blocks if block["id"].startswith("r3-"))
+            rejected_quote = wrong_block["text"]
+            early_reply = sourced_final(row["answer"], wrong_block["id"])
+            reply = early_reply
+        elif step == 4:
+            assert "tools" not in body
+            payload = json.loads(body["messages"][-1]["content"])
+            assert payload["quote"] == rejected_quote
+            reply = {"role": "assistant", "content": "UNSUPPORTED"}
+        elif step == 5:
+            assert "tools" not in body and "tool_choice" not in body
+            assert early_reply not in body["messages"]
+            read_messages = [message for message in body["messages"] if message.get("role") == "tool"
+                             and message.get("tool_call_id") in {"call-first-read", "call-second-read"}]
+            assert [message["tool_call_id"] for message in read_messages] == ["call-first-read", "call-second-read"]
+            selected_id = select_block({"messages": [read_messages[0]]}, row["evidence"])
+            reply = sourced_final(row["answer"], selected_id)
+        else:
+            assert step == 6 and "tools" not in body
+            payload = json.loads(body["messages"][-1]["content"])
+            assert (payload["question"], payload["answer"], payload["quote"]) == (
+                row["question"], row["answer"], row["evidence"])
+            reply = SUPPORTED
+        return completion(step, reply, 1000, 30, 0, 0, 0.0003)
+
+    ledger = tmp_path / "receipts.jsonl"
+    with closing(SnapshotRegistry(corpus_path=data / "corpus.jsonl", allow_wikipedia_aliases=False)) as snapshot:
+        registry = SimpleNamespace(schemas=snapshot.schemas, run=execute)
+        trace = ask(row["question"], registry, ledger, handle, budget="0.06", model="openai/gpt-4o-mini")
+
+    assert calls == [("web_search", search), ("page_find", first_read), ("page_find", second_read)]
+    tool_events = [event for event in trace["events"] if event["type"] == "tool"]
+    assert [event["step"] for event in tool_events] == [1, 2, 2]
+    assert [json.loads(event["output"]) for event in tool_events] == outputs
+    assert (trace["status"], trace["final"], trace["quote"], trace["source_url"]) == (
+        "ok", row["answer"], row["evidence"], row["url"])
+    assert selected_id.startswith("r2-")
+    checks = [event for event in trace["events"] if event.get("evidence_check")]
+    assert [event["message"]["content"] for event in checks] == ["UNSUPPORTED", "SUPPORTED"]
+    assert all(event["tools_enabled"] is False for event in checks)
+    assert trace["steps"] == trace["model_calls"] == len(bodies) == 6
+    assert [event["step"] for event in trace["events"] if event["type"] == "llm"] == list(range(1, 7))
+    assert trace["cost_usd"] == pytest.approx(0.0018)
+    assert trace["cost_usd"] < trace["question_budget_usd"] == 0.06
+    assert len(ledger.read_text(encoding="utf-8").splitlines()) == 6
+    assert evaluate_case(row, trace, returncode=0, duration_s=trace["elapsed_s"], model=trace["model"])["verified_correct"]
+
+
 @pytest.mark.parametrize("search_result", [
     {"results": []},
     {"results": [{"url": "https://"}]},

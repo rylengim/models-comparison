@@ -19,7 +19,7 @@ from .mcp_client import REPO, TOOL_NAMES, with_publication_tools
 from .prompt_cache import mark_system_cache, prefix_sha256
 from .quote_evidence import (
     QUOTE_ID_FORMAT, evidence_verdict, is_https_url, json_object, quote_blocks,
-    recent_evidence, resolve_final_quote, resolve_quote,
+    recent_evidence, resolve_final_quote, resolve_quote, successful_reads,
 )
 from .spending import MOSCOW, as_usd, limit_micros
 
@@ -193,7 +193,8 @@ def _split_final(final):
 def _accept_early_final(final, events, *, question, model, client):
     if SIMULATED_TOOL_MARKUP.search(events[-1]["message"]["content"]):
         return False
-    verified = resolve_quote(final, (recent_evidence(events),))
+    evidence = recent_evidence(events)
+    verified = resolve_quote(final, (evidence,))
     if verified is None:
         return False
     answer, quote, url, passage = verified
@@ -202,16 +203,25 @@ def _accept_early_final(final, events, *, question, model, client):
         return EarlyFinalDecision(accepted=True, additional_steps=steps)
 
     judge = events[-1]
-    # Leave a step for reading and a step for the reserved final answer.
-    if evidence_verdict(judge) == "UNSUPPORTED" and judge["step"] <= MAX_STEPS - 2:
-        unread_urls = _unread_search_urls(events, url)
-        if unread_urls:
-            judge["fallback_read_urls"] = unread_urls
+    if evidence_verdict(judge) == "UNSUPPORTED":
+        other_reads = any(number != evidence[0] for number, _ in successful_reads(events))
+        if other_reads and judge["step"] < MAX_STEPS:
             return EarlyFinalDecision(
                 accepted=False, additional_steps=steps,
-                retry_message="The first passage did not support the answer. Call page_find on an unread URL "
-                              "from the previous search: " + ", ".join(unread_urls),
+                finalize=True,
+                retry_message="The selected passage did not support the answer. Answer the original question "
+                              "using another page_find result already in the history. Select its QUOTE_ID.",
             )
+        # Reading an unread candidate also needs a step for the final answer.
+        if judge["step"] <= MAX_STEPS - 2:
+            unread_urls = _unread_search_urls(events, url)
+            if unread_urls:
+                judge["fallback_read_urls"] = unread_urls
+                return EarlyFinalDecision(
+                    accepted=False, additional_steps=steps,
+                    retry_message="The first passage did not support the answer. Call page_find on an unread URL "
+                                  "from the previous search: " + ", ".join(unread_urls),
+                )
     return EarlyFinalDecision(accepted=False, additional_steps=steps, stop_status=status)
 
 

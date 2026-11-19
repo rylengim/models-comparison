@@ -44,6 +44,7 @@ class EarlyFinalDecision:
     additional_steps: int = 0
     stop_status: str | None = None
     retry_message: str | None = None
+    finalize: bool = False
 
 
 @dataclass(frozen=True)
@@ -65,7 +66,8 @@ def run_agent(question: str, *, model: str, client, registry, tool_names: list[s
     one early request without tools. After an inconclusive response, the agent
     resumes from the original history. ``accept_early_final(final, events)``
     can return a boolean or an EarlyFinalDecision with additional requests
-    to count, a reason to stop, or a message for resumed retrieval.
+    to count, a reason to stop, a message for resumed retrieval, or a request
+    for a final answer without tools.
     ``require_tool(events)`` may name the required tool or restrict an argument
     with a ToolRequirement during a retrieval step.
     """
@@ -89,12 +91,14 @@ def run_agent(question: str, *, model: str, client, registry, tool_names: list[s
     status = "ok"
     force_reason = None
     early_final_tried = False
+    finalize_requested = False
 
     while steps < (max_steps if names else 1):
         slot = steps + 1
-        finalize = bool(names) and (force_reason is not None or slot == max_steps)
-        if finalize:
+        if names and slot == max_steps:
             force_reason = force_reason or "max_steps"
+        finalize = bool(names) and (force_reason is not None or finalize_requested)
+        if finalize:
             messages.append({"role": "user", "content": (
                 "Tool use has ended. Answer the original question now using the evidence already available. "
                 "Return FINAL: <short answer> or FINAL: unknown.")})
@@ -164,6 +168,7 @@ def run_agent(question: str, *, model: str, client, registry, tool_names: list[s
                         break
                     if decision.retry_message is not None:
                         messages.append({"role": "user", "content": decision.retry_message})
+                    finalize_requested = decision.finalize
                 else:
                     accepted = decision
             event["early_final_accepted"] = bool(accepted)

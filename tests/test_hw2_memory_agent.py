@@ -156,6 +156,12 @@ def test_correction_is_saved_before_answer_and_survives_window_eviction():
     "I want reminders on any weekday except Monday.",
     "I prefer any day other than Monday for reminders.",
     "I prefer Monday for reminders, but I don't want Monday anymore.",
+    "I want a Monday meeting about reminders",
+    "I want a Monday meeting about reminders.",
+    "I prefer reading the Monday news about reminder apps.",
+    "I prefer reading Monday reminders.",
+    "I want a Friday meeting about reminders; use Monday now.",
+    "I prefer Monday reminders; I prefer any day other than Monday for reminders.",
 ])
 def test_unsupported_reminder_day_does_not_overwrite_saved_preference(statement):
     store = MutableStore()
@@ -172,6 +178,35 @@ def test_unsupported_reminder_day_does_not_overwrite_saved_preference(statement)
     summary = session.finish()
     assert summary["memory_updates"][0]["status"] == "invalid_extraction"
     assert summary["extracted"] == []
+
+
+@pytest.mark.parametrize("statement", [
+    "I want reminders on Monday.",
+    "I want Monday reminders.",
+    "My reminder day is Monday.",
+    "I want you to remind me on Monday.",
+])
+def test_explicit_reminder_assignment_is_saved_before_answer_and_recalled(statement):
+    store = MutableStore()
+    store.upsert("previous", [{"key": "reminder_day", "value": "Tuesday"}])
+    extraction = {"reminder_day": "Monday", "distance_unit": "", "project_name": ""}
+    client = Client([{"content": json.dumps(extraction)}, {"content": "FINAL: Monday"},
+                     {"content": "FINAL: Monday"}])
+    session = memory_session(store, client, window_pairs=0)
+
+    result = session.ask(statement)
+    recalled = session.ask("Which day should I get reminders?")
+
+    assert result["memory_update"]["status"] == "persisted"
+    assert result["memory_update"]["extracted"] == [
+        {"key": "reminder_day", "value": "Monday", "evidence": statement}]
+    assert result["answer"] == recalled["answer"] == "Monday"
+    assert recalled["history"] == []
+    assert recalled["facts"] == store.all() == [
+        {"key": "reminder_day", "value": "Monday", "session_id": "a"}]
+    assert "reminder day: Monday" in client.messages[1][-1]["content"]
+    assert "reminder day: Monday" in client.messages[2][-1]["content"]
+    assert store.writes == 2
 
 
 @pytest.mark.parametrize("statement", [
