@@ -38,7 +38,7 @@ def _final_text(content):
 
 
 def run_agent(question: str, *, model: str, client, registry, tool_names: list[str],
-              max_steps: int = 6, prepare_early_final=None, accept_early_final=None) -> dict:
+              max_steps: int = 6, prepare_early_final=None, accept_early_final=None, require_tool=None) -> dict:
     """Run baseline (one request) or an agent with a reserved final-answer step.
 
     ``steps`` counts attempted LLM requests, excluding a local budget rejection.
@@ -49,6 +49,7 @@ def run_agent(question: str, *, model: str, client, registry, tool_names: list[s
     one early request without tools. After an inconclusive response, the agent
     resumes from the original history. ``accept_early_final(final, events)``
     can check the candidate answer before the agent returns it.
+    ``require_tool(events)`` may name the required tool during a retrieval step.
     """
     if not isinstance(max_steps, int) or isinstance(max_steps, bool) or max_steps < 1:
         raise ValueError("max_steps must be a positive integer")
@@ -83,15 +84,19 @@ def run_agent(question: str, *, model: str, client, registry, tool_names: list[s
             early_messages = prepare_early_final(deepcopy(messages), events)
         early_final = early_messages is not None
         request_tools = None if finalize or early_final else schemas
+        required_tool = require_tool(events) if request_tools and require_tool is not None else None
         call_started = time.perf_counter()
         spent_before_call = client.spent_usd
         event = {"type": "llm", "step": slot, "tools_enabled": bool(request_tools)}
         if early_final:
             early_final_tried = True
             event["early_final"] = True
+        request = {"model": model, "messages": early_messages if early_final else messages, "tools": request_tools}
+        if required_tool is not None:
+            event["required_tool"] = required_tool
+            request["tool_choice"] = {"type": "function", "function": {"name": required_tool}}
         try:
-            response = client.complete(model=model, messages=early_messages if early_final else messages,
-                                       tools=request_tools)
+            response = client.complete(**request)
             steps += 1
             event.update({key: response[key] for key in
                           ("cost_usd", "prompt_tokens", "completion_tokens", "request_id")})
@@ -139,6 +144,9 @@ def run_agent(question: str, *, model: str, client, registry, tool_names: list[s
             final = _final_text(message.get("content"))
             break
         if not calls:
+            if required_tool is not None:
+                messages.extend([message, {"role": "user", "content": f"Call {required_tool} before answering."}])
+                continue
             final = _final_text(message.get("content"))
             status = force_reason or ("ok" if message.get("content") else "empty_response")
             break
@@ -157,6 +165,9 @@ def run_agent(question: str, *, model: str, client, registry, tool_names: list[s
         for index, item in enumerate(calls):
             tool_started = time.perf_counter()
             name = item["function"].get("name", "")
+            expected_tool = required_tool
+            if expected_tool is None and require_tool is not None:
+                expected_tool = require_tool(events)
             raw_arguments = item["function"].get("arguments", "")
             arguments = None
             try:
@@ -173,6 +184,8 @@ def run_agent(question: str, *, model: str, client, registry, tool_names: list[s
                     force_reason = force_reason or "tool_limit"
                 elif name not in allowed or item.get("type", "function") != "function":
                     output = _tool_error("tool_not_allowed")
+                elif expected_tool is not None and name != expected_tool:
+                    output = json.dumps({"error": "tool_required", "required_tool": expected_tool})
                 elif signature in seen:
                     output = _tool_error("repeated_tool_call")
                     force_reason = force_reason or "repeated_tool_call"
