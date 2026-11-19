@@ -263,6 +263,135 @@ def test_explicit_distance_preference_is_saved_before_answer_and_recalled(statem
 
 
 @pytest.mark.parametrize("statement", [
+    "My project is Atlas. I no longer work on Orion.",
+    "I no longer work on Orion.",
+    "My project is Orion. My project is Atlas.",
+    "My colleague's project is Orion.",
+    "My project is not Orion.",
+    "I might call my project Orion.",
+    "My project is Orion. I no longer work on Orion.",
+    "My project is Orion. My project is not Orion.",
+    "My project is Orion. I don't call my project Orion anymore.",
+    "My project is Orion. I no longer work on ORION.",
+    "My project is Orion Research.",
+])
+def test_rejected_or_superseded_project_does_not_overwrite_saved_name(statement):
+    store = MutableStore()
+    store.upsert("previous", [{"key": "project_name", "value": "Atlas"}])
+    stale_extraction = {"reminder_day": "", "distance_unit": "", "project_name": "Orion"}
+    client = Client([{"content": json.dumps(stale_extraction)}, {"content": "FINAL: Orion"}])
+    session = memory_session(store, client)
+
+    with pytest.raises(FactExtractionError):
+        session.ask(statement)
+
+    assert store.writes == len(client.messages) == 1
+    assert store.all() == [{"key": "project_name", "value": "Atlas", "session_id": "previous"}]
+    summary = session.finish()
+    assert summary["memory_updates"][0]["status"] == "invalid_extraction"
+    assert summary["extraction_receipts"][0]["request_id"] == "1"
+    assert summary["extracted"] == []
+
+
+@pytest.mark.parametrize(("statement", "name", "evidence"), [
+    ("My project is Orion.", "Orion", "My project is Orion."),
+    ("I named my project Orion.", "Orion", "I named my project Orion."),
+    ("Our project is now called Orion.", "Orion", "Our project is now called Orion."),
+    ("I renamed my project to Orion.", "Orion", "I renamed my project to Orion."),
+    ("My project is Orion Research.", "Orion Research", "My project is Orion Research."),
+    ('My project is "Orion Research".', "Orion Research", 'My project is "Orion Research".'),
+    ("My project is May.", "May", "My project is May."),
+    ("My project is No Limits.", "No Limits", "My project is No Limits."),
+    ("My project is Atlas. I no longer work on Orion.", "Atlas", "My project is Atlas."),
+    ("I no longer work on Orion. My project is Orion Research.",
+     "Orion Research", "My project is Orion Research."),
+    ("My project is Orion. My project is not Orion Research.", "Orion", "My project is Orion."),
+    ("My project is Orion. I no longer work on Orion Research.", "Orion", "My project is Orion."),
+])
+def test_explicit_project_name_is_saved_before_answer_and_recalled(statement, name, evidence):
+    store = MutableStore()
+    store.upsert("previous", [{"key": "project_name", "value": "Atlas"}])
+    extraction = {"reminder_day": "", "distance_unit": "", "project_name": name}
+    client = Client([{"content": json.dumps(extraction)}, {"content": f"FINAL: {name}"},
+                     {"content": f"FINAL: {name}"}])
+    session = memory_session(store, client, window_pairs=0)
+
+    result = session.ask(statement)
+    recalled = session.ask("What is my project called?")
+
+    assert result["memory_update"]["status"] == "persisted"
+    assert result["memory_update"]["extracted"] == [
+        {"key": "project_name", "value": name, "evidence": evidence}]
+    assert result["answer"] == recalled["answer"] == name
+    assert recalled["history"] == []
+    assert recalled["facts"] == store.all() == [
+        {"key": "project_name", "value": name, "session_id": "a"}]
+    assert f"project name: {name}" in client.messages[1][-1]["content"]
+    assert f"project name: {name}" in client.messages[2][-1]["content"]
+    assert store.writes == 2
+
+
+def test_all_three_explicit_memory_fields_are_persisted_in_one_update():
+    store = MutableStore()
+    store.upsert("previous", [
+        {"key": "reminder_day", "value": "Tuesday"},
+        {"key": "distance_unit", "value": "kilometers"},
+        {"key": "project_name", "value": "Atlas"},
+    ])
+    extraction = {"reminder_day": "Friday", "distance_unit": "miles", "project_name": "Orion"}
+    client = Client([{"content": json.dumps(extraction)}, {"content": "FINAL: Friday"}])
+    session = memory_session(store, client)
+
+    result = session.ask("I prefer Friday for reminders. I use miles for distances. My project is Orion.")
+
+    assert result["memory_update"]["status"] == "persisted"
+    assert result["memory_update"]["extracted"] == [
+        {"key": "reminder_day", "value": "Friday", "evidence": "I prefer Friday for reminders."},
+        {"key": "distance_unit", "value": "miles", "evidence": "I use miles for distances."},
+        {"key": "project_name", "value": "Orion", "evidence": "My project is Orion."},
+    ]
+    assert store.all() == [
+        {"key": "reminder_day", "value": "Friday", "session_id": "a"},
+        {"key": "distance_unit", "value": "miles", "session_id": "a"},
+        {"key": "project_name", "value": "Orion", "session_id": "a"},
+    ]
+    assert store.writes == 2
+    assert all(f"{fact['key'].replace('_', ' ')}: {fact['value']}" in client.messages[1][-1]["content"]
+               for fact in result["facts"])
+
+
+@pytest.mark.parametrize(("key", "stale_value"), [
+    ("reminder_day", "Tuesday"),
+    ("distance_unit", "kilometers"),
+    ("project_name", "Atlas"),
+])
+def test_invalid_memory_field_prevents_partial_update_of_all_three_fields(key, stale_value):
+    store = MutableStore()
+    store.upsert("previous", [
+        {"key": "reminder_day", "value": "Tuesday"},
+        {"key": "distance_unit", "value": "kilometers"},
+        {"key": "project_name", "value": "Atlas"},
+    ])
+    saved = store.all()
+    extraction = {"reminder_day": "Friday", "distance_unit": "miles", "project_name": "Orion"}
+    extraction[key] = stale_value
+    client = Client([{"content": json.dumps(extraction)}, {"content": "FINAL: Friday"}])
+    session = memory_session(store, client)
+
+    with pytest.raises(FactExtractionError):
+        session.ask("I no longer prefer Tuesday for reminders; use Friday now. "
+                    "I no longer use kilometers. I now measure distances in miles. "
+                    "I no longer work on Atlas. My project is Orion.")
+
+    assert store.all() == saved
+    assert store.writes == len(client.messages) == 1
+    summary = session.finish()
+    assert summary["memory_updates"][0]["status"] == "invalid_extraction"
+    assert summary["extraction_receipts"][0]["request_id"] == "1"
+    assert summary["extracted"] == []
+
+
+@pytest.mark.parametrize("statement", [
     "I moved reminders to Friday.",
     "I moved reminders from Monday to Friday.",
     "I no longer prefer Monday for reminders; use Friday now.",

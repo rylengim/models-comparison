@@ -199,6 +199,8 @@ hw2/.venv/bin/python -m hw2.run_benchmark
 
 Для `distance_unit` поддерживаются явные формы `I use miles for distances`, `I prefer kilometers for distances` и `I measure distances in nautical miles`, включая `now`. Более позднее назначение имеет приоритет. Если экстрактор возвращает отвергнутую или заменённую единицу, запись отклоняется до обновления памяти.
 
+Для `project_name` проверяется явное название собственного проекта, например `My project is Orion`, `Our project is now called Orion`, `I named my project Orion` или `I renamed my project to Orion`. Поддерживаются названия из нескольких слов и прямые кавычки. Более позднее название заменяет прежнее. Отказ в формах `My project is not Orion`, `I no longer work on Orion` и `I don't call my project Orion` снимает подтверждение того же полного названия. Гипотеза и упоминание чужого проекта не подтверждают запись. На моках проверяются отказ от Orion при сохранённом Atlas, явное переименование, сохранение и повторное чтение всех трёх полей памяти. Невалидное поле отклоняет всё обновление до записи.
+
 ```bash
 hw2/.venv/bin/python -m hw2.demo_memory
 hw2/.venv/bin/python -m hw2.demo_memory --out hw2/results/memory/openrouter

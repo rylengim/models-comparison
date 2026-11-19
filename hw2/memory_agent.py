@@ -67,6 +67,30 @@ _DISTANCE_ASSIGNMENT = re.compile(
     """,
     re.IGNORECASE | re.VERBOSE,
 )
+_PROJECT_ASSIGNMENT = re.compile(
+    r"""
+    \s*(?:
+        (?:my|our)\s+project(?:['’]s\s+name|\s+name)?\s+is
+        (?:\s+now)?(?:\s+(?:called|named))?
+        |(?:I|we)\s+(?:now\s+)?(?:
+            (?:call|named)\s+(?:my|our)\s+project
+            |renamed\s+(?:my|our)\s+project(?:\s+to)?
+        )
+    )
+    \s+(?P<denial>not\s+|no\s+longer\s+)?
+    (?P<quote>["']?)(?P<name>.+?)(?P=quote)\s*[.!]?\s*
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+_PROJECT_REJECTION = re.compile(
+    r"""
+    \s*(?:I|we)\s+(?:no\s+longer|do\s+not|don['’]t|never)\s+
+    (?:work\s+on|call\s+(?:my|our)\s+project)\s+
+    (?P<quote>["']?)(?P<name>.+?)(?P=quote)
+    (?:\s+(?:anymore|any\s+longer))?\s*[.!]?\s*
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
 
 
 def usage(record):
@@ -170,6 +194,23 @@ def _distance_evidence(value, statements):
     return evidence
 
 
+def _project_evidence(value, statements):
+    """Accept only the latest explicit name of the user's own project."""
+    requested = " ".join(value.split()).casefold()
+    evidence = None
+    for statement in statements:
+        for clause in _CLAUSE_BREAK.split(statement):
+            assignment = _PROJECT_ASSIGNMENT.fullmatch(clause)
+            if assignment is not None and not assignment["denial"]:
+                # Words such as "May" or "No Limits" can be part of a name.
+                evidence = statement if assignment["name"] == value else None
+            else:
+                rejection = assignment or _PROJECT_REJECTION.fullmatch(clause)
+                if rejection is not None and " ".join(rejection["name"].split()).casefold() == requested:
+                    evidence = None
+    return evidence
+
+
 def _validate_extraction(response, statements):
     if response.get("finish_reason") != "stop":
         raise ValueError("Извлечение фактов не завершено.")
@@ -187,8 +228,7 @@ def _validate_extraction(response, statements):
         elif key == "distance_unit":
             evidence = _distance_evidence(value, statements)
         else:
-            pattern = re.compile(r"(?<!\w)" + re.escape(value) + r"(?!\w)")
-            evidence = next((s for s in reversed(statements) if pattern.search(s)), None)
+            evidence = _project_evidence(value, statements)
         if not value.strip() or evidence is None:
             raise ValueError("Факт должен ссылаться на точные слова пользователя.")
         facts.append({"key": key, "value": value, "evidence": evidence})
