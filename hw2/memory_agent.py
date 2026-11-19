@@ -22,6 +22,28 @@ EXTRACT_RULES = ('Read these user statements. Copy the most recent explicit valu
 FACT_KEYS = ("reminder_day", "distance_unit", "project_name")
 USAGE_FIELDS = ("prompt_tokens", "completion_tokens", "cost_usd")
 MEMORY_POLICY = "update_before_answer_v2"
+_WEEKDAY_NAMES = "Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday"
+_WEEKDAY = re.compile(rf"\b(?:{_WEEKDAY_NAMES})\b", re.IGNORECASE)
+_REMINDER_TOPIC = re.compile(r"\bremind(?:ers?|ed|ing|s)?\b", re.IGNORECASE)
+_REMINDER_ASSERTION = re.compile(
+    r"\b(?:prefer|want|need|like|choose|use|set|move[d]?|switch(?:ed)?|change[d]?|(?:re)?schedule[d]?)\b"
+    r"|\bremind me\b|\bmy reminders?(?: day)?\s+(?:is|are|should|will)\b",
+    re.IGNORECASE,
+)
+_REMINDER_CONTINUATION = re.compile(
+    r"\s*(?:(?:please\s+)?(?:use|switch to|make it)|(?:I|we)\s+"
+    r"(?:(?:now|no longer|do not|don['’]t)\s+)?(?:prefer|want|choose)|not)"
+    rf"\s+(?:{_WEEKDAY_NAMES})"
+    r"(?:\s+(?:now|instead|from now on|anymore|any longer))?[.!]?\s*",
+    re.IGNORECASE,
+)
+_CLAUSE_BREAK = re.compile(r"[;\n]|\bbut\b|\band\s+(?=(?:I|we|my|our)\b)|,\s*(?=(?:not|I|we|my|our)\b)",
+                           re.IGNORECASE)
+_REJECTED = re.compile(
+    r"\b(?:no|not|never|used to|instead of|except|other than|off|cancel(?:l?ed|l?ing)?|stop|remove|may|might|could|maybe)\b|n['’]t\b",
+    re.IGNORECASE,
+)
+_DAY_CHANGE = re.compile(rf"\bfrom (?:{_WEEKDAY_NAMES})\b(?: to ({_WEEKDAY_NAMES})\b)?", re.IGNORECASE)
 
 
 def usage(record):
@@ -87,6 +109,29 @@ def extract_facts(utterances, client, model):
         raise FactExtractionError(str(error), receipt) from error
 
 
+def _reminder_evidence(value, statements):
+    """Find the latest unambiguous reminder day in the English demo contract."""
+    for statement in reversed(statements):
+        if not _REMINDER_TOPIC.search(statement):
+            continue
+        for clause in reversed(_CLAUSE_BREAK.split(statement)):
+            if not (_REMINDER_TOPIC.search(clause) or _REMINDER_CONTINUATION.fullmatch(clause)):
+                continue
+            days = _WEEKDAY.findall(clause)
+            if not days:
+                continue
+            if _REJECTED.search(clause):
+                if any(day.casefold() == value.casefold() for day in days):
+                    return None
+                continue
+            if _REMINDER_ASSERTION.search(clause):
+                change = _DAY_CHANGE.search(clause)
+                if change:
+                    return statement if len(days) == 2 and change[1] == value else None
+                return statement if days == [value] else None
+    return None
+
+
 def _validate_extraction(response, statements):
     if response.get("finish_reason") != "stop":
         raise ValueError("Извлечение фактов не завершено.")
@@ -99,8 +144,11 @@ def _validate_extraction(response, statements):
             raise ValueError("Неверное значение извлечённого факта.")
         if value == "":
             continue
-        pattern = re.compile(r"(?<!\w)" + re.escape(value) + r"(?!\w)")
-        evidence = next((s for s in reversed(statements) if pattern.search(s)), None)
+        if key == "reminder_day":
+            evidence = _reminder_evidence(value, statements)
+        else:
+            pattern = re.compile(r"(?<!\w)" + re.escape(value) + r"(?!\w)")
+            evidence = next((s for s in reversed(statements) if pattern.search(s)), None)
         if not value.strip() or evidence is None:
             raise ValueError("Факт должен ссылаться на точные слова пользователя.")
         facts.append({"key": key, "value": value, "evidence": evidence})

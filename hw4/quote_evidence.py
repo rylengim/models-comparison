@@ -112,11 +112,13 @@ def _llm_content(event):
     return content if isinstance(content, str) else ""
 
 
-def supported_verdict(event):
-    return (event.get("finish_reason") == "stop"
-            and _llm_content(event).strip() == "SUPPORTED"
+def evidence_verdict(event):
+    verdict = _llm_content(event).strip()
+    if (verdict in {"SUPPORTED", "UNSUPPORTED"} and event.get("finish_reason") == "stop"
             and event["message"].get("role") == "assistant"
-            and not event["message"].get("tool_calls"))
+            and not event["message"].get("tool_calls")):
+        return verdict
+    return None
 
 
 def quote_id_evidence_matches_trace(trace):
@@ -132,7 +134,7 @@ def quote_id_evidence_matches_trace(trace):
 
     candidate, judge = events[-2:]
     if (judge.get("evidence_check") is not True or judge.get("evidence_supported") is not True
-            or judge.get("tools_enabled") is not False or not supported_verdict(judge)):
+            or judge.get("tools_enabled") is not False or evidence_verdict(judge) != "SUPPORTED"):
         return False
 
     content = _llm_content(candidate)

@@ -5,7 +5,7 @@ import pytest
 
 from freshqa.tools import ToolRegistry
 from freshqa.client import BudgetExceeded
-from hw2.memory_agent import EXTRACT_RULES, MemorySession, extract_facts
+from hw2.memory_agent import EXTRACT_RULES, FactExtractionError, MemorySession, extract_facts
 
 
 @pytest.fixture(autouse=True)
@@ -141,6 +141,55 @@ def test_correction_is_saved_before_answer_and_survives_window_eviction():
     assert "Friday" not in str(recalled["history"])
     assert recalled["answer"] == "Friday"
     assert client.extractions == 2
+    assert store.all() == [{"key": "reminder_day", "value": "Friday", "session_id": "a"}]
+
+
+@pytest.mark.parametrize("statement", [
+    "I no longer prefer Monday for reminders; use Tuesday now.",
+    "I prefer reminders on Tuesday, not Monday.",
+    "I moved reminders from Monday to Friday.",
+    "I moved reminders off Monday.",
+    "I want to cancel my Monday reminders.",
+    "I might move reminders to Monday.",
+    "I held a Monday meeting about a book.",
+    "I no longer want Friday reminders; I want a Monday meeting.",
+    "I want reminders on any weekday except Monday.",
+    "I prefer any day other than Monday for reminders.",
+    "I prefer Monday for reminders, but I don't want Monday anymore.",
+])
+def test_unsupported_reminder_day_does_not_overwrite_saved_preference(statement):
+    store = MutableStore()
+    store.upsert("previous", [{"key": "reminder_day", "value": "Tuesday"}])
+    stale_extraction = {"reminder_day": "Monday", "distance_unit": "", "project_name": ""}
+    client = Client([{"content": json.dumps(stale_extraction)}, {"content": "FINAL: Monday"}])
+    session = memory_session(store, client)
+
+    with pytest.raises(FactExtractionError):
+        session.ask(statement)
+
+    assert store.writes == len(client.messages) == 1
+    assert store.all() == [{"key": "reminder_day", "value": "Tuesday", "session_id": "previous"}]
+    summary = session.finish()
+    assert summary["memory_updates"][0]["status"] == "invalid_extraction"
+    assert summary["extracted"] == []
+
+
+@pytest.mark.parametrize("statement", [
+    "I moved reminders to Friday.",
+    "I moved reminders from Monday to Friday.",
+    "I no longer prefer Monday for reminders; use Friday now.",
+    "I don't want reminders on Monday anymore, I prefer Friday.",
+])
+def test_explicit_reschedule_updates_saved_preference(statement):
+    store = MutableStore()
+    store.upsert("previous", [{"key": "reminder_day", "value": "Tuesday"}])
+    session = memory_session(store, PreferenceClient())
+
+    result = session.ask(statement)
+
+    assert result["memory_update"]["status"] == "persisted"
+    assert result["facts"][0]["value"] == result["answer"] == "Friday"
+    assert store.writes == 2
     assert store.all() == [{"key": "reminder_day", "value": "Friday", "session_id": "a"}]
 
 

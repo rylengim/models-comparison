@@ -4,6 +4,7 @@ import json
 import re
 import time
 from copy import deepcopy
+from dataclasses import dataclass
 
 from .client import BudgetExceeded, CostUnknownError, OpenRouterError
 
@@ -37,6 +38,21 @@ def _final_text(content):
     return re.split(r"\bFINAL\s*:", content, flags=re.IGNORECASE)[-1].strip() or "unknown"
 
 
+@dataclass(frozen=True)
+class EarlyFinalDecision:
+    accepted: bool
+    additional_steps: int = 0
+    stop_status: str | None = None
+    retry_message: str | None = None
+
+
+@dataclass(frozen=True)
+class ToolRequirement:
+    name: str
+    argument: str
+    allowed_values: tuple[str, ...]
+
+
 def run_agent(question: str, *, model: str, client, registry, tool_names: list[str],
               max_steps: int = 6, prepare_early_final=None, accept_early_final=None, require_tool=None) -> dict:
     """Run baseline (one request) or an agent with a reserved final-answer step.
@@ -48,8 +64,10 @@ def run_agent(question: str, *, model: str, client, registry, tool_names: list[s
     ``prepare_early_final(messages, events)`` may supply an isolated prompt for
     one early request without tools. After an inconclusive response, the agent
     resumes from the original history. ``accept_early_final(final, events)``
-    can check the candidate answer before the agent returns it.
-    ``require_tool(events)`` may name the required tool during a retrieval step.
+    can return a boolean or an EarlyFinalDecision with additional requests
+    to count, a reason to stop, or a message for resumed retrieval.
+    ``require_tool(events)`` may name the required tool or restrict an argument
+    with a ToolRequirement during a retrieval step.
     """
     if not isinstance(max_steps, int) or isinstance(max_steps, bool) or max_steps < 1:
         raise ValueError("max_steps must be a positive integer")
@@ -72,7 +90,8 @@ def run_agent(question: str, *, model: str, client, registry, tool_names: list[s
     force_reason = None
     early_final_tried = False
 
-    for slot in range(1, (max_steps if names else 1) + 1):
+    while steps < (max_steps if names else 1):
+        slot = steps + 1
         finalize = bool(names) and (force_reason is not None or slot == max_steps)
         if finalize:
             force_reason = force_reason or "max_steps"
@@ -84,7 +103,8 @@ def run_agent(question: str, *, model: str, client, registry, tool_names: list[s
             early_messages = prepare_early_final(deepcopy(messages), events)
         early_final = early_messages is not None
         request_tools = None if finalize or early_final else schemas
-        required_tool = require_tool(events) if request_tools and require_tool is not None else None
+        requirement = require_tool(events) if request_tools and require_tool is not None else None
+        required_tool = requirement.name if isinstance(requirement, ToolRequirement) else requirement
         call_started = time.perf_counter()
         spent_before_call = client.spent_usd
         event = {"type": "llm", "step": slot, "tools_enabled": bool(request_tools)}
@@ -132,8 +152,20 @@ def run_agent(question: str, *, model: str, client, registry, tool_names: list[s
             candidate = _final_text(content)
             accepted = (not calls and response.get("finish_reason") != "length"
                         and isinstance(content, str) and re.match(r"\s*FINAL\s*:", content, re.IGNORECASE)
-                        and candidate.splitlines()[0].strip().casefold() != "unknown"
-                        and (accept_early_final is None or accept_early_final(candidate, events)))
+                        and candidate.splitlines()[0].strip().casefold() != "unknown")
+            if accepted and accept_early_final is not None:
+                decision = accept_early_final(candidate, events)
+                if isinstance(decision, EarlyFinalDecision):
+                    steps += decision.additional_steps
+                    accepted = decision.accepted
+                    if decision.stop_status is not None:
+                        event["early_final_accepted"] = False
+                        status = decision.stop_status
+                        break
+                    if decision.retry_message is not None:
+                        messages.append({"role": "user", "content": decision.retry_message})
+                else:
+                    accepted = decision
             event["early_final_accepted"] = bool(accepted)
             if accepted:
                 final = candidate
@@ -165,9 +197,10 @@ def run_agent(question: str, *, model: str, client, registry, tool_names: list[s
         for index, item in enumerate(calls):
             tool_started = time.perf_counter()
             name = item["function"].get("name", "")
-            expected_tool = required_tool
-            if expected_tool is None and require_tool is not None:
-                expected_tool = require_tool(events)
+            expected = requirement
+            if expected is None and require_tool is not None:
+                expected = require_tool(events)
+            expected_tool = expected.name if isinstance(expected, ToolRequirement) else expected
             raw_arguments = item["function"].get("arguments", "")
             arguments = None
             try:
@@ -186,6 +219,8 @@ def run_agent(question: str, *, model: str, client, registry, tool_names: list[s
                     output = _tool_error("tool_not_allowed")
                 elif expected_tool is not None and name != expected_tool:
                     output = json.dumps({"error": "tool_required", "required_tool": expected_tool})
+                elif isinstance(expected, ToolRequirement) and arguments.get(expected.argument) not in expected.allowed_values:
+                    output = _tool_error("tool_argument_not_allowed")
                 elif signature in seen:
                     output = _tool_error("repeated_tool_call")
                     force_reason = force_reason or "repeated_tool_call"

@@ -345,30 +345,38 @@ def test_openrouter_requires_page_find_for_fresh_136(tmp_path, first_read_respon
         assert json.loads(rejected["output"])["required_tool"] == "page_find"
 
 
-def test_openrouter_reads_second_candidate_after_early_unknown(tmp_path):
-    question = "What speed did ESO report for the star S301?"
-    source = "https://www.eso.org/public/news/eso2612/"
-    first_url = "https://www.eso.org/public/news/eso2607/"
-    quote = "reaches speeds of 25 000 km/s"
-    search = {"query": "ESO fast-moving objects"}
+@pytest.mark.parametrize(("early_verdict", "repeat_first_url"), [
+    (None, False), ("UNSUPPORTED", False), ("UNSUPPORTED", True),
+], ids=["unknown", "unsupported", "reject-reread"])
+def test_openrouter_reads_second_candidate_after_rejected_early_final(tmp_path, early_verdict, repeat_first_url):
+    from hw4.mcp_benchmark_report import evaluate_case
+
+    data = Path(__file__).resolve().parents[1] / "hw4" / "data"
+    with (data / "questions.jsonl").open(encoding="utf-8") as stream:
+        row = next(item for line in stream if (item := json.loads(line))["id"] == "fresh-136")
+    question, source, quote = row["question"], row["url"], row["evidence"]
+    first_url = "https://www.esa.int/articles/about-us/directorates/science/euclid/euclid-discovers-new-comet"
+    search = {"query": "ESO S301 discovery announcement 19 August 2026"}
     first_read = {"url": first_url, "keywords": ["speed"]}
-    second_read = {"url": source, "keywords": ["S301"]}
-    search_result = {"results": [
-        {"url": first_url, "title": "Motion in a distant star cluster", "snippet": "Unrelated observations. " * 15},
-        {"url": source, "title": "The Milky Way's fastest star", "snippet": "An ESO observation of S301. " * 15},
-    ]}
-    pages = {
-        first_url: {"url": first_url, "found": True, "excerpts": ["> The team measured the speed of several galaxies."]},
-        source: {"url": source, "found": True, "excerpts": [f"> The star, named S301,\n> {quote}"]},
-    }
+    second_read = {"url": source, "keywords": ["S301", "speed"]}
+    resume_step = 5 if early_verdict else 4
     calls, bodies, resumed_hits = [], [], []
+    outputs = []
     early_unknown = {"role": "assistant", "content": "FINAL: unknown"}
+    early_reply = early_unknown
+    first_block = None
 
     def execute(name, arguments):
         calls.append((name, arguments))
-        return search_result if name == "web_search" else pages[arguments["url"]]
+        output = json.loads(snapshot.run(name, arguments))
+        if name == "web_search":
+            output["results"] = output["results"][:2]
+            assert [hit["url"] for hit in output["results"]] == [first_url, source]
+        outputs.append(output)
+        return output
 
     def handle(request):
+        nonlocal early_reply, first_block
         body = json.loads(request.content)
         bodies.append(body)
         step = len(bodies)
@@ -378,39 +386,74 @@ def test_openrouter_reads_second_candidate_after_early_unknown(tmp_path):
             reply = assistant_tool_call("page_find", first_read)
         elif step == 3:
             assert "tools" not in body
-            assert shown_excerpts(body)[0]["text"] == pages[first_url]["excerpts"][0].removeprefix("> ")
-            reply = early_unknown
-        elif step == 4:
-            assert body["tool_choice"] == "auto" and early_unknown not in body["messages"]
+            blocks = shown_excerpts(body)
+            assert all(quote != block["text"] for block in blocks)
+            first_block = blocks[0]
+            if early_verdict:
+                early_reply = sourced_final(row["answer"], first_block["id"])
+            reply = early_reply
+        elif step == 4 and early_verdict:
+            assert "tools" not in body
+            payload = json.loads(body["messages"][-1]["content"])
+            assert payload["quote"] == first_block["text"]
+            reply = {"role": "assistant", "content": early_verdict}
+        elif step == resume_step:
+            expected_choice = {"type": "function", "function": {"name": "page_find"}} if early_verdict else "auto"
+            assert body["tool_choice"] == expected_choice and early_reply not in body["messages"]
+            if early_verdict:
+                assert source in body["messages"][-1]["content"]
             preview = next(message for message in body["messages"] if message.get("tool_call_id") == "call-web_search")
             compacted = json.loads(preview["content"])
             assert compacted["compacted"] is True
             resumed_hits.extend(compacted["results"])
             if any(hit["url"] == source for hit in resumed_hits):
-                reply = assistant_tool_call("page_find", second_read)
+                arguments = {"url": first_url, "keywords": ["different query"]} if repeat_first_url else second_read
+                reply = assistant_tool_call("page_find", arguments)
                 reply["tool_calls"][0]["id"] = "call-page-find-second"
             else:
                 reply = early_unknown
-        elif step == 5:
-            reply = sourced_final("25 000 km/s", select_block(body, quote))
+        elif step == resume_step + 1:
+            if early_verdict:
+                assert "tools" not in body
+            reading = next(message for message in body["messages"]
+                           if message.get("tool_call_id") == "call-page-find-second")
+            if repeat_first_url:
+                assert json.loads(reading["content"])["error"] == "tool_argument_not_allowed"
+                reply = early_unknown
+            else:
+                reply = sourced_final(row["answer"], select_block({"messages": [reading]}, quote))
         else:
-            assert step == 6 and "tools" not in body
+            assert step == resume_step + 2 and "tools" not in body
             assert json.loads(body["messages"][-1]["content"])["quote"] == quote
             reply = SUPPORTED
         return completion(step, reply, 1000, 30, 0, 0, 0.0003)
 
-    registry = SimpleNamespace(schemas=PublicationTools().schemas, run=execute)
-    trace = ask(question, registry, tmp_path / "receipts.jsonl", handle, budget="0.06", model="openai/gpt-4o-mini")
+    with closing(SnapshotRegistry(corpus_path=data / "corpus.jsonl", allow_wikipedia_aliases=False)) as snapshot:
+        registry = SimpleNamespace(schemas=snapshot.schemas, run=execute)
+        trace = ask(question, registry, tmp_path / "receipts.jsonl", handle, budget="0.06", model="openai/gpt-4o-mini")
 
     assert [hit["url"] for hit in resumed_hits] == [first_url, source]
+    if repeat_first_url:
+        assert calls == [("web_search", search), ("page_find", first_read)]
+        assert trace["final"] == "unknown" and trace["source_url"] is None
+        assert trace["model_calls"] == trace["steps"] == 6
+        return
     assert calls == [("web_search", search), ("page_find", first_read), ("page_find", second_read)]
     tool_outputs = [json.loads(event["output"]) for event in trace["events"] if event["type"] == "tool"]
-    assert tool_outputs == [search_result, pages[first_url], pages[source]]
-    assert (trace["status"], trace["final"], trace["quote"], trace["source_url"]) == ("ok", "25 000 km/s", quote, source)
+    assert tool_outputs == outputs
+    assert (trace["status"], trace["final"], trace["quote"], trace["source_url"]) == ("ok", row["answer"], quote, source)
     early_attempt, = [event for event in trace["events"] if event.get("early_final")]
     assert early_attempt["early_final_accepted"] is False
-    assert trace["model_calls"] == len(bodies) == 6
-    assert trace["events"][-1]["evidence_supported"] is True
+    assert trace["steps"] == trace["model_calls"] == len(bodies) == resume_step + 2
+    assert [event["step"] for event in trace["events"] if event["type"] == "llm"] == list(range(1, len(bodies) + 1))
+    checks = [event for event in trace["events"] if event.get("evidence_check")]
+    assert [event["message"]["content"] for event in checks] == ([early_verdict] if early_verdict else []) + ["SUPPORTED"]
+    assert all(event["tools_enabled"] is False for event in checks)
+    assert trace["cost_usd"] == pytest.approx(len(bodies) * 0.0003)
+    assert trace["cost_usd"] < trace["question_budget_usd"] == 0.06
+    assert len((tmp_path / "receipts.jsonl").read_text(encoding="utf-8").splitlines()) == len(bodies)
+    result = evaluate_case(row, trace, returncode=0, duration_s=trace["elapsed_s"], model=trace["model"])
+    assert result["verified_correct"] is True
 
 
 @pytest.mark.parametrize("search_result", [
@@ -659,7 +702,13 @@ def test_openrouter_checks_whether_quote_answers_the_question(
 
     with closing(SnapshotRegistry(corpus_path=data / "corpus.jsonl", allow_wikipedia_aliases=False)) as snapshot:
         async def with_snapshot(operation):
-            return operation(snapshot)
+            def execute(name, arguments):
+                output = json.loads(snapshot.run(name, arguments))
+                if name == "web_search":
+                    output["results"] = [hit for hit in output["results"] if hit["url"] == source]
+                return output
+
+            return operation(SimpleNamespace(schemas=snapshot.schemas, run=execute))
 
         monkeypatch.setenv("OPENROUTER_API_KEY", KEY)
         monkeypatch.setattr(mcp_openrouter, "with_publication_tools", with_snapshot)

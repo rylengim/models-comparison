@@ -10,7 +10,7 @@ from time import perf_counter
 from uuid import uuid4
 from zoneinfo import ZoneInfo
 
-from freshqa.agent import run_agent
+from freshqa.agent import EarlyFinalDecision, ToolRequirement, run_agent
 from freshqa.client import BudgetExceeded, CostUnknownError, OpenRouterError
 from hw3.client import LedgerInUseError, MeteredClient
 
@@ -18,8 +18,8 @@ from .context import compact_search_results
 from .mcp_client import REPO, TOOL_NAMES, with_publication_tools
 from .prompt_cache import mark_system_cache, prefix_sha256
 from .quote_evidence import (
-    QUOTE_ID_FORMAT, is_https_url, json_object, quote_blocks, recent_evidence,
-    resolve_final_quote, resolve_quote, supported_verdict,
+    QUOTE_ID_FORMAT, evidence_verdict, is_https_url, json_object, quote_blocks,
+    recent_evidence, resolve_final_quote, resolve_quote,
 )
 from .spending import MOSCOW, as_usd, limit_micros
 
@@ -132,20 +132,42 @@ def _present_tool_reads(messages):
     return view
 
 
+def _search_urls(result):
+    hits = result.get("results")
+    if "error" in result or not isinstance(hits, list):
+        return []
+    return [hit["url"] for hit in hits if isinstance(hit, dict) and is_https_url(hit.get("url"))]
+
+
+def _unread_search_urls(events, source_url):
+    read_urls = set()
+    for event in reversed(events):
+        if event["type"] != "tool":
+            continue
+        if event["name"] == "page_find":
+            arguments = event.get("arguments")
+            if isinstance(arguments, dict) and is_https_url(arguments.get("url")):
+                read_urls.add(arguments["url"])
+        elif event["name"] == "web_search":
+            urls = _search_urls(json_object(event.get("output")))
+            if source_url in urls:
+                return [url for url in urls if url not in read_urls]
+    return []
+
+
 def _require_page_find(events):
     for event in reversed(events):
+        if unread := event.get("fallback_read_urls"):
+            return ToolRequirement("page_find", "url", tuple(unread))
         if event["type"] != "tool" or event["name"] not in TOOL_NAMES:
             continue
         result = json_object(event.get("output"))
-        if result.get("error") in ("tool_required", "invalid_arguments", "tool_not_allowed", "tool_limit"):
+        if result.get("error") in ("tool_required", "invalid_arguments", "tool_not_allowed", "tool_limit",
+                                   "tool_argument_not_allowed"):
             continue
         if event["name"] == "page_find":
             return None
-        results = result.get("results")
-        if ("error" not in result and isinstance(results, list)
-                and any(isinstance(hit, dict) and is_https_url(hit.get("url")) for hit in results)):
-            return "page_find"
-        return None
+        return "page_find" if _search_urls(result) else None
     return None
 
 
@@ -168,17 +190,35 @@ def _split_final(final):
     return (answer.strip(), url.strip()) if delimiter else (final.strip(), None)
 
 
-def _accept_early_final(final, events):
+def _accept_early_final(final, events, *, question, model, client):
     if SIMULATED_TOOL_MARKUP.search(events[-1]["message"]["content"]):
         return False
-    return resolve_quote(final, (recent_evidence(events),)) is not None
+    verified = resolve_quote(final, (recent_evidence(events),))
+    if verified is None:
+        return False
+    answer, quote, url, passage = verified
+    status, steps = _check_evidence(question, answer, quote, passage, events, model=model, client=client)
+    if status == "ok":
+        return EarlyFinalDecision(accepted=True, additional_steps=steps)
+
+    judge = events[-1]
+    # Leave a step for reading and a step for the reserved final answer.
+    if evidence_verdict(judge) == "UNSUPPORTED" and judge["step"] <= MAX_STEPS - 2:
+        unread_urls = _unread_search_urls(events, url)
+        if unread_urls:
+            judge["fallback_read_urls"] = unread_urls
+            return EarlyFinalDecision(
+                accepted=False, additional_steps=steps,
+                retry_message="The first passage did not support the answer. Call page_find on an unread URL "
+                              "from the previous search: " + ", ".join(unread_urls),
+            )
+    return EarlyFinalDecision(accepted=False, additional_steps=steps, stop_status=status)
 
 
-def _check_evidence(question, answer, quote, passage, result, *, model, client):
+def _check_evidence(question, answer, quote, passage, events, *, model, client):
     payload = {"question": question, "answer": answer, "quote": quote, "passage": passage}
     messages = [{"role": "system", "content": VERIFY_PROMPT},
                 {"role": "user", "content": json.dumps(payload, ensure_ascii=False)}]
-    events = result["events"]
     event = {"type": "llm", "step": events[-1]["step"] + 1, "tools_enabled": False,
              "evidence_check": True, "evidence_supported": False}
     started = perf_counter()
@@ -187,25 +227,22 @@ def _check_evidence(question, answer, quote, passage, result, *, model, client):
         response = client.complete(model=model, messages=messages, evidence_check=True)
         event.update({key: response[key] for key in
                       ("message", "finish_reason", "request_id", "cost_usd", "prompt_tokens", "completion_tokens")})
-        event["evidence_supported"] = supported_verdict(event)
-        if not event["evidence_supported"] and result["status"] == "ok":
-            result["status"] = "unsupported_answer"
+        event["evidence_supported"] = evidence_verdict(event) == "SUPPORTED"
+        status = "ok" if event["evidence_supported"] else "unsupported_answer"
     except BudgetExceeded as error:
-        result["status"] = "budget_exceeded"
+        status = "budget_exceeded"
         event.update(error=str(error), cost_usd=0.0)
     except CostUnknownError as error:
-        result["status"] = "cost_unknown"
+        status = "cost_unknown"
         event.update(error=str(error), cost_usd=None)
     except Exception as error:
-        result["status"] = "error"
+        status = "error"
         event.update(error=str(error) if isinstance(error, OpenRouterError) else "Evidence check failed",
                      cost_usd=client.spent_usd - spent_before)
     finally:
         event["elapsed_s"] = perf_counter() - started
-        result["elapsed_s"] += event["elapsed_s"]
-        result["steps"] += client.scope_calls - calls_before
         events.append(event)
-    return event["evidence_supported"]
+    return status, client.scope_calls - calls_before
 
 
 def _attach_verified_source(question, result, *, model, client):
@@ -213,17 +250,28 @@ def _attach_verified_source(question, result, *, model, client):
     result.update(final="unknown", quote=None, source_url=None)
     if candidate.casefold() == "unknown" or result["status"] == "output_truncated":
         return
-    verified = resolve_final_quote(candidate, result["events"])
+    events = result["events"]
+    checked_early = events[-1].get("evidence_check") is True
+    verified = resolve_final_quote(candidate, events[:-1] if checked_early else events)
     if verified is None:
         if result["status"] == "ok":
             result["status"] = "unverified_source"
         return
 
     answer, quote, url, passage = verified
-    if _check_evidence(question, answer, quote, passage, result, model=model, client=client):
-        result.update(final=answer, quote=quote, source_url=url)
-        if result["status"] == "max_steps":
-            result["status"] = "ok"
+    if not checked_early:
+        status, steps = _check_evidence(question, answer, quote, passage, events, model=model, client=client)
+        result["steps"] += steps
+        result["elapsed_s"] += events[-1]["elapsed_s"]
+        if status != "ok":
+            if status != "unsupported_answer" or result["status"] == "ok":
+                result["status"] = status
+            return
+    elif events[-1].get("evidence_supported") is not True:
+        return
+    result.update(final=answer, quote=quote, source_url=url)
+    if result["status"] == "max_steps":
+        result["status"] = "ok"
 
 
 def _usage_report(steps, model):
@@ -277,7 +325,8 @@ def _with_usage(result, *, model, client):
 def _run(question, registry, *, model, client):
     result = run_agent(question, model=model, client=client, registry=registry,
                        tool_names=TOOL_NAMES, max_steps=MAX_STEPS, prepare_early_final=_prepare_early_final,
-                       accept_early_final=_accept_early_final, require_tool=_require_page_find)
+                       accept_early_final=partial(_accept_early_final, question=question, model=model, client=client),
+                       require_tool=_require_page_find)
     _attach_verified_source(question, result, model=model, client=client)
     result["quote_format"] = QUOTE_ID_FORMAT
     return _with_usage(result, model=model, client=client)
