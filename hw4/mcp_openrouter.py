@@ -7,7 +7,6 @@ from datetime import datetime
 from functools import partial
 from math import fsum
 from time import perf_counter
-from urllib.parse import urlsplit
 from uuid import uuid4
 from zoneinfo import ZoneInfo
 
@@ -18,6 +17,10 @@ from hw3.client import LedgerInUseError, MeteredClient
 from .context import compact_search_results
 from .mcp_client import REPO, TOOL_NAMES, with_publication_tools
 from .prompt_cache import mark_system_cache, prefix_sha256
+from .quote_evidence import (
+    QUOTE_ID_FORMAT, is_https_url, json_object, quote_blocks, recent_evidence,
+    resolve_final_quote, resolve_quote, supported_verdict,
+)
 from .spending import MOSCOW, as_usd, limit_micros
 
 
@@ -52,7 +55,6 @@ VERIFY_PROMPT = (
 USAGE_FIELDS = ("prompt_tokens", "completion_tokens", "cached_tokens", "cache_write_tokens")
 RECEIPT_FIELDS = (*USAGE_FIELDS, "cost_usd", "request_id", "status_code")
 SIMULATED_TOOL_MARKUP = re.compile(r"</?\s*tool_(?:call|response)\b", re.IGNORECASE)
-QUOTE_BLOCK_BREAK = re.compile(r"\n[ \t\r]*\n|\n(?=[ \t]*>)")
 
 
 class _QuestionClient(MeteredClient):
@@ -112,28 +114,8 @@ def _open_client(*, api_key, model, budget_usd, ledger_path, transport, use_mcp=
     return client
 
 
-def _json_object(content):
-    try:
-        output = json.loads(content)
-    except (TypeError, ValueError, RecursionError):
-        return {}
-    return output if isinstance(output, dict) else {}
-
-
-def _quote_blocks(read, read_number):
-    block_number = 0
-    for excerpt in read["excerpts"]:
-        if not isinstance(excerpt, str):
-            continue
-        for part in QUOTE_BLOCK_BREAK.split(excerpt):
-            text = part.lstrip().removeprefix(">").strip()
-            if text:
-                block_number += 1
-                yield {"id": f"r{read_number}-b{block_number}", "text": text}, excerpt
-
-
 def _present_read(read, read_number):
-    return {**read, "excerpts": [block for block, _ in _quote_blocks(read, read_number)]}
+    return {**read, "excerpts": [block for block, _ in quote_blocks(read, read_number)]}
 
 
 def _present_tool_reads(messages):
@@ -144,74 +126,31 @@ def _present_tool_reads(messages):
         if message.get("role") != "tool":
             continue
         read_number += 1
-        read = _json_object(message.get("content"))
+        read = json_object(message.get("content"))
         if read.get("found") is True and isinstance(read.get("excerpts"), list):
             view[index] = {**message, "content": json.dumps(_present_read(read, read_number), ensure_ascii=False)}
     return view
-
-
-def _is_https_url(url):
-    if not isinstance(url, str) or not url.startswith("https://") or any(char.isspace() for char in url):
-        return False
-    try:
-        return bool(urlsplit(url).hostname)
-    except ValueError:
-        return False
 
 
 def _require_page_find(events):
     for event in reversed(events):
         if event["type"] != "tool" or event["name"] not in TOOL_NAMES:
             continue
-        result = _json_object(event.get("output"))
+        result = json_object(event.get("output"))
         if result.get("error") in ("tool_required", "invalid_arguments", "tool_not_allowed", "tool_limit"):
             continue
         if event["name"] == "page_find":
             return None
         results = result.get("results")
         if ("error" not in result and isinstance(results, list)
-                and any(isinstance(hit, dict) and _is_https_url(hit.get("url")) for hit in results)):
+                and any(isinstance(hit, dict) and is_https_url(hit.get("url")) for hit in results)):
             return "page_find"
         return None
     return None
 
 
-def _read_evidence(event):
-    arguments = event.get("arguments")
-    if event.get("type") != "tool" or event.get("name") != "page_find" or not isinstance(arguments, dict):
-        return None
-    url = arguments.get("url")
-    if not _is_https_url(url):
-        return None
-    page = _json_object(event.get("output"))
-    if "error" in page or page.get("found") is not True or page.get("url") != url:
-        return None
-    excerpts = page.get("excerpts")
-    if not isinstance(excerpts, list):
-        return None
-    passages = [text for text in excerpts if isinstance(text, str) and text.strip()]
-    return {"url": url, "excerpts": passages} if passages else None
-
-
-def _successful_reads(events, *, step=None):
-    tool_events = (event for event in events if event["type"] == "tool")
-    for read_number, event in enumerate(tool_events, start=1):
-        if step is None or step == event["step"]:
-            read = _read_evidence(event)
-            if read is not None:
-                yield read_number, read
-
-
-def _recent_evidence(events):
-    for event in reversed(events):
-        if event["type"] == "llm" and not event.get("early_final"):
-            reads = list(_successful_reads(events, step=event["step"]))
-            return reads[-1] if reads else None
-    return None
-
-
 def _prepare_early_final(messages, events):
-    evidence = _recent_evidence(events)
+    evidence = recent_evidence(events)
     if evidence is None:
         return None
     read_number, read = evidence
@@ -229,28 +168,10 @@ def _split_final(final):
     return (answer.strip(), url.strip()) if delimiter else (final.strip(), None)
 
 
-def _verified_quote(final, reads):
-    lines = final.splitlines()
-    if len(lines) != 2 or not lines[1].startswith("QUOTE_ID:"):
-        return None
-    answer = lines[0].strip()
-    quote_id = lines[1][len("QUOTE_ID:"):].strip()
-    if not answer or not quote_id or answer.casefold() == "unknown":
-        return None
-    for evidence in reads:
-        if evidence is None:
-            continue
-        read_number, read = evidence
-        for block, excerpt in _quote_blocks(read, read_number):
-            if block["id"] == quote_id:
-                return answer, block["text"], read["url"], excerpt
-    return None
-
-
 def _accept_early_final(final, events):
     if SIMULATED_TOOL_MARKUP.search(events[-1]["message"]["content"]):
         return False
-    return _verified_quote(final, (_recent_evidence(events),)) is not None
+    return resolve_quote(final, (recent_evidence(events),)) is not None
 
 
 def _check_evidence(question, answer, quote, passage, result, *, model, client):
@@ -266,10 +187,7 @@ def _check_evidence(question, answer, quote, passage, result, *, model, client):
         response = client.complete(model=model, messages=messages, evidence_check=True)
         event.update({key: response[key] for key in
                       ("message", "finish_reason", "request_id", "cost_usd", "prompt_tokens", "completion_tokens")})
-        message = response["message"]
-        verdict = message.get("content")
-        event["evidence_supported"] = (response["finish_reason"] == "stop" and not message.get("tool_calls")
-                                       and isinstance(verdict, str) and verdict.strip() == "SUPPORTED")
+        event["evidence_supported"] = supported_verdict(event)
         if not event["evidence_supported"] and result["status"] == "ok":
             result["status"] = "unsupported_answer"
     except BudgetExceeded as error:
@@ -295,12 +213,7 @@ def _attach_verified_source(question, result, *, model, client):
     result.update(final="unknown", quote=None, source_url=None)
     if candidate.casefold() == "unknown" or result["status"] == "output_truncated":
         return
-    events = result["events"]
-    if events and events[-1].get("early_final_accepted"):
-        reads = (_recent_evidence(events),)
-    else:
-        reads = _successful_reads(events)
-    verified = _verified_quote(candidate, reads)
+    verified = resolve_final_quote(candidate, result["events"])
     if verified is None:
         if result["status"] == "ok":
             result["status"] = "unverified_source"
@@ -309,6 +222,8 @@ def _attach_verified_source(question, result, *, model, client):
     answer, quote, url, passage = verified
     if _check_evidence(question, answer, quote, passage, result, model=model, client=client):
         result.update(final=answer, quote=quote, source_url=url)
+        if result["status"] == "max_steps":
+            result["status"] = "ok"
 
 
 def _usage_report(steps, model):
@@ -364,6 +279,7 @@ def _run(question, registry, *, model, client):
                        tool_names=TOOL_NAMES, max_steps=MAX_STEPS, prepare_early_final=_prepare_early_final,
                        accept_early_final=_accept_early_final, require_tool=_require_page_find)
     _attach_verified_source(question, result, model=model, client=client)
+    result["quote_format"] = QUOTE_ID_FORMAT
     return _with_usage(result, model=model, client=client)
 
 

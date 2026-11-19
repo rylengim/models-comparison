@@ -268,27 +268,31 @@ def run_critic(question, *, runner, client, registry, model, max_steps=6):
     verified, final, status = False, "unknown", result["status"]
     while status not in FAILURE_STATUSES:
         evidence = _evidence(result["events"])
-        response, status, event = _request(client, phase="critic", step=checks + 1, model=model,
-            response_format={"type": "json_object"}, messages=[
-                {"role": "system", "content": CRITIC_SYSTEM},
-                {"role": "user", "content": json.dumps({"question": question, "candidate": candidate,
-                  "evidence": evidence or "No tool evidence was retrieved."}, ensure_ascii=False)}])
-        events.append(event)
-        steps += int(event["attempted"])
-        if status != "ok":
-            break
-        checks += 1
-        try:
-            verdict = Verdict.model_validate_json(response["message"].get("content") or "")
-            if response.get("finish_reason") == "length" or verdict.supported == bool(verdict.issue.strip()):
-                raise ValueError("Inconsistent verdict")
-        except (ValidationError, ValueError, TypeError):
-            status = "unverified"
-            events.append({"type": "critic", "check": checks, "valid": False, "reason": "invalid_verdict"})
-            break
-        if not evidence:
+        review = {"type": "critic", "check": checks + 1}
+        if evidence:
+            response, status, event = _request(client, phase="critic", step=review["check"], model=model,
+                response_format={"type": "json_object"}, messages=[
+                    {"role": "system", "content": CRITIC_SYSTEM},
+                    {"role": "user", "content": json.dumps({"question": question, "candidate": candidate,
+                      "evidence": evidence}, ensure_ascii=False)}])
+            events.append(event)
+            steps += int(event["attempted"])
+            if status != "ok":
+                break
+            checks += 1
+            try:
+                verdict = Verdict.model_validate_json(response["message"].get("content") or "")
+                if response.get("finish_reason") == "length" or verdict.supported == bool(verdict.issue.strip()):
+                    raise ValueError("Inconsistent verdict")
+            except (ValidationError, ValueError, TypeError):
+                status = "unverified"
+                events.append({**review, "valid": False, "reason": "invalid_verdict"})
+                break
+        else:
+            checks += 1
             verdict = Verdict(supported=False, issue="Retrieve source evidence for the answer.")
-        events.append({"type": "critic", "check": checks, "valid": True, **verdict.model_dump()})
+            review["reason"] = "missing_evidence"
+        events.append({**review, "valid": True, **verdict.model_dump()})
         if verdict.supported:
             verified, final, status = True, candidate, "ok"
             break

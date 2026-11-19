@@ -19,6 +19,7 @@ BILLING = ("request_id", "cost_usd", "prompt_tokens", "completion_tokens")
 FIELDS = ("id", "config", "question", "model", "origin", "measured", "provider", "cost_basis",
           "status", "final", "cost_usd", "prompt_tokens", "completion_tokens", "steps",
           "retrieved_ids", "recorded_at")
+REPLAY_CONTEXT_FILES = ("hw2/data/corpus.jsonl", "hw2/chunk_corpus.py")
 
 
 def public_record(record):
@@ -88,12 +89,28 @@ def complete_records(new, prior, rows, signature):
     return [combined[key] for key in sorted(combined)]
 
 
-def load_snapshot(path, signature, rows, prior):
+def _matches_replay_signature(archived, current):
+    if not isinstance(archived, dict) or archived.keys() != current.keys():
+        return False
+    if any(archived[key] != value for key, value in current.items() if key != "protocol_sha256"):
+        return False
+    # Replay rebuilds passages from historical chunk IDs. Other code hashes
+    # describe how the saved responses were originally generated.
+    hashes = archived["protocol_sha256"]
+    return isinstance(hashes, dict) and all(
+        hashes.get(path) == current["protocol_sha256"][path] for path in REPLAY_CONTEXT_FILES
+    )
+
+
+def load_snapshot(path, signature, rows, prior, *, historical=False):
+    """Replay saved output without requiring the original generation code."""
     with gzip.open(path, "rt", encoding="utf-8") as handle:
         snapshot = json.load(handle)
-    if snapshot["version"] != 1 or snapshot["signature"] != signature:
+    archived = snapshot.get("signature")
+    matches = _matches_replay_signature(archived, signature) if historical else archived == signature
+    if snapshot["version"] != 1 or not matches:
         raise ValueError("Данные, модели или протокол снимка отличаются от текущего запуска.")
-    return complete_records(snapshot["records"], prior, rows, signature)
+    return complete_records(snapshot["records"], prior, rows, archived)
 
 
 def save_snapshot(path, manifest, signature, rows, prior, records):

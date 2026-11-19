@@ -1,6 +1,7 @@
 import gzip
 import json
 import sys
+from collections import Counter
 
 import pytest
 
@@ -52,6 +53,30 @@ def test_snapshot_exports_only_new_measurements_and_checks_completeness(tmp_path
         load_snapshot(output, {**signature, "max_steps": 1}, rows, prior)
 
 
+def test_historical_snapshot_still_requires_the_same_inputs(tmp_path, measurements):
+    rows, signature, prior, measured = measurements
+    output = tmp_path / "measured.json.gz"
+    save_snapshot(output, {"signature": signature}, signature, rows, prior, prior + measured)
+    hashes = {**signature["protocol_sha256"], "freshqa/agent.py": "0" * 64}
+    updated = {**signature, "protocol_sha256": hashes}
+
+    assert len(load_snapshot(output, updated, rows, prior, historical=True)) == len(CONFIGS)
+    with pytest.raises(ValueError, match="протокол"):
+        load_snapshot(output, updated, rows, prior)
+
+    changed_fields = (
+        {"dataset_sha256": "0" * 64},
+        {"models": {**signature["models"], "cheap_rag": "different-model"}},
+        {"max_steps": 1},
+        {"tools": {}},
+        {"protocol_sha256": {**hashes, "hw2/data/corpus.jsonl": "0" * 64}},
+        {"protocol_sha256": {**hashes, "hw2/chunk_corpus.py": "0" * 64}},
+    )
+    for change in changed_fields:
+        with pytest.raises(ValueError, match="протокол"):
+            load_snapshot(output, {**updated, **change}, rows, prior, historical=True)
+
+
 def test_fresh_clone_live_flag_replays_without_opening_a_key_or_creating_ledger(tmp_path, monkeypatch, measurements):
     rows, signature, prior, measured = measurements
     data = tmp_path / "data"
@@ -72,6 +97,34 @@ def test_fresh_clone_live_flag_replays_without_opening_a_key_or_creating_ledger(
                                       "--traces", str(ledger), "--out", str(out)])
     assert run_benchmark.main() == 0
     assert (out / "report.md").is_file() and not ledger.exists()
+
+
+@pytest.mark.parametrize("stale_ledger", [False, True], ids=["clean-clone", "stale-ledger"])
+def test_cli_replays_tracked_hw2_snapshot_offline(tmp_path, monkeypatch, stale_ledger):
+    out = tmp_path / "report"
+    ledger = tmp_path / "ledger"
+    manifest = ledger / "manifest.json"
+    stale_manifest = b'{"signature":{"format":0}}\n'
+    if stale_ledger:
+        ledger.mkdir()
+        manifest.write_bytes(stale_manifest)
+    monkeypatch.setattr(run_benchmark, "project_key", lambda *args: pytest.fail("unexpected credential access"))
+    monkeypatch.setattr(run_benchmark, "benchmark", lambda *args, **kwargs: pytest.fail("unexpected new run"))
+    monkeypatch.setattr(sys, "argv", ["run_benchmark", "--traces", str(ledger), "--out", str(out)])
+
+    assert run_benchmark.main() == 0
+
+    report = json.loads((out / "report.json").read_text(encoding="utf-8"))
+    assert set(report["questions"]) == set(CONFIGS)
+    measured = [(config, record) for config, records in report["questions"].items() for record in records]
+    assert len(measured) == len({(config, record["id"]) for config, record in measured}) == 570
+    assert Counter(record["origin"] for _, record in measured) == {"hw1": 208, "hw2": 362}
+    assert all(config["n"] == 114 and config["complete"] for config in report["configs"].values())
+    assert (out / "report.md").is_file()
+    assert ledger.exists() is stale_ledger
+    if stale_ledger:
+        assert list(ledger.iterdir()) == [manifest]
+        assert manifest.read_bytes() == stale_manifest
 
 
 def test_snapshot_retains_future_rag_replay_inputs_but_not_transport_metadata(tmp_path, measurements):

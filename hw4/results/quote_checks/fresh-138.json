@@ -1,0 +1,46 @@
+{
+  "id": "fresh-138",
+  "model": "openai/gpt-4o-mini",
+  "status": "ok",
+  "final": "a brown dwarf",
+  "quote": "Instead, it circles a brown dwarf",
+  "source_url": "https://www.eso.org/public/news/eso2610/",
+  "question_budget_usd": 0.06,
+  "cost_usd": 0.0003354,
+  "model_calls": 4,
+  "usage": {
+    "prompt_tokens": 1992,
+    "completion_tokens": 61,
+    "cached_tokens": 0
+  },
+  "events": [
+    {
+      "step": 1,
+      "name": "web_search"
+    },
+    {
+      "step": 2,
+      "name": "page_find",
+      "url": "https://www.eso.org/public/news/eso2610/",
+      "selected_block": {
+        "id": "r2-b4",
+        "text": "Instead, it circles a brown dwarf"
+      }
+    },
+    {
+      "step": 3,
+      "tools_enabled": false,
+      "early_final": true,
+      "early_final_accepted": true,
+      "quote_id": "r2-b4"
+    },
+    {
+      "step": 4,
+      "tools_enabled": false,
+      "evidence_check": true,
+      "evidence_supported": true,
+      "finish_reason": "stop",
+      "verdict": "SUPPORTED"
+    }
+  ]
+}

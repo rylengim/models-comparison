@@ -345,6 +345,74 @@ def test_openrouter_requires_page_find_for_fresh_136(tmp_path, first_read_respon
         assert json.loads(rejected["output"])["required_tool"] == "page_find"
 
 
+def test_openrouter_reads_second_candidate_after_early_unknown(tmp_path):
+    question = "What speed did ESO report for the star S301?"
+    source = "https://www.eso.org/public/news/eso2612/"
+    first_url = "https://www.eso.org/public/news/eso2607/"
+    quote = "reaches speeds of 25 000 km/s"
+    search = {"query": "ESO fast-moving objects"}
+    first_read = {"url": first_url, "keywords": ["speed"]}
+    second_read = {"url": source, "keywords": ["S301"]}
+    search_result = {"results": [
+        {"url": first_url, "title": "Motion in a distant star cluster", "snippet": "Unrelated observations. " * 15},
+        {"url": source, "title": "The Milky Way's fastest star", "snippet": "An ESO observation of S301. " * 15},
+    ]}
+    pages = {
+        first_url: {"url": first_url, "found": True, "excerpts": ["> The team measured the speed of several galaxies."]},
+        source: {"url": source, "found": True, "excerpts": [f"> The star, named S301,\n> {quote}"]},
+    }
+    calls, bodies, resumed_hits = [], [], []
+    early_unknown = {"role": "assistant", "content": "FINAL: unknown"}
+
+    def execute(name, arguments):
+        calls.append((name, arguments))
+        return search_result if name == "web_search" else pages[arguments["url"]]
+
+    def handle(request):
+        body = json.loads(request.content)
+        bodies.append(body)
+        step = len(bodies)
+        if step == 1:
+            reply = assistant_tool_call("web_search", search)
+        elif step == 2:
+            reply = assistant_tool_call("page_find", first_read)
+        elif step == 3:
+            assert "tools" not in body
+            assert shown_excerpts(body)[0]["text"] == pages[first_url]["excerpts"][0].removeprefix("> ")
+            reply = early_unknown
+        elif step == 4:
+            assert body["tool_choice"] == "auto" and early_unknown not in body["messages"]
+            preview = next(message for message in body["messages"] if message.get("tool_call_id") == "call-web_search")
+            compacted = json.loads(preview["content"])
+            assert compacted["compacted"] is True
+            resumed_hits.extend(compacted["results"])
+            if any(hit["url"] == source for hit in resumed_hits):
+                reply = assistant_tool_call("page_find", second_read)
+                reply["tool_calls"][0]["id"] = "call-page-find-second"
+            else:
+                reply = early_unknown
+        elif step == 5:
+            reply = sourced_final("25 000 km/s", select_block(body, quote))
+        else:
+            assert step == 6 and "tools" not in body
+            assert json.loads(body["messages"][-1]["content"])["quote"] == quote
+            reply = SUPPORTED
+        return completion(step, reply, 1000, 30, 0, 0, 0.0003)
+
+    registry = SimpleNamespace(schemas=PublicationTools().schemas, run=execute)
+    trace = ask(question, registry, tmp_path / "receipts.jsonl", handle, budget="0.06", model="openai/gpt-4o-mini")
+
+    assert [hit["url"] for hit in resumed_hits] == [first_url, source]
+    assert calls == [("web_search", search), ("page_find", first_read), ("page_find", second_read)]
+    tool_outputs = [json.loads(event["output"]) for event in trace["events"] if event["type"] == "tool"]
+    assert tool_outputs == [search_result, pages[first_url], pages[source]]
+    assert (trace["status"], trace["final"], trace["quote"], trace["source_url"]) == ("ok", "25 000 km/s", quote, source)
+    early_attempt, = [event for event in trace["events"] if event.get("early_final")]
+    assert early_attempt["early_final_accepted"] is False
+    assert trace["model_calls"] == len(bodies) == 6
+    assert trace["events"][-1]["evidence_supported"] is True
+
+
 @pytest.mark.parametrize("search_result", [
     {"results": []},
     {"results": [{"url": "https://"}]},
@@ -621,6 +689,92 @@ def test_openrouter_checks_whether_quote_answers_the_question(
         assert (trace["status"], trace["final"], trace["quote"], trace["source_url"]) == (
             status, "unknown", None, None,
         )
+
+
+@pytest.mark.parametrize("verdict", ["SUPPORTED", "UNSUPPORTED"])
+def test_openrouter_scores_reserved_final_step_after_verification(tmp_path, monkeypatch, capsys, verdict):
+    from freshqa import __main__ as cli
+    from hw4 import mcp_openrouter
+    from hw4.mcp_benchmark_report import evaluate_case
+
+    model = "openai/gpt-4o-mini"
+    answer = "C/2026 TEST"
+    first_url = "https://example.invalid/unrelated-observatory-release"
+    first_read = {"url": first_url}
+    second_search = {"query": "official designation of the new object"}
+    tools = PublicationTools()
+    bodies = []
+    replies = [
+        assistant_tool_call("web_search", SEARCH_ARGS),
+        assistant_tool_call("page_find", first_read),
+        {"role": "assistant", "content": "FINAL: unknown"},
+        assistant_tool_call("web_search", second_search),
+        assistant_tool_call("page_find", READ_ARGS),
+    ]
+    replies[3]["tool_calls"][0]["id"] = "call-web-search-second"
+    replies[4]["tool_calls"][0]["id"] = "call-page-find-second"
+
+    def execute(name, arguments):
+        if (name, arguments) == ("web_search", SEARCH_ARGS):
+            return {"results": [{"url": first_url, "snippet": "An unrelated release."}]}
+        if (name, arguments) == ("page_find", first_read):
+            return {"found": True, "url": first_url, "excerpts": ["The observatory published an annual report."]}
+        return tools.run(name, arguments)
+
+    def handle(request):
+        body = json.loads(request.content)
+        bodies.append(body)
+        step = len(bodies)
+        if step <= len(replies):
+            reply = replies[step - 1]
+        elif step == 6:
+            assert "tools" not in body
+            read_view = next(message for message in body["messages"]
+                             if message.get("tool_call_id") == "call-page-find-second")
+            reply = sourced_final(answer, select_block({"messages": [read_view]}, QUOTE))
+        else:
+            assert step == 7 and "tools" not in body and body["max_tokens"] == 32
+            assert json.loads(body["messages"][-1]["content"])["quote"] == QUOTE
+            reply = {"role": "assistant", "content": verdict}
+        return completion(step, reply, 900, 30, 0, 0, 0.001)
+
+    original_ask = mcp_openrouter.ask_openrouter
+
+    async def with_mock_transport(question, **options):
+        return await original_ask(question, transport=httpx.MockTransport(handle), **options)
+
+    async def with_mock_tools(operation):
+        return operation(SimpleNamespace(schemas=tools.schemas, run=execute))
+
+    monkeypatch.setenv("OPENROUTER_API_KEY", KEY)
+    monkeypatch.setattr(mcp_openrouter, "with_publication_tools", with_mock_tools)
+    monkeypatch.setattr(mcp_openrouter, "ask_openrouter", with_mock_transport)
+    output = tmp_path / "trace.json"
+    exit_code = cli.main([
+        "ask", "--mcp", "--openrouter", "--model", model, "--budget-usd", "0.06",
+        "--ledger", str(tmp_path / "receipts.jsonl"), "--output", str(output), "--", QUESTION,
+    ])
+
+    trace = json.loads(output.read_text(encoding="utf-8"))
+    stdout = capsys.readouterr().out.splitlines()
+    final, verification = trace["events"][-2:]
+    assert final["step"] == 6 and final["tools_enabled"] is False
+    assert verification["step"] == 7 and verification["evidence_check"] is True
+    supported = verdict == "SUPPORTED"
+    assert verification["evidence_supported"] is supported
+    assert trace["model_calls"] == trace["steps"] == len(bodies) == 7
+    if supported:
+        assert (trace["final"], trace["quote"], trace["source_url"]) == (answer, QUOTE, SOURCE)
+        assert stdout[:3] == [f"FINAL: {answer}", f"QUOTE: {QUOTE}", f"SOURCE: {SOURCE}"]
+        assert (trace["status"], exit_code) == ("ok", 0)
+    else:
+        assert (trace["final"], trace["quote"], trace["source_url"]) == ("unknown", None, None)
+        assert stdout[0] == "FINAL: unknown"
+        assert (trace["status"], exit_code) == ("max_steps", 2)
+
+    row = {"id": "mock-designation", "question": QUESTION, "answer": answer, "evidence": QUOTE, "url": SOURCE}
+    case = evaluate_case(row, trace, returncode=exit_code, duration_s=trace["elapsed_s"], model=model)
+    assert case["verified_correct"] is supported
 
 
 def test_openrouter_budget_stops_next_round_before_http_and_resets_for_new_question(tmp_path):

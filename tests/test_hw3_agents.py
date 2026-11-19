@@ -168,18 +168,48 @@ def test_graph_unknown_cost_is_not_zero():
     assert result["known_cost_usd"] == 0
 
 
-@pytest.mark.parametrize("tool_output", [None, '{"error":"tool failed"}'])
-def test_critic_cannot_approve_answer_without_actual_evidence(tool_output):
+@pytest.mark.parametrize("tool_output", [None, '{"results":[]}', '{"error":"tool failed"}'])
+def test_critic_uses_local_feedback_when_evidence_is_missing(tool_output):
     class FailedRegistry(Registry):
         def run(self, name, arguments):
             return tool_output
 
-    responses = ([search()] if tool_output is not None else []) + [
-        answer("FINAL: Paris"), answer('{"supported":true,"issue":""}')]
+    responses = []
+    for attempt in range(3):
+        if tool_output is not None:
+            responses.append(search(call_id=f"search-{attempt}"))
+        responses.append(answer("FINAL: Paris"))
     client = Client(responses, limit=len(responses))
     result = run_critic("Q", runner=run_graph, client=client, registry=FailedRegistry(), model="m")
+
+    assert all("response_format" not in call for call in client.calls)
+    assert result["steps"] == len(client.calls) == len(responses)
+    assert result["cost_usd"] == pytest.approx(.01 * len(responses))
+    reviews = [event for event in result["events"] if event["type"] == "critic"]
+    assert [event["reason"] for event in reviews] == ["missing_evidence"] * 3
+    assert result["checks"] == len(reviews) == 3
+    assert result["corrections"] == 2
+    assert result["status"] == "unverified"
     assert result["verified"] is False
     assert result["final"] == "unknown"
+    calls_per_attempt = len(responses) // 3
+    for call in client.calls[calls_per_attempt::calls_per_attempt]:
+        assert "Retrieve source evidence for the answer." in call["messages"][1]["content"]
+
+
+def test_critic_checks_only_after_runner_retrieves_evidence():
+    result, client, _ = execute(run_critic, [answer("FINAL: London"), search(), answer("FINAL: Paris"),
+                                            answer('{"supported":true,"issue":""}')], runner=run_graph)
+
+    assert [index for index, call in enumerate(client.calls) if "response_format" in call] == [3]
+    assert "Retrieve source evidence for the answer." in client.calls[1]["messages"][1]["content"]
+    evidence_request = json.loads(client.calls[-1]["messages"][1]["content"])
+    assert "Paris is the capital of France." in evidence_request["evidence"]
+    assert result["steps"] == len(client.calls) == 4
+    assert result["cost_usd"] == pytest.approx(.04)
+    assert result["checks"] == 2
+    assert result["corrections"] == 1
+    assert result["verified"] is True and result["final"] == "Paris"
 
 
 @pytest.mark.parametrize("arguments", ['not json', '[]', '{"query":NaN}'])

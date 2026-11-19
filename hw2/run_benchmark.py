@@ -59,13 +59,14 @@ def main():
     signature = _signature(rows, MODELS, max_steps=6)
     manifest_path = args.traces / "manifest.json"
     if snapshot.exists():
-        if (args.traces / "inflight.json").exists():
-            parser.error("В локальном журнале есть незавершённый запрос. Сначала сверьте списания.")
-        if manifest_path.is_file():
-            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-            if manifest["signature"] != signature:
-                parser.error("Локальный журнал относится к другому набору или протоколу.")
-        records = load_snapshot(snapshot, signature, rows, prior)
+        if args.live:
+            if (args.traces / "inflight.json").exists():
+                parser.error("В локальном журнале есть незавершённый запрос. Сначала сверьте списания.")
+            if manifest_path.is_file():
+                manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+                if manifest["signature"] != signature:
+                    parser.error("Локальный журнал относится к другому набору или протоколу.")
+        records = load_snapshot(snapshot, signature, rows, prior, historical=not args.live)
         complete = True
         print("Используются сохранённые измерения ДЗ‑1 и ДЗ‑2.")
     else:

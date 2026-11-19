@@ -1,4 +1,5 @@
 """Reproducible experiment configuration, resumable traces and aggregation."""
+import fcntl
 import hashlib
 import json
 import os
@@ -95,65 +96,73 @@ def benchmark(rows, *, trace_dir, config_names, client, max_steps=6, resume=Fals
     if invalid:
         raise ValueError(f"Неизвестные конфигурации: {sorted(invalid)}")
     root = Path(trace_dir)
-    inflight_path = root / "inflight.json"
-    interrupted_message = ("Обнаружен незавершённый запрос (inflight.json). "
-                           "Сверьте списания в OpenRouter до продолжения; автоматический повтор заблокирован.")
-    if inflight_path.exists():
-        raise ValueError(interrupted_message)
-    code = b"".join(p.read_bytes() for p in sorted(Path(__file__).parent.glob("*.py")))
-    signature = {"dataset_sha256": dataset_hash(rows), "n": len(rows), "configs": configs,
-                 "max_steps": max_steps, "code_sha256": hashlib.sha256(code).hexdigest()}
-    manifest_path = root / "manifest.json"
-    if manifest_path.exists():
-        old = json.loads(manifest_path.read_text(encoding="utf-8"))
-        if not resume:
-            raise ValueError("Каталог содержит прогон. Используйте --resume или новый --traces.")
-        if old["signature"] != signature:
-            raise ValueError("Данные, код или настройки изменились. Нужен новый --traces.")
-    else:
-        if list(root.glob("*/*.json")):
-            raise ValueError("Найдены трейсы без manifest.json; выберите другой каталог.")
-        write_json(manifest_path, {"signature": signature, "created_at": datetime.now(timezone.utc).isoformat()})
-    previous = [json.loads(p.read_text(encoding="utf-8")) for p in root.glob("*/*.json")]
-    if any(t["cost_usd"] is None for t in previous):
-        raise ValueError("В прогоне есть неизвестные списания. Сверьте их в OpenRouter перед новым прогоном.")
-    # The supplied client may already account for additional requests. Restoring
-    # a directory's ledger must never erase those verified charges.
-    client.spent_usd = max(client.spent_usd, sum(t["cost_usd"] for t in previous))
-    for name in config_names:
-        cfg = configs[name]
-        registry = ToolRegistry(extra_search=name in {"cheap_extra_search", "cascade"},
-                                official_sources=name == "cheap_official_sources")
-        for index, row in enumerate(rows, 1):
-            path = root / name / f"{row['id']}.json"
-            if path.exists():
-                continue
-            if client.spent_usd >= client.budget_usd:
-                return False
-            # Create exclusively BEFORE inference. A crash or Ctrl-C leaves this
-            # marker behind, preventing an unaccounted paid request from being
-            # silently retried. Do not remove it in a finally block.
-            try:
-                with inflight_path.open("x", encoding="utf-8") as stream:
-                    json.dump({"config": name, "id": row["id"], "known_spent_usd": client.spent_usd,
-                               "started_at": datetime.now(timezone.utc).isoformat()}, stream)
-            except FileExistsError:
-                raise ValueError(interrupted_message) from None
-            if name == "cascade":
-                trace = run_cascade(row["question"], cheap=cfg["model"], medium=cfg["fallback_model"],
-                                    client=client, registry=registry, tool_names=cfg["tools"], max_steps=max_steps)
-            else:
-                trace = run_agent(row["question"], model=cfg["model"], client=client, registry=registry,
-                                  tool_names=cfg["tools"], max_steps=max_steps)
-            # Gold data are added only after inference; they never enter run_agent.
-            trace.update(id=row["id"], question=row["question"], expected=row["answer"],
-                         correct=score_row(row, trace["final"]), config=name,
-                         model=cfg["model"], measured=True,
-                         recorded_at=datetime.now(timezone.utc).isoformat())
-            write_json(path, trace)
-            inflight_path.unlink()
-            print(f"{name} {index}/{len(rows)}: {trace['status']}; spent=${client.spent_usd:.4f}", flush=True)
-            if trace["status"] in HARD_FAILURE_STATUSES:
-                return False
-    return not any(t.get("status") in HARD_FAILURE_STATUSES for t in previous
-                   if t.get("config") in config_names)
+    root.mkdir(parents=True, exist_ok=True)
+    # Hold one writer lock from reading prior charges through saving the final trace.
+    with (root / ".benchmark.lock").open("a") as lock:
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            raise ValueError("Этот каталог уже занят работающим benchmark.") from None
+
+        inflight_path = root / "inflight.json"
+        interrupted_message = ("Обнаружен незавершённый запрос (inflight.json). "
+                               "Сверьте списания в OpenRouter до продолжения; автоматический повтор заблокирован.")
+        if inflight_path.exists():
+            raise ValueError(interrupted_message)
+        code = b"".join(p.read_bytes() for p in sorted(Path(__file__).parent.glob("*.py")))
+        signature = {"dataset_sha256": dataset_hash(rows), "n": len(rows), "configs": configs,
+                     "max_steps": max_steps, "code_sha256": hashlib.sha256(code).hexdigest()}
+        manifest_path = root / "manifest.json"
+        if manifest_path.exists():
+            old = json.loads(manifest_path.read_text(encoding="utf-8"))
+            if not resume:
+                raise ValueError("Каталог содержит прогон. Используйте --resume или новый --traces.")
+            if old["signature"] != signature:
+                raise ValueError("Данные, код или настройки изменились. Нужен новый --traces.")
+        else:
+            if list(root.glob("*/*.json")):
+                raise ValueError("Найдены трейсы без manifest.json; выберите другой каталог.")
+            write_json(manifest_path, {"signature": signature, "created_at": datetime.now(timezone.utc).isoformat()})
+        previous = [json.loads(p.read_text(encoding="utf-8")) for p in root.glob("*/*.json")]
+        if any(t["cost_usd"] is None for t in previous):
+            raise ValueError("В прогоне есть неизвестные списания. Сверьте их в OpenRouter перед новым прогоном.")
+        # The supplied client may already account for additional requests. Restoring
+        # a directory's ledger must never erase those verified charges.
+        client.spent_usd = max(client.spent_usd, sum(t["cost_usd"] for t in previous))
+        for name in config_names:
+            cfg = configs[name]
+            registry = ToolRegistry(extra_search=name in {"cheap_extra_search", "cascade"},
+                                    official_sources=name == "cheap_official_sources")
+            for index, row in enumerate(rows, 1):
+                path = root / name / f"{row['id']}.json"
+                if path.exists():
+                    continue
+                if client.spent_usd >= client.budget_usd:
+                    return False
+                # Create exclusively BEFORE inference. A crash or Ctrl-C leaves this
+                # marker behind, preventing an unaccounted paid request from being
+                # silently retried. Do not remove it in a finally block.
+                try:
+                    with inflight_path.open("x", encoding="utf-8") as stream:
+                        json.dump({"config": name, "id": row["id"], "known_spent_usd": client.spent_usd,
+                                   "started_at": datetime.now(timezone.utc).isoformat()}, stream)
+                except FileExistsError:
+                    raise ValueError(interrupted_message) from None
+                if name == "cascade":
+                    trace = run_cascade(row["question"], cheap=cfg["model"], medium=cfg["fallback_model"],
+                                        client=client, registry=registry, tool_names=cfg["tools"], max_steps=max_steps)
+                else:
+                    trace = run_agent(row["question"], model=cfg["model"], client=client, registry=registry,
+                                      tool_names=cfg["tools"], max_steps=max_steps)
+                # Gold data are added only after inference; they never enter run_agent.
+                trace.update(id=row["id"], question=row["question"], expected=row["answer"],
+                             correct=score_row(row, trace["final"]), config=name,
+                             model=cfg["model"], measured=True,
+                             recorded_at=datetime.now(timezone.utc).isoformat())
+                write_json(path, trace)
+                inflight_path.unlink()
+                print(f"{name} {index}/{len(rows)}: {trace['status']}; spent=${client.spent_usd:.4f}", flush=True)
+                if trace["status"] in HARD_FAILURE_STATUSES:
+                    return False
+        return not any(t.get("status") in HARD_FAILURE_STATUSES for t in previous
+                       if t.get("config") in config_names)
