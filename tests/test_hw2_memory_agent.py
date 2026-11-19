@@ -149,6 +149,7 @@ def test_correction_is_saved_before_answer_and_survives_window_eviction():
     "I prefer reminders on Tuesday, not Monday.",
     "I moved reminders from Monday to Friday.",
     "I moved reminders off Monday.",
+    "I moved reminders OFF Monday.",
     "I want to cancel my Monday reminders.",
     "I might move reminders to Monday.",
     "I held a Monday meeting about a book.",
@@ -595,3 +596,149 @@ def test_new_demo_validates_recall_after_correction_and_accounts_for_all_extract
     broken["memory_policy"] = "invented_policy"
     with pytest.raises(ValueError, match="policy"):
         demo_memory.validate_demo(broken)
+
+
+# Each row varies the value as well as the field: the transition contract must
+# not depend on a list of known project names or on a single weekday/unit.
+_MEMORY_TRANSITION_ROWS = [
+    ("reminder_day", "Monday", "Tuesday", "Friday",
+     "I prefer Monday for reminders.", "I don't want Monday reminders anymore.",
+     "I don’t discuss reminders in my Monday meeting.", "I prefer Friday for reminders."),
+    ("reminder_day", "Thursday", "Sunday", "Wednesday",
+     "My reminder day is Thursday.", "I no longer want Thursday reminders.",
+     "I don't discuss reminders in my Thursday meeting.", "My reminder day is Wednesday."),
+    ("distance_unit", "miles", "kilometers", "meters",
+     "I use miles for distances.", "I don't use miles for distances anymore.",
+     "I don’t know how many miles the route is.", "I use meters for distances."),
+    ("distance_unit", "nautical miles", "meters", "kilometers",
+     "I measure distances in nautical miles.", "I no longer use nautical miles.",
+     "I don't know how many nautical miles the route is.", "I measure distances in kilometers."),
+    ("project_name", "Orion", "Atlas", "Lyra",
+     "My project is Orion.", "My project is not Orion anymore.",
+     "I don't discuss Orion in my project meeting.", "My project is Lyra."),
+    ("project_name", "Orion Research", "Atlas", "Orion",
+     'My project is "Orion Research".', "My project is no longer called Orion Research.",
+     "I don't discuss Orion Research in my project meeting.", "My project is Orion."),
+    ("project_name", "May", "Atlas", "Autumn",
+     "My project is May.", "My project is no longer called May.",
+     "I don't discuss May in my project meeting.", "My project is Autumn."),
+    ("project_name", "No Limits", "Atlas", "New Horizons",
+     "My project is No Limits.", "My project is not No Limits anymore.",
+     "I don't discuss No Limits in my project meeting.", "My project is New Horizons."),
+]
+
+
+def _memory_transition_cases():
+    for key, value, old, other, assignment, rejection, irrelevant, replacement in _MEMORY_TRANSITION_ROWS:
+        for rule, statement, proposed, valid, evidence in [
+            ("set-reject", f"{assignment} {rejection}", value, False, None),
+            ("reject-set", f"{rejection} {assignment}", value, True, assignment),
+            ("set-irrelevant", f"{assignment} {irrelevant}", value, True, assignment),
+            ("irrelevant-set", f"{irrelevant} {assignment}", value, True, assignment),
+            ("set-new-set-stale", f"{assignment} {replacement}", value, False, None),
+            ("set-new-set-current", f"{assignment} {replacement}", other, True, replacement),
+        ]:
+            yield pytest.param(key, old, statement, proposed, valid, evidence,
+                               id=f"{key}-{value}-{rule}")
+    # Exercise this exact rejection without another invalid field hiding it.
+    assignment = "My project is Orion."
+    rejection = "My project is no longer called Orion."
+    yield pytest.param("project_name", "Atlas", f"{assignment} {rejection}", "Orion", False, None,
+                       id="project_name-Orion-set-no-longer-called")
+    yield pytest.param("project_name", "Atlas", f"{rejection} {assignment}", "Orion", True, assignment,
+                       id="project_name-Orion-no-longer-called-set")
+    yield pytest.param("reminder_day", "Tuesday",
+                       "I prefer Monday for reminders. I might move reminders off Monday.",
+                       "Monday", True, "I prefer Monday for reminders.", id="reminder_day-set-hypothetical-off")
+
+
+class SavedFactClient(Client):
+    """Answers depend on the store and supplied context at the answer boundary."""
+    def __init__(self, store, extraction):
+        self.store = store
+        self.answer_snapshots = []
+        self.extraction = extraction
+        self.spent_usd = 0.0
+        super().__init__([])
+
+    def complete(self, *, model, messages, tools=None):
+        if messages[0]["content"] == EXTRACT_RULES:
+            content = json.dumps(self.extraction)
+        else:
+            saved = self.store.all()
+            self.answer_snapshots.append(deepcopy(saved))
+            assert len(saved) == 1
+            fact = saved[0]
+            assert f"{fact['key'].replace('_', ' ')}: {fact['value']}" in messages[-1]["content"]
+            content = "FINAL: " + fact["value"]
+        self.messages.append(messages)
+        self.spent_usd += 0.01
+        return {"message": {"role": "assistant", "content": content}, "finish_reason": "stop",
+                "prompt_tokens": 10, "completion_tokens": 2, "cost_usd": 0.01,
+                "request_id": str(len(self.messages))}
+
+
+@pytest.mark.parametrize(("key", "old", "statement", "value", "valid", "evidence"),
+                         list(_memory_transition_cases()))
+def test_memory_event_order_preserves_or_replaces_saved_state(key, old, statement, value, valid, evidence):
+    store = MutableStore()
+    store.upsert("previous", [{"key": key, "value": old}])
+    before = store.all()
+    extraction = dict.fromkeys(("reminder_day", "distance_unit", "project_name"), "")
+    extraction[key] = value
+    client = SavedFactClient(store, extraction)
+    session = memory_session(store, client, window_pairs=0)
+
+    if not valid:
+        with pytest.raises(FactExtractionError):
+            session.ask(statement)
+        assert store.all() == before
+        assert store.writes == len(client.messages) == 1
+        assert client.answer_snapshots == []
+        summary = session.finish()
+        assert summary["memory_updates"][0]["status"] == "invalid_extraction"
+        assert summary["extracted"] == []
+    else:
+        updated = session.ask(statement)
+        recalled = session.ask("What value is saved for this preference?")
+        saved = [{"key": key, "value": value, "session_id": "a"}]
+        expected_fact = {"key": key, "value": value, "evidence": evidence}
+        assert updated["memory_update"]["status"] == "persisted"
+        assert updated["memory_update"]["extracted"] == [expected_fact]
+        assert updated["answer"] == recalled["answer"] == value
+        assert recalled["history"] == []
+        assert recalled["memory_update"]["status"] == "skipped"
+        assert updated["facts"] == recalled["facts"] == store.all() == saved
+        assert client.answer_snapshots == [saved, saved]
+        assert store.writes == 2 and len(client.messages) == 3
+        summary = session.finish()
+        assert summary["extracted"] == [expected_fact]
+    assert summary["extraction_receipts"] == [
+        {"request_id": "1", "prompt_tokens": 10, "completion_tokens": 2, "cost_usd": 0.01}]
+    assert summary["extraction_usage"] == {
+        "prompt_tokens": 10, "completion_tokens": 2, "cost_usd": 0.01}
+
+
+def test_retracted_project_blocks_other_valid_fields_in_the_same_batch():
+    store = MutableStore()
+    store.upsert("previous", [
+        {"key": "reminder_day", "value": "Tuesday"},
+        {"key": "distance_unit", "value": "kilometers"},
+        {"key": "project_name", "value": "Atlas"},
+    ])
+    before = store.all()
+    extraction = {"reminder_day": "Monday", "distance_unit": "miles", "project_name": "Orion"}
+    client = Client([{"content": json.dumps(extraction)}, {"content": "FINAL: Orion"}])
+    session = memory_session(store, client, window_pairs=0)
+
+    with pytest.raises(FactExtractionError):
+        session.ask("I prefer Monday for reminders. I don’t discuss reminders in my Monday meeting. "
+                    "I use miles for distances. I don’t know how many miles the route is. "
+                    "My project is Orion. My project is no longer called Orion.")
+
+    assert store.all() == before
+    assert store.writes == len(client.messages) == 1
+    summary = session.finish()
+    assert summary["memory_updates"][0]["status"] == "invalid_extraction"
+    assert summary["extracted"] == []
+    assert summary["extraction_receipts"][0]["request_id"] == "1"

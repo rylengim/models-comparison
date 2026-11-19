@@ -141,14 +141,14 @@ def _search_urls(result):
 
 def _unread_search_urls(events, source_url):
     read_urls = set()
-    for event in reversed(events):
-        if event["type"] != "tool":
-            continue
-        if event["name"] == "page_find":
+    # A refined search must not reset attempts made earlier in this run.
+    for event in events:
+        if event["type"] == "tool" and event["name"] == "page_find":
             arguments = event.get("arguments")
             if isinstance(arguments, dict) and is_https_url(arguments.get("url")):
                 read_urls.add(arguments["url"])
-        elif event["name"] == "web_search":
+    for event in reversed(events):
+        if event["type"] == "tool" and event["name"] == "web_search":
             urls = _search_urls(json_object(event.get("output")))
             if source_url in urls:
                 return [url for url in urls if url not in read_urls]

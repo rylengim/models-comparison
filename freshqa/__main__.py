@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 
 from .dataset import load_rows, validate_rows
 from .experiment import BONUS_CONFIGS, LABELS, REQUIRED_CONFIGS, benchmark, configurations, write_json
-from .reporting import render_report
+from .reporting import DEFAULT_REPORT_OUT, render_report, validate_report_output
 
 
 def get_client(budget):
@@ -97,11 +97,11 @@ def main(argv=None):
     report = sub.add_parser("report", help="Построить таблицу/график из сохранённых трейсов")
     report.add_argument("--data", default="data/fresh.jsonl")
     report.add_argument("--traces", default="traces")
-    report.add_argument("--out", default="reports")
+    report.add_argument("--out", default=DEFAULT_REPORT_OUT)
     run = sub.add_parser("benchmark", help="Реальный платный эксперимент, нужен ключ")
     run.add_argument("--data", default="data/fresh.jsonl")
     run.add_argument("--traces", default="traces")
-    run.add_argument("--out", default="reports")
+    run.add_argument("--out", default=DEFAULT_REPORT_OUT)
     run.add_argument("--configs", nargs="+", choices=list(LABELS), default=REQUIRED_CONFIGS)
     run.add_argument("--bonuses", action="store_true", help="Исходные семь конфигураций; официальный поиск включается отдельно через --configs cheap_official_sources")
     run.add_argument("--resume", action="store_true")
@@ -124,6 +124,8 @@ def main(argv=None):
     ask.add_argument("--ledger", type=Path, help="Файл учёта расходов для --mcp или --no-tools.")
     args = parser.parse_args(argv)
     try:
+        if args.command in {"report", "benchmark"}:
+            validate_report_output(args.out)
         if args.command == "ask":
             if args.no_tools and not args.openrouter:
                 ask.error("Для --no-tools добавьте --openrouter.")
@@ -189,7 +191,7 @@ def main(argv=None):
         if args.limit is not None:
             if args.limit < 1:
                 raise ValueError("--limit должен быть положительным")
-            if args.traces == "traces" or args.out == "reports":
+            if args.traces == "traces" or args.out in {"reports", DEFAULT_REPORT_OUT}:
                 raise ValueError("Для --limit укажите отдельные --traces и --out, чтобы не смешать smoke и полный прогон.")
             rows = rows[:args.limit]
         if args.max_steps < 1:

@@ -7,6 +7,7 @@ from copy import deepcopy
 
 from freshqa.agent import run_agent
 from freshqa.client import BudgetExceeded
+from hw2.memory_facts import FACT_KEYS, current_candidates, memory_events
 
 
 CONTEXT_RULES = """You are helping the same user over multiple conversations.
@@ -19,78 +20,8 @@ EXTRACT_RULES = ('Read these user statements. Copy the most recent explicit valu
                  'names their own project. Return exactly one JSON object. Example input: "I prefer Monday for '
                  'reminders. I measure distances in miles." Example output: '
                  '{"reminder_day":"Monday","distance_unit":"miles","project_name":""}')
-FACT_KEYS = ("reminder_day", "distance_unit", "project_name")
 USAGE_FIELDS = ("prompt_tokens", "completion_tokens", "cost_usd")
 MEMORY_POLICY = "update_before_answer_v2"
-_WEEKDAY_NAMES = "Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday"
-_WEEKDAY = re.compile(rf"\b(?:{_WEEKDAY_NAMES})\b", re.IGNORECASE)
-_REMINDER_TOPIC = re.compile(r"\bremind(?:ers?|ed|ing|s)?\b", re.IGNORECASE)
-_REMINDER_ASSIGNMENT = re.compile(
-    rf"""
-    \s*(?:
-        (?:I|we)\s+
-        (?:(?:now|no\s+longer|do\s+not|don['’]t|never|used\s+to|may|might|could|maybe)\s+)?
-        (?:prefer|want|need|like|choose|use|set|move[d]?|switch(?:ed)?|change[d]?|(?:re)?schedule[d]?)\s+
-        (?:
-            (?:(?:my|our)\s+)?reminders?\s+(?:on|for|to|off)\s+(?:{_WEEKDAY_NAMES})
-            |(?:(?:my|our)\s+)?reminders?\s+from\s+(?:{_WEEKDAY_NAMES})\s+to\s+(?:{_WEEKDAY_NAMES})
-            |(?:{_WEEKDAY_NAMES})\s+(?:for\s+(?:(?:my|our)\s+)?reminders?|reminders?)
-        )
-        |(?:my|our)\s+reminders?(?:\s+day)?\s+(?:is|are|should\s+be|will\s+be)\s+(?:{_WEEKDAY_NAMES})
-        |(?:I|we)\s+(?:want|need)\s+(?:you\s+)?to\s+remind\s+(?:me|us)\s+on\s+(?:{_WEEKDAY_NAMES})
-    )
-    (?:\s+(?:now|instead|from\s+now\s+on|anymore|any\s+longer))?\s*[,.!]?\s*
-    """,
-    re.IGNORECASE | re.VERBOSE,
-)
-_REMINDER_CONTINUATION = re.compile(
-    r"\s*(?:(?:please\s+)?(?:use|switch to|make it)|(?:I|we)\s+"
-    r"(?:(?:now|no longer|do not|don['’]t)\s+)?(?:prefer|want|choose)|not)"
-    rf"\s+(?:{_WEEKDAY_NAMES})"
-    r"(?:\s+(?:now|instead|from now on|anymore|any longer))?[.!]?\s*",
-    re.IGNORECASE,
-)
-_CLAUSE_BREAK = re.compile(r"[;\n]|\bbut\b|\band\s+(?=(?:I|we|my|our)\b)|,\s*(?=(?:not|I|we|my|our)\b)",
-                           re.IGNORECASE)
-_REJECTED = re.compile(
-    r"\b(?:no|not|never|used to|instead of|except|other than|off|cancel(?:l?ed|l?ing)?|stop|remove|may|might|could|maybe)\b|n['’]t\b",
-    re.IGNORECASE,
-)
-_DISTANCE_ASSIGNMENT = re.compile(
-    r"""
-    \s*(?:I|we)\s+(?:now\s+)?(?:
-        (?:use|prefer|want|choose)\s+(?P<preferred_unit>[\w-]+(?:\s+[\w-]+)*?)
-        \s+for\s+(?:(?:my|our)\s+)?distances?
-        |measure\s+(?:(?:my|our)\s+)?distances?\s+in\s+(?P<measured_unit>[\w-]+(?:\s+[\w-]+)*?)
-    )
-    (?:\s+(?:now|instead|from\s+now\s+on))?\s*[,.!]?\s*
-    """,
-    re.IGNORECASE | re.VERBOSE,
-)
-_PROJECT_ASSIGNMENT = re.compile(
-    r"""
-    \s*(?:
-        (?:my|our)\s+project(?:['’]s\s+name|\s+name)?\s+is
-        (?:\s+now)?(?:\s+(?:called|named))?
-        |(?:I|we)\s+(?:now\s+)?(?:
-            (?:call|named)\s+(?:my|our)\s+project
-            |renamed\s+(?:my|our)\s+project(?:\s+to)?
-        )
-    )
-    \s+(?P<denial>not\s+|no\s+longer\s+)?
-    (?P<quote>["']?)(?P<name>.+?)(?P=quote)\s*[.!]?\s*
-    """,
-    re.IGNORECASE | re.VERBOSE,
-)
-_PROJECT_REJECTION = re.compile(
-    r"""
-    \s*(?:I|we)\s+(?:no\s+longer|do\s+not|don['’]t|never)\s+
-    (?:work\s+on|call\s+(?:my|our)\s+project)\s+
-    (?P<quote>["']?)(?P<name>.+?)(?P=quote)
-    (?:\s+(?:anymore|any\s+longer))?\s*[.!]?\s*
-    """,
-    re.IGNORECASE | re.VERBOSE,
-)
 
 
 def usage(record):
@@ -156,82 +87,23 @@ def extract_facts(utterances, client, model):
         raise FactExtractionError(str(error), receipt) from error
 
 
-def _reminder_evidence(value, statements):
-    """Find the latest unambiguous reminder day in the English demo contract."""
-    evidence = None
-    for statement in statements:
-        reminder_context = False
-        for clause in _CLAUSE_BREAK.split(statement):
-            continuation = reminder_context and _REMINDER_CONTINUATION.fullmatch(clause)
-            reminder_context = bool(_REMINDER_ASSIGNMENT.fullmatch(clause) or continuation)
-            days = _WEEKDAY.findall(clause)
-            if _REJECTED.search(clause):
-                # Rejections can have a wider form than affirmative assignments.
-                if (_REMINDER_TOPIC.search(clause) or continuation) and any(
-                    day.casefold() == value.casefold() for day in days
-                ):
-                    evidence = None
-            elif reminder_context:
-                evidence = statement if days[-1] == value else None
-    return evidence
-
-
-def _distance_evidence(value, statements):
-    """Find the latest explicit distance unit in the demo's English forms."""
-    requested = re.compile(r"(?<!\w)" + re.escape(" ".join(value.split())) + r"(?!\w)", re.IGNORECASE)
-    evidence = None
-    for statement in statements:
-        for clause in _CLAUSE_BREAK.split(statement):
-            normalized = " ".join(clause.split())
-            if _REJECTED.search(normalized):
-                if requested.search(normalized):
-                    evidence = None
-                continue
-            assignment = _DISTANCE_ASSIGNMENT.fullmatch(clause)
-            if assignment is not None:
-                unit = assignment["preferred_unit"] or assignment["measured_unit"]
-                evidence = statement if unit == value else None
-    return evidence
-
-
-def _project_evidence(value, statements):
-    """Accept only the latest explicit name of the user's own project."""
-    requested = " ".join(value.split()).casefold()
-    evidence = None
-    for statement in statements:
-        for clause in _CLAUSE_BREAK.split(statement):
-            assignment = _PROJECT_ASSIGNMENT.fullmatch(clause)
-            if assignment is not None and not assignment["denial"]:
-                # Words such as "May" or "No Limits" can be part of a name.
-                evidence = statement if assignment["name"] == value else None
-            else:
-                rejection = assignment or _PROJECT_REJECTION.fullmatch(clause)
-                if rejection is not None and " ".join(rejection["name"].split()).casefold() == requested:
-                    evidence = None
-    return evidence
-
-
 def _validate_extraction(response, statements):
     if response.get("finish_reason") != "stop":
         raise ValueError("Извлечение фактов не завершено.")
     obj = json.loads(response["message"]["content"])
     if not isinstance(obj, dict) or set(obj) != set(FACT_KEYS):
         raise ValueError("Ожидалось по одному полю для каждого типа факта.")
+    candidates = current_candidates(memory_events(statements))
     facts = []
     for key, value in obj.items():
         if not isinstance(value, str) or len(value) > 100:
             raise ValueError("Неверное значение извлечённого факта.")
         if value == "":
             continue
-        if key == "reminder_day":
-            evidence = _reminder_evidence(value, statements)
-        elif key == "distance_unit":
-            evidence = _distance_evidence(value, statements)
-        else:
-            evidence = _project_evidence(value, statements)
-        if not value.strip() or evidence is None:
+        candidate = candidates.get(key)
+        if not value.strip() or candidate is None or candidate.value != value:
             raise ValueError("Факт должен ссылаться на точные слова пользователя.")
-        facts.append({"key": key, "value": value, "evidence": evidence})
+        facts.append({"key": key, "value": value, "evidence": candidate.evidence})
     return facts
 
 

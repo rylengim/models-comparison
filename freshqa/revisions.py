@@ -10,7 +10,8 @@ from pathlib import Path
 
 from .dataset import METRIC_VERSION, load_rows, score_row
 from .experiment import REQUIRED_CONFIGS, dataset_hash
-from .reporting import render_report as report_hw1
+from .evaluation import GRADING_POLICY_VERSION, score_trace
+from .reporting import ARCHIVED_REVISIONS, render_report as report_hw1
 from hw2.benchmark_report import render_report as report_hw2
 from hw2.benchmark_snapshot import load_snapshot
 from hw2.prior_runs import load_prior_runs
@@ -21,6 +22,7 @@ from hw3.evaluation import score as score_hw3
 from hw3.report import _load_records, render_report as report_hw3
 
 ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_REVISION_OUT = ROOT / 'reports/revisions' / GRADING_POLICY_VERSION
 BASELINE_COMMIT = '061b823c3ac8286d03c1f10fcffff93d907d1e0c'
 # Accepted portable snapshot, independently checked against BASELINE_COMMIT.
 # Pin the historical generation protocol here; do not relax benchmark resume checks.
@@ -58,6 +60,7 @@ def validate_output(root, out):
     root, out = root.resolve(), out.resolve()
     revisions = root / 'reports/revisions'
     if (root.is_relative_to(out) or out == revisions
+            or any(out.is_relative_to(revisions / name) for name in ARCHIVED_REVISIONS)
             or (out.is_relative_to(root) and not out.is_relative_to(revisions))):
         raise ValueError('Revision output must be separate from accepted inputs and reports')
     # Existing symlinks must not redirect individual report writes into source artifacts.
@@ -100,7 +103,7 @@ def parser_replay(records, diagnostic, chunks, gold):
                 records=assessments, separate_diagnostic=samples)
 
 
-def build_revision(root=ROOT, out=ROOT / 'reports/revisions/2026-11-15'):
+def build_revision(root=ROOT, out=DEFAULT_REVISION_OUT):
     root, out = Path(root).resolve(), Path(out).resolve()
     validate_output(root, out)
     before = input_hashes(root)
@@ -115,7 +118,8 @@ def build_revision(root=ROOT, out=ROOT / 'reports/revisions/2026-11-15'):
         for path in sorted((root / 'traces' / config).glob('*.json')):
             r = read(path)
             grades1.append(dict(config=config, id=r['id'], metric_version=METRIC_VERSION,
-                                old_correct=r['correct'], correct=score_row(gold1[r['id']], r['final']),
+                                grading_policy_version=GRADING_POLICY_VERSION,
+                                old_correct=r['correct'], correct=score_trace(gold1[r['id']], r),
                                 final=r['final'], expected=gold1[r['id']]['answer'], cost_usd=r['cost_usd']))
     write(out / 'hw1/grades.json', grades1)
     write(out / 'hw1/changed_grades.json', [r for r in grades1 if r['old_correct'] != r['correct']])
@@ -197,16 +201,19 @@ def build_revision(root=ROOT, out=ROOT / 'reports/revisions/2026-11-15'):
                           f'Новых вызовов и расходов нет. {note}\n' + body, encoding='utf-8')
     if before != input_hashes(root):
         raise ValueError('Accepted inputs changed during offline re-evaluation')
-    summary = dict(metric_version=METRIC_VERSION, parser_version=PARSER_VERSION, new_model_calls=0,
+    summary = dict(metric_version=METRIC_VERSION, grading_policy_version=GRADING_POLICY_VERSION,
+                   parser_version=PARSER_VERSION, new_model_calls=0,
                    new_cost_usd=0, input_hashes_verified=True, comparison=compared,
                    hw3_changed_config_totals=len(changes3), full_rag_benchmark_reparsed=replay['full_benchmark_reparsed'])
     write(out / 'summary.json', summary)
-    code = ['freshqa/dataset.py', 'freshqa/quantities.py', 'freshqa/revisions.py', 'freshqa/reporting.py',
+    code = ['freshqa/dataset.py', 'freshqa/quantities.py', 'freshqa/evaluation.py',
+            'freshqa/revisions.py', 'freshqa/reporting.py',
             'hw2/rag.py', 'hw2/reparse.py', 'hw2/benchmark_snapshot.py', 'hw2/benchmark_report.py',
             'hw2/memory_agent.py', 'hw3/evaluation.py', 'hw3/report.py',
             'hw3/audited_report.py', 'hw2/prior_runs.py', 'freshqa/experiment.py']
     write(out / 'provenance.json', dict(baseline_commit=BASELINE_COMMIT, metric_version=METRIC_VERSION,
-          parser_version=PARSER_VERSION, generation_signatures={'hw1': read(root / 'traces/manifest.json')['signature'],
+          parser_version=PARSER_VERSION, grading_policy_version=GRADING_POLICY_VERSION,
+          generation_signatures={'hw1': read(root / 'traces/manifest.json')['signature'],
                                                                'hw2': signature2,
                                                                'hw3': read(result3 / 'manifest.json')},
           input_sha256=before, evaluation_code_sha256={p: sha(root / p) for p in code},
@@ -216,7 +223,7 @@ def build_revision(root=ROOT, out=ROOT / 'reports/revisions/2026-11-15'):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--out', type=Path, default=ROOT / 'reports/revisions/2026-11-15')
+    parser.add_argument('--out', type=Path, default=DEFAULT_REVISION_OUT)
     args = parser.parse_args()
     summary = build_revision(ROOT, args.out)
     print(json.dumps(summary, ensure_ascii=False, indent=2))

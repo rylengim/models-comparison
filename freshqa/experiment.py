@@ -6,7 +6,8 @@ import os
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .dataset import final_text, score_row
+from .dataset import METRIC_VERSION, final_text
+from .evaluation import GRADING_POLICY_VERSION, HARD_FAILURE_STATUSES, score_trace
 
 LABELS = {
     "strong_no_tools": "Сильная, без инструментов",
@@ -20,7 +21,6 @@ LABELS = {
 }
 REQUIRED_CONFIGS = list(LABELS)[:5]
 BONUS_CONFIGS = REQUIRED_CONFIGS + ["cheap_extra_search", "cascade"]
-HARD_FAILURE_STATUSES = {"error", "cost_unknown", "budget_exceeded"}
 
 
 def configurations():
@@ -111,7 +111,8 @@ def benchmark(rows, *, trace_dir, config_names, client, max_steps=6, resume=Fals
             raise ValueError(interrupted_message)
         code = b"".join(p.read_bytes() for p in sorted(Path(__file__).parent.glob("*.py")))
         signature = {"dataset_sha256": dataset_hash(rows), "n": len(rows), "configs": configs,
-                     "max_steps": max_steps, "code_sha256": hashlib.sha256(code).hexdigest()}
+                     "max_steps": max_steps, "code_sha256": hashlib.sha256(code).hexdigest(),
+                     "grading_policy_version": GRADING_POLICY_VERSION, "metric_version": METRIC_VERSION}
         manifest_path = root / "manifest.json"
         if manifest_path.exists():
             old = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -156,7 +157,8 @@ def benchmark(rows, *, trace_dir, config_names, client, max_steps=6, resume=Fals
                                       tool_names=cfg["tools"], max_steps=max_steps)
                 # Gold data are added only after inference; they never enter run_agent.
                 trace.update(id=row["id"], question=row["question"], expected=row["answer"],
-                             correct=score_row(row, trace["final"]), config=name,
+                             correct=score_trace(row, trace), config=name,
+                             grading_policy_version=GRADING_POLICY_VERSION, metric_version=METRIC_VERSION,
                              model=cfg["model"], measured=True,
                              recorded_at=datetime.now(timezone.utc).isoformat())
                 write_json(path, trace)

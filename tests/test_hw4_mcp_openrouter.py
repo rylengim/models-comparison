@@ -8,7 +8,7 @@ import pytest
 
 from hw3.snapshot_tools import SnapshotRegistry
 from hw4.mcp_client import _PublicationTools
-from hw4.mcp_openrouter import run_openrouter
+from hw4.mcp_openrouter import _unread_search_urls, run_openrouter
 from hw4.mcp_tool_pins import TOOL_NAMES, verify_tool_pins
 
 
@@ -454,6 +454,106 @@ def test_openrouter_reads_second_candidate_after_rejected_early_final(tmp_path, 
     assert len((tmp_path / "receipts.jsonl").read_text(encoding="utf-8").splitlines()) == len(bodies)
     result = evaluate_case(row, trace, returncode=0, duration_s=trace["elapsed_s"], model=trace["model"])
     assert result["verified_correct"] is True
+
+
+@pytest.mark.parametrize("failed_read", [
+    {"found": False, "excerpts": []},
+    {"error": "mcp_transport_error"},
+])
+@pytest.mark.parametrize("newer_unrelated_search", [False, True])
+def test_unread_candidates_use_whole_read_history(failed_read, newer_unrelated_search):
+    first_url, selected_url, unread_url = [f"https://example.invalid/{name}" for name in ("first", "selected", "unread")]
+
+    def tool(step, name, arguments, output):
+        return {"type": "tool", "step": step, "name": name, "arguments": arguments,
+                "output": json.dumps(output)}
+
+    events = [
+        tool(1, "web_search", {"query": "initial"}, {"results": [{"url": first_url}]}),
+        tool(2, "page_find", {"url": first_url, "keywords": ["initial"]}, failed_read),
+        tool(3, "web_search", {"query": "refined"},
+             {"results": [{"url": url} for url in (first_url, selected_url, unread_url)]}),
+        tool(4, "page_find", {"url": selected_url},
+             {"url": selected_url, "found": True, "excerpts": ["> An unrelated observation."]}),
+    ]
+    if newer_unrelated_search:
+        events.append(tool(4, "web_search", {"query": "another topic"},
+                           {"results": [{"url": "https://example.invalid/another"}]}))
+
+    assert _unread_search_urls(events, selected_url) == [unread_url]
+
+
+def test_openrouter_keeps_read_history_after_refined_search(tmp_path):
+    first_url = "https://example.invalid/irrelevant"
+    initial_search, refined_search = {"query": "initial designation"}, {"query": "refined designation"}
+    first_read = {"url": first_url, "keywords": ["designation"]}
+    repeated_read = {"url": first_url, "keywords": ["different passage"]}
+    calls, bodies = [], []
+    unrelated_quote = "The observatory published an unrelated observation."
+
+    def execute(name, arguments):
+        calls.append((name, arguments))
+        if name == "web_search":
+            urls = [first_url] if arguments == initial_search else [first_url, SOURCE]
+            return {"results": [{"url": url} for url in urls]}
+        assert name == "page_find"
+        url = arguments["url"]
+        return {"url": url, "found": True, "excerpts": [f"> {QUOTE if url == SOURCE else unrelated_quote}"]}
+
+    def handle(request):
+        body = json.loads(request.content)
+        bodies.append(body)
+        step = len(bodies)
+        if step == 1:
+            reply = assistant_tool_call("web_search", initial_search)
+            reply["tool_calls"][0]["id"] = "initial-search"
+            for call_id, name, arguments in [
+                ("first-read", "page_find", first_read), ("refined-search", "web_search", refined_search),
+            ]:
+                call = assistant_tool_call(name, arguments)["tool_calls"][0]
+                call["id"] = call_id
+                reply["tool_calls"].append(call)
+        elif step == 2:
+            assert "tools" not in body
+            assert shown_excerpts(body) == [{"id": "r2-b1", "text": unrelated_quote}]
+            reply = sourced_final("C/2026 TEST", "r2-b1")
+        elif step == 3:
+            assert json.loads(body["messages"][-1]["content"])["quote"] == unrelated_quote
+            reply = {"role": "assistant", "content": "UNSUPPORTED"}
+        elif step == 4:
+            assert body["tool_choice"] == {"type": "function", "function": {"name": "page_find"}}
+            reply = assistant_tool_call("page_find", repeated_read)
+            reply["tool_calls"][0]["id"] = "rejected-reread"
+            next_read = assistant_tool_call("page_find", READ_ARGS)["tool_calls"][0]
+            next_read["id"] = "second-read"
+            reply["tool_calls"].append(next_read)
+        elif step == 5:
+            rejected = next(message for message in body["messages"]
+                            if message.get("tool_call_id") == "rejected-reread")
+            assert json.loads(rejected["content"])["error"] == "tool_argument_not_allowed"
+            reading = next(message for message in body["messages"] if message.get("tool_call_id") == "second-read")
+            reply = sourced_final("C/2026 TEST", select_block({"messages": [reading]}, QUOTE))
+        else:
+            assert step == 6 and "tools" not in body
+            assert json.loads(body["messages"][-1]["content"])["quote"] == QUOTE
+            reply = SUPPORTED
+        return completion(step, reply, 1000, 30, 0, 0, 0.0003)
+
+    ledger = tmp_path / "receipts.jsonl"
+    registry = SimpleNamespace(schemas=PublicationTools().schemas, run=execute)
+    trace = ask(QUESTION, registry, ledger, handle, budget="0.06", model="openai/gpt-4o-mini")
+
+    assert calls == [("web_search", initial_search), ("page_find", first_read),
+                     ("web_search", refined_search), ("page_find", READ_ARGS)]
+    assert (trace["status"], trace["final"], trace["quote"], trace["source_url"]) == ("ok", "C/2026 TEST", QUOTE, SOURCE)
+    checks = [event for event in trace["events"] if event.get("evidence_check")]
+    assert [event["message"]["content"] for event in checks] == ["UNSUPPORTED", "SUPPORTED"]
+    assert checks[0]["fallback_read_urls"] == [SOURCE]
+    assert trace["steps"] == trace["model_calls"] == len(bodies) == 6
+    assert trace["cost_usd"] == pytest.approx(0.0018)
+    assert trace["cost_usd"] < trace["question_budget_usd"] == 0.06
+    receipts = [json.loads(line) for line in ledger.read_text(encoding="utf-8").splitlines()]
+    assert [receipt["request_id"] for receipt in receipts] == [f"receipt-{step}" for step in range(1, 7)]
 
 
 def test_openrouter_reuses_first_parallel_read_after_unsupported_early_final(tmp_path):

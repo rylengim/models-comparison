@@ -208,3 +208,112 @@ def test_resumed_api_failure_cannot_be_reported_as_successful(tmp_path, fake_env
     assert not benchmark(dataset(), trace_dir=tmp_path, config_names=["cheap_no_tools"],
                          client=client, resume=True)
     assert len(fake_environment) == 1
+
+
+@pytest.mark.parametrize("status,finish_reason", [
+    ("output_truncated", "length"),
+    ("output_truncated", "stop"),
+    ("ok", "length"),
+])
+def test_benchmark_does_not_credit_truncated_matching_final(tmp_path, monkeypatch, status, finish_reason):
+    def run(question, *, client, **kwargs):
+        client.spent_usd += .01
+        return dict(final="Alice", status=status, cost_usd=.01, known_cost_usd=.01,
+                    steps=1, elapsed_s=.1, events=[
+                        {"type": "llm", "finish_reason": finish_reason,
+                         "message": {"role": "assistant", "content": "FINAL: Alice"}}])
+
+    monkeypatch.setattr("freshqa.agent.run_agent", run)
+    monkeypatch.setattr("freshqa.tools.ToolRegistry", lambda **kwargs: object())
+    client = SimpleNamespace(spent_usd=0.0, budget_usd=5.0)
+    assert benchmark(dataset(), trace_dir=tmp_path, config_names=["cheap_no_tools"], client=client)
+    trace = json.loads((tmp_path / "cheap_no_tools" / "one.json").read_text())
+    assert trace["correct"] is False
+    result = aggregate([trace], total=1)
+    assert result["n"] == 1 and result["complete"]
+    assert result["cost_total"] == pytest.approx(.01)
+    assert result["accuracy"] == 0
+
+
+@pytest.mark.parametrize("status,cost,finish_reason,content,tool_calls,expected", [
+    ("ok", .01, "stop", "FINAL: Alice", [], True),
+    ("ok", .01, None, "FINAL: Alice", [], True),
+    ("ok", .01, "content_filter", "FINAL: Alice", [], False),
+    ("ok", .01, "tool_calls", "FINAL: Alice", [], False),
+    ("ok", .01, "future_unknown_reason", "FINAL: Alice", [], False),
+    ("max_steps", .01, "stop", "FINAL: Alice", [], True),
+    ("tool_limit", .01, "stop", "FINAL: Alice", [], True),
+    ("repeated_tool_call", .01, "stop", "FINAL: Alice", [], True),
+    ("error", .01, "stop", "FINAL: Alice", [], False),
+    ("budget_exceeded", .01, "stop", "FINAL: Alice", [], False),
+    ("cost_unknown", None, "stop", "FINAL: Alice", [], False),
+    ("ok", None, "stop", "FINAL: Alice", [], False),
+    ("empty_response", .01, "stop", "FINAL: Alice", [], False),
+    ("invalid_tool_calls", .01, "stop", "FINAL: Alice", [], False),
+    ("unexpected_tool_call", .01, "stop", "FINAL: Alice", [], False),
+    ("max_steps", .01, "tool_calls", "FINAL: Alice", [{"id": "pending"}], False),
+    ("ok", .01, "stop", "", [], False),
+])
+def test_benchmark_and_report_share_versioned_final_policy(
+        tmp_path, monkeypatch, status, cost, finish_reason, content, tool_calls, expected):
+    from freshqa.dataset import METRIC_VERSION
+    from freshqa.evaluation import GRADING_POLICY_VERSION, HARD_FAILURE_STATUSES
+    from freshqa.reporting import render_report
+
+    def run(question, *, client, **kwargs):
+        client.spent_usd += .01
+        return dict(final="Alice", status=status, cost_usd=cost, known_cost_usd=.01,
+                    steps=2, elapsed_s=.1, events=[
+                        {"type": "llm", "early_final": True, "finish_reason": "length",
+                         "message": {"content": "unfinished candidate"}},
+                        {"type": "llm", "finish_reason": finish_reason,
+                         "message": {"content": content, "tool_calls": tool_calls}}])
+
+    monkeypatch.setattr("freshqa.agent.run_agent", run)
+    monkeypatch.setattr("freshqa.tools.ToolRegistry", lambda **kwargs: object())
+    monkeypatch.setattr("freshqa.reporting._chart", lambda *args: None)
+    root, out = tmp_path / "traces", tmp_path / "reports"
+    client = SimpleNamespace(spent_usd=0.0, budget_usd=5.0)
+    assert benchmark(dataset(), trace_dir=root, config_names=["cheap_no_tools"], client=client) == (
+        status not in HARD_FAILURE_STATUSES)
+    path = root / "cheap_no_tools" / "one.json"
+    original = path.read_bytes()
+    trace = json.loads(original)
+    assert trace["correct"] is expected
+    assert trace["grading_policy_version"] == GRADING_POLICY_VERSION
+    assert trace["metric_version"] == METRIC_VERSION
+    signature = json.loads((root / "manifest.json").read_text())["signature"]
+    assert signature["grading_policy_version"] == GRADING_POLICY_VERSION
+    assert signature["metric_version"] == METRIC_VERSION
+    summary, _ = render_report(dataset(), root, out)
+    value = summary["cheap_no_tools"]
+    assert value["correct"] == int(expected)
+    assert value["n"] == 1 and value["accuracy"] == int(expected)
+    assert value["cost_total"] == cost
+    assert value["complete"] == (cost is not None and status not in HARD_FAILURE_STATUSES)
+    sidecar = json.loads((out / "grading.json").read_text())
+    assert sidecar["grading_policy_version"] == GRADING_POLICY_VERSION
+    assert sidecar["grades"][0]["historical_correct"] is expected
+    assert sidecar["grades"][0]["current_correct"] is expected
+    assert path.read_bytes() == original
+
+
+@pytest.mark.parametrize("changes", [
+    {"status": "output_truncated"},
+    {"status": "error"},
+    {"cost_usd": None},
+    {"finish_reason": "length"},
+    {"finish_reason": "content_filter"},
+    {"finish_reason": "future_unknown_reason"},
+    {"events": [{"type": "llm", "finish_reason": "length"}]},
+    {"events": [{"type": "llm", "error": "failed"}]},
+])
+def test_ineligible_final_never_enters_text_metric(monkeypatch, changes):
+    from freshqa.evaluation import score_trace
+
+    def forbidden(*args):
+        raise AssertionError("The text metric must not see an ineligible final")
+
+    monkeypatch.setattr("freshqa.evaluation.score_row", forbidden)
+    trace = dict(final="Alice", status="ok", cost_usd=.01, events=[])
+    assert score_trace(dataset()[0], {**trace, **changes}) is False

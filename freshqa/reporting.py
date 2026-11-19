@@ -1,10 +1,24 @@
 """Build reports only from saved, explicitly measured traces."""
 import csv
+import hashlib
 import json
 from pathlib import Path
 
-from .dataset import is_correct, score_row
+from .dataset import METRIC_VERSION, is_correct
+from .evaluation import GRADING_POLICY_VERSION, HISTORICAL_POLICY, ineligibility_reason, score_trace
 from .experiment import LABELS, REQUIRED_CONFIGS, aggregate, configurations, dataset_hash, write_json
+
+DEFAULT_REPORT_OUT = "tmp/current-report"
+ARCHIVED_REVISIONS = ("2026-11-15", "2026-11-15-sources")
+
+
+def validate_report_output(out_dir):
+    """Reject accepted report locations before credentials, inference or writes."""
+    out = Path(out_dir).resolve()
+    canonical = Path(__file__).resolve().parents[1] / "reports"
+    archives = [canonical / "revisions" / name for name in ARCHIVED_REVISIONS]
+    if out == canonical or any(out.is_relative_to(archive) for archive in archives):
+        raise ValueError("Исторические отчёты сохраняются. Укажите отдельный --out.")
 
 
 def freshness(traces, total, model):
@@ -17,8 +31,16 @@ def freshness(traces, total, model):
             "guessed_ids": [t["id"] for t in traces if t["correct"]]}
 
 
-def render_report(rows, trace_dir="traces", out_dir="reports"):
+def render_report(rows, trace_dir="traces", out_dir=DEFAULT_REPORT_OUT, *, grading_policy=GRADING_POLICY_VERSION):
+    """Regrade saved answers into separate output; never rewrite source traces.
+
+    ``historical-recorded`` explicitly reproduces saved ``correct`` values.
+    The sidecar retains both historical values and the current-policy grades.
+    """
     root, out = Path(trace_dir), Path(out_dir)
+    if grading_policy not in {GRADING_POLICY_VERSION, HISTORICAL_POLICY}:
+        raise ValueError(f"Неизвестная политика оценки: {grading_policy}")
+    validate_report_output(out)
     out.mkdir(parents=True, exist_ok=True)
     configs = configurations()
     manifest = root / "manifest.json"
@@ -35,6 +57,7 @@ def render_report(rows, trace_dir="traces", out_dir="reports"):
     # configurations have since been added to the executable experiment.
     grouped = {name: [] for name in configs}
     trace_paths = {}
+    grades = []
     for path in sorted(root.glob("*/*.json")):
         if not manifest.exists():
             raise ValueError("Есть трейсы без manifest.json")
@@ -45,11 +68,25 @@ def render_report(rows, trace_dir="traces", out_dir="reports"):
             raise ValueError(f"Трейс не соответствует пути: {path}")
         if trace["config"] not in grouped:
             raise ValueError(f"Конфигурация трейса отсутствует в манифесте: {path}")
-        trace["correct"] = score_row(gold[trace["id"]], trace["final"])
+        current_correct = score_trace(gold[trace["id"]], trace)
+        reason = ineligibility_reason(trace)
+        grades.append(dict(config=trace["config"], id=trace["id"],
+                           historical_correct=trace.get("correct"), current_correct=current_correct,
+                           historical_grading_policy_version=trace.get("grading_policy_version"),
+                           historical_metric_version=trace.get("metric_version"),
+                           eligible=reason is None, ineligible_reason=reason,
+                           trace_sha256=hashlib.sha256(path.read_bytes()).hexdigest()))
+        if grading_policy == HISTORICAL_POLICY:
+            if not isinstance(trace.get("correct"), bool):
+                raise ValueError(f"Нет сохранённой исторической оценки: {path}")
+        else:
+            trace["correct"] = current_correct
         grouped[trace["config"]].append(trace)
         trace_paths[(trace["config"], trace["id"])] = path
     summary = {name: aggregate(items, len(rows)) for name, items in grouped.items()}
     fresh = freshness(grouped["strong_no_tools"], len(rows), configs["strong_no_tools"]["model"])
+    write_json(out / "grading.json", dict(selected_policy=grading_policy,
+               grading_policy_version=GRADING_POLICY_VERSION, metric_version=METRIC_VERSION, grades=grades))
     write_json(out / "report.json", summary)
     write_json(out / "freshness.json", fresh)
     with (out / "report.csv").open("w", encoding="utf-8", newline="") as stream:
@@ -62,6 +99,7 @@ def render_report(rows, trace_dir="traces", out_dir="reports"):
         return "—" if value is None else (f"{value:.1%}" if percent else f"{value:.4f}")
 
     lines = ["# Результаты эксперимента", "",
+             f"Политика отчёта: `{grading_policy}`. Исходные и текущие оценки: [grading.json](grading.json).", "",
              "Числа рассчитываются только из реальных трейсов. `—` означает отсутствие замера, а не ноль.", "",
              "| Конфигурация | Завершено | Верных | $/задачу | $/верный | Шагов | Секунд |",
              "|---|---:|---:|---:|---:|---:|---:|"]
